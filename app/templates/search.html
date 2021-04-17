@@ -1,15 +1,26 @@
-<html>
+<!DOCTYPE html>
     <head>
+        <meta charset="UTF-8">
+        <title>Game Recommendations</title>
         <link rel="stylesheet" href="/static/bootstrap.min.css">
         <link rel="stylesheet" href="/static/main.css">
     </head>
     <body>
         <div class="topcorner">
-            <p>Project Name: {{ name }}</p>
-            <p>Student Name: ({{ netid }})</p>
+            <p>Student Name: Cindy Jin (cj369), Elisha Chen (ec636), Linda He (lfh32), Leo Leyva (ll692), Mahin Chowdhury (mac568)</p>
         </div>
+
+        <nav>
+            <ul>
+                <li><a href="popular.html">Popular</a></li>
+                <li><a href="videogames.html">Video Games</a></li>
+                <li><a href="mobilegames.html">Mobile Games</a></li>
+                <li><a href="boardgames.html">Board Games</a></li>
+            </ul>
+        </nav>
+
         <form class="form-inline global-search">
-            <h1 style="font-size: 55px; font-family:Futura; color: #4285F4">
+            <h1 style="font-size: 55px; font-family:Futura; color: #4285F4; text-align:center">
                 C
                 <span style="color: #EA4335; ">S</span>
                 <span style="color: #FBBC05; ">4</span>
@@ -17,23 +28,38 @@
                 <span style="color: #34A853; ">0</span>
                 <span style="color: #EA4335; ">0</span>
             </h1>
-            
+            <h2 style="text-align:center">Game Recommendation Engine</h2>
+
+
+
             <br><br>
-            
-            <div class="form-group">
-                <input id="input" type="text" name="search" class="form-control" placeholder="Your Input">
+
+            <div class="form-group" style="text-align:center">
+                <label for="gametype">Type of game:</label>
+                <select id="gametype" name="gametype">
+                  <option value="boardgames">Board Game</option>
+                  <option value="mobilegames">Mobile Game</option>
+                  <option value="videogames">Video Game</option>
+                </select>
+                <br>
+                <br>
+                <input id="input_game" type="text" name="search" class="form-control" placeholder="Enter a game to start">
+                <input id="input_keyword" type="text" name="search" class="form-control" placeholder="Keywords">
+                <button type="submit" class="btn btn-info"> Go! </button>
             </div>
-            <button type="submit" class="btn btn-info"> Go! </button>
+
+
         </form>
-        <form class="form-inline global-search">
+
+        <!-- <form class="form-inline global-search">
         {% if data %}
             <h1>{{output_message}}</h1>
-            {% for d in data %}  
+            {% for d in data %}
                 <br>
                 <p>{{d}}</p>
             {% endfor %}
         {% endif %}
-        </form>
+        </form> -->
     </body>
 
 </html>
