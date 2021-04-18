@@ -66,16 +66,6 @@
 
   </form>
 
-  <!-- <form class="form-inline global-search">
-        {% if data %}
-            <h1>{{output_message}}</h1>
-            {% for d in data %}
-                <br>
-                <p>{{d}}</p>
-            {% endfor %}
-        {% endif %}
-        </form> -->
-
   <script>
     // const requestData = async function () {
     //   const bg = await d3.csv('../datasets/bg_detailed_info.csv');
@@ -87,6 +77,7 @@
         let name = document.getElementById('input_game').value;
         let keys = document.getElementById('input_keyword').value;
         let type = document.getElementById('gametype').value;
+
         let rank = [];
         if (type === 'boardgame') {
           //Get board game rankings
