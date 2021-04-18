@@ -22,6 +22,8 @@ from app.accounts import accounts as accounts
 app.register_blueprint(accounts)
 from app.irsystem import irsystem as irsystem
 app.register_blueprint(irsystem)
+from app.datasets import datasets as datasets
+app.register_blueprint(datasets)
 
 # Initialize app w/SocketIO
 socketio.init_app(app)
