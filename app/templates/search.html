@@ -1,69 +1,72 @@
 <!DOCTYPE html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Game Recommendations</title>
-        <link rel="stylesheet" href="/static/bootstrap.min.css">
-        <link rel="stylesheet" href="/static/main.css">
-    </head>
-    <body>
-        <div class="topcorner">
-            <a href="account" class = "btn btn-warning">Sign In</a>
-        </div>
 
-        <div class="navbar navbar-default navbar-fixed-bottom" role="navigation">
-          <nav>
-              <ul class="nav navbar-nav">
-                <li>
-                  <a href="/">Search</a>
-                </li>
-                <li>
-                  <a href="popular">Popular</a>
-                </li>
-                <li>
-                  <a href="videogames">Video Games</a>
-                </li>
-                <li>
-                  <a href="mobilegames">Mobile Games</a>
-                </li>
-                <li>
-                  <a href="boardgames">Board Games</a>
-                </li>
-              </ul>
-          </nav>
-          <div class = "container">
-            <p class = "navbar-text pull-right">Built by: cj369, ec636, lfh32, ll692, mac568</p>
-          </div>
-        </div>
+<head>
+  <meta charset="UTF-8">
+  <title>Game Recommendations</title>
+  <link rel="stylesheet" href="/static/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/main.css">
+  <script src="https://d3js.org/d3.v6.min.js"></script>
+</head>
 
-        <h1 style="font-size: 55px; font-family:Futura; color: #4285F4; text-align:center">
-            C
-            <span style="color: #EA4335; ">S</span>
-            <span style="color: #FBBC05; ">4</span>
-            3
-            <span style="color: #34A853; ">0</span>
-            <span style="color: #EA4335; ">0</span>
-        </h1>
-        <h2 style="text-align:center">Game Recommendation Engine</h2>
+<body>
+  <div class="topcorner">
+    <a href="account" class="btn btn-warning">Sign In</a>
+  </div>
 
-        <form class="form-inline global-search">
-            <div class="form-group" style="text-align:center">
-                <label for="gametype">Type of game:</label>
-                <select id="gametype" name="gametype"  class="form-control" >
-                  <option value="boardgames">Board Game</option>
-                  <option value="mobilegames">Mobile Game</option>
-                  <option value="videogames">Video Game</option>
-                </select>
-                <br>
-                <br>
-                <input id="input_game" type="text" name="search" class="form-control" placeholder="Enter a game to start">
-                <input id="input_keyword" type="text" name="search" class="form-control" placeholder="Keywords">
-                <button type="submit" class="btn btn-info"> Go! </button>
-            </div>
+  <div class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+    <nav>
+      <ul class="nav navbar-nav">
+        <li>
+          <a href="/">Search</a>
+        </li>
+        <li>
+          <a href="popular">Popular</a>
+        </li>
+        <li>
+          <a href="videogames">Video Games</a>
+        </li>
+        <li>
+          <a href="mobilegames">Mobile Games</a>
+        </li>
+        <li>
+          <a href="boardgames">Board Games</a>
+        </li>
+      </ul>
+    </nav>
+    <div class="container">
+      <p class="navbar-text pull-right">Built by: cj369, ec636, lfh32, ll692, mac568</p>
+    </div>
+  </div>
+
+  <h1 style="font-size: 55px; font-family:Futura; color: #4285F4; text-align:center">
+    C
+    <span style="color: #EA4335; ">S</span>
+    <span style="color: #FBBC05; ">4</span>
+    3
+    <span style="color: #34A853; ">0</span>
+    <span style="color: #EA4335; ">0</span>
+  </h1>
+  <h2 style="text-align:center">Game Recommendation Engine</h2>
+
+  <form action='results' class="form-inline global-search">
+    <div class="form-group" style="text-align:center">
+      <label for="gametype">Type of game:</label>
+      <select id="gametype" name="gametype" class="form-control">
+        <option value="boardgames">Board Game</option>
+        <option value="mobilegames">Mobile Game</option>
+        <option value="videogames">Video Game</option>
+      </select>
+      <br>
+      <br>
+      <input id="input_game" type="text" name="search" class="form-control" placeholder="Enter a game to start">
+      <input id="input_keyword" type="text" name="search" class="form-control" placeholder="Keywords">
+      <button id='go' type="submit" class="btn btn-info"> Go! </button>
+    </div>
 
 
-        </form>
+  </form>
 
-        <!-- <form class="form-inline global-search">
+  <!-- <form class="form-inline global-search">
         {% if data %}
             <h1>{{output_message}}</h1>
             {% for d in data %}
@@ -73,6 +76,39 @@
         {% endif %}
         </form> -->
 
-    </body>
+  <script>
+    // const requestData = async function () {
+    //   const bg = await d3.csv('../datasets/bg_detailed_info.csv');
+    // };
+    // requestData();
+
+    let go = d3.select('#go')
+      .on('click', function () {
+        let name = document.getElementById('input_game').value;
+        let keys = document.getElementById('input_keyword').value;
+        let type = document.getElementById('gametype').value;
+        let rank = [];
+        if (type === 'boardgame') {
+          //Get board game rankings
+        }
+        else if (type === 'videogame') {
+          //Get video game rankings
+        }
+        else {
+          //Get mobile game rankings
+        }
+
+        sessionStorage.setItem("rk", JSON.stringify(rank));
+        sessionStorage.setItem("gn", name);
+        sessionStorage.setItem("kw", keys);
+        sessionStorage.setItem("gt", type);
+
+
+      });
+
+  </script>
+
+
+</body>
 
 </html>
