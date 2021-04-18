@@ -53,3 +53,8 @@ body {
   top: 0px;
   left: 0px;
 }
+
+#btns{
+  display: flex;
+  justify-content: space-evenly;
+}
