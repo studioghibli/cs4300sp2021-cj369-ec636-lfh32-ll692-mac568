@@ -13,3 +13,5 @@ from .controllers.mobilegames_controller import *
 from .controllers.videogames_controller import *
 
 from .controllers.boardgames_controller import *
+
+from .controllers.account_controller import *

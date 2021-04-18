@@ -1,28 +1,42 @@
 <!DOCTYPE html>
     <head>
         <meta charset="UTF-8">
-        <title>Game Recommendations</title>
+        <title>Popular Games</title>
         <link rel="stylesheet" href="/static/bootstrap.min.css">
         <link rel="stylesheet" href="/static/main.css">
     </head>
     <body>
-        <div class="topcorner">
-            <p>Student Name: Cindy Jin (cj369), Elisha Chen (ec636), Linda He (lfh32), Leo Leyva (ll692), Mahin Chowdhury (mac568)</p>
+      <div class="topcorner">
+          <a href="account" class = "btn btn-warning">Sign In</a>
+      </div>
+
+      <div class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+        <nav>
+            <ul class="nav navbar-nav">
+              <li>
+                <a href="/">Search</a>
+              </li>
+              <li>
+                <a href="popular">Popular</a>
+              </li>
+              <li>
+                <a href="videogames">Video Games</a>
+              </li>
+              <li>
+                <a href="mobilegames">Mobile Games</a>
+              </li>
+              <li>
+                <a href="boardgames">Board Games</a>
+              </li>
+            </ul>
+        </nav>
+        <div class = "container">
+          <p class = "navbar-text pull-right">Built by: cj369, ec636, lfh32, ll692, mac568</p>
         </div>
+      </div>
 
-        
-        </form>
-
-        <!-- <form class="form-inline global-search">
-        {% if data %}
-            <h1>{{output_message}}</h1>
-            {% for d in data %}
-                <br>
-                <p>{{d}}</p>
-            {% endfor %}
-        {% endif %}
-        </form> -->
-
+      <h1>Popular Games</h1>
+      
     </body>
 
 </html>

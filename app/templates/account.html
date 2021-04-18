@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Account</title>
+        <link rel="stylesheet" href="/static/bootstrap.min.css">
+        <link rel="stylesheet" href="/static/main.css">
+    </head>
+    <body>
+      <div class="topcorner">
+          <a href="account" class = "btn btn-warning">Sign In</a>
+      </div>
+
+      <div class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+        <nav>
+            <ul class="nav navbar-nav">
+              <li>
+                <a href="/">Search</a>
+              </li>
+              <li>
+                <a href="popular">Popular</a>
+              </li>
+              <li>
+                <a href="videogames">Video Games</a>
+              </li>
+              <li>
+                <a href="mobilegames">Mobile Games</a>
+              </li>
+              <li>
+                <a href="boardgames">Board Games</a>
+              </li>
+            </ul>
+        </nav>
+        <div class = "container">
+          <p class = "navbar-text pull-right">Built by: cj369, ec636, lfh32, ll692, mac568</p>
+        </div>
+      </div>
+
+      <h1>My Account</h1>
+
+      <div>
+        <h3>Sign In</h3>
+        <form id="signinform" method="post" action="" class="" novalidate>
+            <div class="form-group" style="text-align:left">
+                <div class="form-group">
+                  <label for="userEmail">Email: </label>
+                  <input id="userEmail" type="email" name="userEmail" class="form-control" placeholder="" required/>
+                  <div class="feedback hidden" id = "userNameError"> Name is required. </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="userPassword">Password: </label>
+                  <input id="userPassword" type="text" name="userPassword" class="form-control" placeholder="" required/>
+                  <div class="feedback hidden" id = "userEmailError">A valid email is required.</div>
+                </div>
+                <button type="submit" class="btn btn-primary">Sign In</button>
+            </div>
+      </form>
+      </div>
+
+      <br>
+      <br>
+      <br>
+
+      <div>
+        <h3>Create an Account</h3>
+        <form id="createAccountForm" method="post" action="" class="" novalidate>
+            <div class="form-group" style="text-align:left">
+                <div class="form-group">
+                  <label for="userFirstName"> First Name: </label>
+                  <input id="userFirstName" name="userFirstName" placeholder="" required/>
+                  <div class="feedback hidden" id = "userFirstNameError"> First name is required. </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="userLastName"> Last Name: </label>
+                  <input id="userLastName" name="userLastName" placeholder="" required/>
+                  <div class="feedback hidden" id = "userLastNameError"> Last name is required. </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="userEmail">Email: </label>
+                  <input id="userEmail" type="email" name="userEmail" class="form-control" placeholder="" required/>
+                  <div class="feedback hidden" id = "userNameError"> A valid email is required. </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="userPassword">Password: </label>
+                  <input id="userPassword" type="text" name="userPassword" class="form-control" placeholder="" required/>
+                  <div class="feedback hidden" id = "userEmailError">A valid password is required.</div>
+                </div>
+
+                <div class="form-group">
+                  <label for="userConfirmPassword">Confirm Password: </label>
+                  <input id="userConfirmPassword" type="text" name="userConfirmPassword" class="form-control" placeholder="" required/>
+                  <div class="feedback hidden" id = "userConfirmPasswordError">Password does not match.</div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Sign In</button>
+            </div>
+      </form>
+      </div>
+
+      <br>
+      <br>
+      <br>
+
+    </body>
+
+</html>
