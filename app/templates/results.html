@@ -4,43 +4,115 @@
   <title>Results</title>
   <meta charset="utf-8" />
   <link rel="stylesheet" href="/static/main.css">
+  <link rel="stylesheet" href="/static/bootstrap.min.css">
   <script src="https://d3js.org/d3.v6.min.js"></script>
-  <!-- <script src='../interactivity/app_int.js'></script> -->
 </head>
 
 <body>
-  <a href=''>Sign In</a>
-  <ul>
-    <li><a href=''>Popular</a></li>
-    <li><a href=''>Video Games</a></li>
-    <li><a href=''>Mobile Games</a></li>
-    <li><a href=''>Board Games</a></li>
-  </ul>
+  <div class="topcorner">
+    <a href="account" class="btn btn-warning">Sign In</a>
+  </div>
 
-  <h1>Game Recommendation Engine</h1>
-  <form>
-    <div class="form-group">
-      <input id="input" type="text" name="search" class="form-control" placeholder="Enter a game to start">
-      <input id="input2" type="text" name="search" class="form-control" placeholder="Keywords">
+  <div class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+    <nav>
+      <ul class="nav navbar-nav">
+        <li>
+          <a href="/">Search</a>
+        </li>
+        <li>
+          <a href="popular">Popular</a>
+        </li>
+        <li>
+          <a href="videogames">Video Games</a>
+        </li>
+        <li>
+          <a href="mobilegames">Mobile Games</a>
+        </li>
+        <li>
+          <a href="boardgames">Board Games</a>
+        </li>
+      </ul>
+    </nav>
+    <div class="container">
+      <p class="navbar-text pull-right">Built by: cj369, ec636, lfh32, ll692, mac568</p>
     </div>
-  </form>
+  </div>
 
-  <h2>Results of games similar to: </h2>
-  <button>Filter</button>
-  <button>Sort</button>
+  <h1 style="font-size: 55px; font-family:Futura; color: #4285F4; text-align:center">
+    C
+    <span style="color: #EA4335; ">S</span>
+    <span style="color: #FBBC05; ">4</span>
+    3
+    <span style="color: #34A853; ">0</span>
+    <span style="color: #EA4335; ">0</span>
+  </h1>
+  <h2 style="text-align:center">Game Recommendation Engine</h2>
+  <!-- 
+  <form action='results' class="form-inline global-search">
+    <div class="form-group" style="text-align:center">
+      <label for="input">Type of game:</label>
+      <select id="gametype" name="gametype" class="form-control">
+        <option value="boardgames">Board Game</option>
+        <option value="mobilegames">Mobile Game</option>
+        <option value="videogames">Video Game</option>
+      </select>
+      <br>
+      <br>
+      <input id="input2" type="text" name="search" class="form-control" placeholder="Enter a game to start">
+      <input id="input3" type="text" name="search" class="form-control" placeholder="Keywords">
+      <button id='go2' type="submit" class="btn btn-info"> Go! </button>
+    </div>
+  </form> -->
+  <br />
+  <h3 id='similarto' style="text-align:center"></h3>
+  <div id='btns'>
+    <button>Filter</button>
+    <button>Sort</button>
+  </div>
+
+  <div id='results'></div>
 
 
   <script>
 
-    let rk = sessionStorage.getItem('rk');
+    let rk = JSON.parse(sessionStorage.getItem('rk'));
     let gn = sessionStorage.getItem('gn');
     let kw = sessionStorage.getItem('kw');
     let gt = sessionStorage.getItem('gt');
 
-    console.log(rk);
-    console.log(gn);
-    console.log(kw);
-    console.log(gt);
+    document.getElementById('similarto').innerHTML = 'Results of games similar to {' + gn + ', ' + kw + ', ' + gt + '}' + ':';
+
+    const len = rk.length;
+    let simm = len === 0 ? -1 : rk[0][1];
+    let res = d3.select('#results');
+    let i = 0;
+    simm = simm >= 0.6 ? simm : -1;
+
+    while (simm >= 0.6 || (i < len && i < 10)) {
+      if (simm != -1 && sim < 0.6) {
+        break;
+      }
+
+      //Actually getting the info from the ranks and stuff
+
+      if (i % 3 == 0) {
+        res.append('div.row')
+          .attr('class', 'row')
+          .attr('id', 'row' + (i / 3));
+      }
+
+      d3.select('row' + (i / 3)).append('div')
+        .attr('class', 'rank' + (i % 3))
+        .attr('id', 'rank' + (i));
+
+
+      //Passing on necessary content over to divs
+
+      //Advance i and your position in the ranks
+    }
+
+
+
 
   </script>
 
