@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<head>
+  <title>Results</title>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="/static/main.css">
+  <script src="https://d3js.org/d3.v6.min.js"></script>
+  <!-- <script src='../interactivity/app_int.js'></script> -->
+</head>
+
+<a href=''>Sign In</a>
+
+<body>
+  <ul>
+    <li><a href=''>Popular</a></li>
+    <li><a href=''>Video Games</a></li>
+    <li><a href=''>Mobile Games</a></li>
+    <li><a href=''>Board Games</a></li>
+  </ul>
+
+  <h1>Game Recommendation Engine</h1>
+  <form>
+    <div class="form-group">
+      <input id="input" type="text" name="search" class="form-control" placeholder="Enter a game to start">
+      <input id="input" type="text" name="search" class="form-control" placeholder="Keywords">
+    </div>
+  </form>
+
+  <h2>Results of games similar to: </h2>
+  <button>Filter</button>
+  <button>Sort</button>
+
+
+  <script>
+
+    let rk = sessionStorage.getItem('rk');
+    let gn = sessionStorage.getItem('gn');
+    let kw = sessionStorage.getItem('kw');
+    let gt = sessionStorage.getItem('gt');
+
+    console.log(rk);
+    console.log(gn);
+    console.log(kw);
+    console.log(gt);
+
+  </script>
+
+
+</body>
+
+</html>
