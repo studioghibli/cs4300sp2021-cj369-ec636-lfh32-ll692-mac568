@@ -42,10 +42,8 @@ def mgs_jaccard_list(app):
 
 # compute tf-idf vectors and cossim
 
-reviews = pd.read_csv(r'data/mobile-games/googleplaystore_user_reviews.csv')
+reviews = pd.read_csv(r'data/mobile-games/user_reviews_cleaned.csv')
 reviews = (reviews.dropna()).reset_index(drop=True)
-reviews = reviews.head(1000)
-print("the length of reviews is " + str(len(reviews)))
 
 
 def tokenize(text):
@@ -138,9 +136,9 @@ def mgs_get_rankings(score_list):
 
 
 test_app1 = game_apps['App'][0]
-print("Query: " + game_apps['App'][0])
+print("\nQuery: " + test_app1)
 
-print('\nJaccard Similarity:')
+print('Jaccard Similarity:')
 jaccard_scores = mgs_jaccard_list(test_app1)
 output_jaccard = mgs_get_rankings(jaccard_scores)
 for i in range(50):
@@ -149,7 +147,8 @@ for i in range(50):
 
 test_app2 = reviews['App'][0]
 
-print('\nCosine Similarity:')
+print("\nQuery: " + test_app2)
+print('Cosine Similarity:')
 output_cossim = mgs_cossim_list(test_app2)
 for i in range(len(output_cossim)):
     print(output_cossim[i])
