@@ -16,11 +16,11 @@ def search():
 		output_message = ''
 	else:
 		if gt == 'boardgames':
-			data = list(pd.read_csv(r'app/datasets/steam.csv'))
+			data = list(pd.read_csv(r'data/board-games/data/games_detailed_info.csv'))
 		elif gt == 'mobilegames':
-			data = list(pd.read_csv(r'app/datasets/bg_detailed_info.csv'))
+			data = list(pd.read_csv(r'data/mobile-games/googleplaystore.csv'))
 		else:
-			data = list(pd.read_csv(r'app/datasets/googleplaystore.csv'))
+			data = list(pd.read_csv(r'data/steam-games/steam.csv'))
 		
 		output_message = "Your search: " + gt + ', ' + gn + ', ' + k
 	return render_template('search.html', output_message=output_message, data=data)
