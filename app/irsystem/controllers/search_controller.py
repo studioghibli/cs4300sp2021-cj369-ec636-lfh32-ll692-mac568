@@ -1,20 +1,26 @@
 from . import *  
 from app.irsystem.models.helpers import *
 from app.irsystem.models.helpers import NumpyEncoder as NumpyEncoder
+import pandas as pd
 
-project_name = "Ilan's Cool Project Template"
-net_id = "Ilan Filonenko: if56"
+
 
 @irsystem.route('/', methods=['GET'])
 def search():
-	query = request.args.get('search')
-	if not query:
+	gt = request.args.get('gametype')
+	gn = request.args.get('game')
+	k = request.args.get('keys')
+
+	if gt == None or gn == None or k == None:
 		data = []
 		output_message = ''
 	else:
-		output_message = "Your search: " + query
-		data = range(5)
-	return render_template('search.html', name=project_name, netid=net_id, output_message=output_message, data=data)
-
-
-
+		if gt == 'boardgames':
+			data = list(pd.read_csv(r'app/datasets/steam.csv'))
+		elif gt == 'mobilegames':
+			data = list(pd.read_csv(r'app/datasets/bg_detailed_info.csv'))
+		else:
+			data = list(pd.read_csv(r'app/datasets/googleplaystore.csv'))
+		
+		output_message = "Your search: " + gt + ', ' + gn + ', ' + k
+	return render_template('search.html', output_message=output_message, data=data)

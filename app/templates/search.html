@@ -48,7 +48,7 @@
   </h1>
   <h2 style="text-align:center">Game Recommendation Engine</h2>
 
-  <form action='results' class="form-inline global-search">
+  <form  class="form-inline global-search">
     <div class="form-group" style="text-align:center">
       <label for="gametype">Type of game:</label>
       <select id="gametype" name="gametype" class="form-control">
@@ -58,19 +58,25 @@
       </select>
       <br>
       <br>
-      <input id="input_game" type="text" name="search" class="form-control" placeholder="Enter a game to start">
-      <input id="input_keyword" type="text" name="search" class="form-control" placeholder="Keywords">
+      <input id="input_game" type="text" name="game" class="form-control" placeholder="Enter a game to start">
+      <input id="input_keyword" type="text" name="keys" class="form-control" placeholder="Keywords">
       <button id='go' type="submit" class="btn btn-info"> Go! </button>
     </div>
 
 
   </form>
 
+      <form class="form-inline global-search">
+        {% if data %}
+        <h1>{{output_message}}</h1>
+        {% for sd in data %}
+        <br>
+        <p>{{sd}}</p>
+        {% endfor %}
+        {% endif %}
+      </form>
+
   <script>
-    // const requestData = async function () {
-    //   const bg = await d3.csv('../datasets/bg_detailed_info.csv');
-    // };
-    // requestData();
 
     let go = d3.select('#go')
       .on('click', function () {
