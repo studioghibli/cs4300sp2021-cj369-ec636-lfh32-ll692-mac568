@@ -15,5 +15,3 @@ from .controllers.videogames_controller import *
 from .controllers.boardgames_controller import *
 
 from .controllers.account_controller import *
-
-from .controllers.results_controller import *

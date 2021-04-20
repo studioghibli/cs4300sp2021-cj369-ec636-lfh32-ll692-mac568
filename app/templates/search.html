@@ -48,6 +48,10 @@
   </h1>
   <h2 style="text-align:center">Game Recommendation Engine</h2>
 
+  
+  <h3 style="text-align:center">{{output_message}}</h3> 
+  
+
   <form  class="form-inline global-search">
     <div class="form-group" style="text-align:center">
       <label for="gametype">Type of game:</label>
@@ -62,48 +66,15 @@
       <input id="input_keyword" type="text" name="keys" class="form-control" placeholder="Keywords">
       <button id='go' type="submit" class="btn btn-info"> Go! </button>
     </div>
-
-
   </form>
 
-      <form class="form-inline global-search">
-        {% if data %}
-        <h1>{{output_message}}</h1>
-        {% for sd in data %}
-        <br>
-        <p>{{sd}}</p>
-        {% endfor %}
-        {% endif %}
+
+  <form class="form-inline global-search">
+      {% for d in data %}
+      <br>
+      <p>{{d}}</p>
+      {% endfor %}
       </form>
-
-  <script>
-
-    let go = d3.select('#go')
-      .on('click', function () {
-        let name = document.getElementById('input_game').value;
-        let keys = document.getElementById('input_keyword').value;
-        let type = document.getElementById('gametype').value;
-
-        let rank = [];
-        if (type === 'boardgame') {
-          //Get board game rankings
-        }
-        else if (type === 'videogame') {
-          //Get video game rankings
-        }
-        else {
-          //Get mobile game rankings
-        }
-
-        sessionStorage.setItem("rk", JSON.stringify(rank));
-        sessionStorage.setItem("gn", name);
-        sessionStorage.setItem("kw", keys);
-        sessionStorage.setItem("gt", type);
-
-
-      });
-
-  </script>
 
 
 </body>

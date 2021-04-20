@@ -120,12 +120,12 @@ def steam_get_rankings(score_list):
 TESTING
 '''
 
-print('jaccard')
-output_jaccard = steam_get_rankings(steam_jaccard_list(steam_df['appid'][0]))
-for i in range(50):
-    print(output_jaccard[i])
+# print('jaccard')
+# output_jaccard = steam_get_rankings(steam_jaccard_list(steam_df['appid'][0]))
+# for i in range(50):
+#     print(output_jaccard[i])
 
-print('cossim')
-output_cossim = steam_cossim_list(1069460)
-for i in range(50):
-    print(output_cossim[i])
+# print('cossim')
+# output_cossim = steam_cossim_list(1069460)
+# for i in range(50):
+#     print(output_cossim[i])
