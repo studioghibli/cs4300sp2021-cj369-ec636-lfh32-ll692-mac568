@@ -24,16 +24,7 @@ def search():
 			elif gt == 'mobilegames':
 				data = mg.mgs_get_rankings(mg.mgs_jaccard_list(gn))
 			else:
-				name_id = {}
-				id_name = {}
-				for i in range(len(steam_df['name'])):
-					name_id[steam_df['name'][i]] = steam_df['appid'][i]
-					id_name[str(steam_df['appid'][i])] = steam_df['name'][i]
-
-				pdata = sg.steam_get_rankings(sg.steam_jaccard_list(name_id[gn]))
-				data = []
-				for l in range(0, len(pdata)):
-					data.append([(id_name[str(pdata[l][0])], pdata[l][1])])
+				data = sg.steam_get_rankings(sg.steam_jaccard_list(gn))
 
 			output_message = 'Results of games similar to {' + \
 				gn + ', ' + k + ', ' + gt + '}' + ':'
