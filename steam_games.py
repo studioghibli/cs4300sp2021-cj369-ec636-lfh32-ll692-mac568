@@ -161,7 +161,7 @@ def steam_bool_filter(score_list, genres_in=None, genres_ex=None, platforms_in=N
             for genre in genres_ex:
                 if genre in genres:
                     include = False
-                    continue
+                    break
             if not include:
                 continue
 
@@ -169,7 +169,7 @@ def steam_bool_filter(score_list, genres_in=None, genres_ex=None, platforms_in=N
             for genre in genres_in:
                 if genre not in genres:
                     include = False
-                    continue
+                    break
             if not include:
                 continue
 
@@ -178,7 +178,7 @@ def steam_bool_filter(score_list, genres_in=None, genres_ex=None, platforms_in=N
             for platform in platforms_ex:
                 if platform in platforms:
                     include = False
-                    continue
+                    break
             if not include:
                 continue
 
@@ -186,7 +186,7 @@ def steam_bool_filter(score_list, genres_in=None, genres_ex=None, platforms_in=N
             for platform in platforms_in:
                 if platform not in platforms:
                     include = False
-                    continue
+                    break
             if not include:
                 continue
         
@@ -195,7 +195,7 @@ def steam_bool_filter(score_list, genres_in=None, genres_ex=None, platforms_in=N
             for category in players_ex:
                 if category in categories:
                     include = False
-                    continue
+                    break
             if not include:
                 continue
 
@@ -203,7 +203,7 @@ def steam_bool_filter(score_list, genres_in=None, genres_ex=None, platforms_in=N
             for category in player_in:
                 if category not in categories:
                     include = False
-                    continue
+                    break
             if not include:
                 continue
         
