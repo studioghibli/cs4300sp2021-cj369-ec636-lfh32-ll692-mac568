@@ -208,23 +208,19 @@ def steam_bool_filter(score_list, genres_in=None, genres_ex=None, platforms_in=N
                 continue
         
         if min_time != None:
-            include = steam_df['median_playtime'][i] >= min_time
-            if not include:
+            if steam_df['median_playtime'][i] < min_time:
                 continue
 
         if max_time != None:
-            include = steam_df['median_playtime'][i] <= min_time
-            if not include:
+            if steam_df['median_playtime'][i] > max_time:
                 continue
         
         if min_price != None:
-            include = steam_df['price'][i] >= min_price
-            if not include:
+            if steam_df['price'][i] < min_price:
                 continue
         
         if max_price != None:
-            include = steam_df['price'][i] <= max_price
-            if not include:
+            if steam_df['price'][i] > max_price:
                 continue
         
         filtered.append((appid, score))
@@ -255,8 +251,14 @@ TESTING
 # for i in range(50):
 #     print(output_sim[i])
 
-print('boolean')
+print('boolean and jaccard')
 output_jaccard = steam_jaccard_list(steam_df['appid'][0])
-filtered_jaccard = steam_get_rankings(steam_bool_filter(output_jaccard, ['Casual']))
+filtered_jaccard = steam_get_rankings(steam_bool_filter(output_jaccard, genres_in=['Casual']))
 for i in range(50):
     print(filtered_jaccard[i])
+
+print('boolean and cossim')
+output_cossim = steam_cossim_list(steam_df['appid'][0])
+filtered_cossim = steam_get_rankings(steam_bool_filter(output_cossim, min_price=10))
+for i in range(50):
+    print(filtered_cossim[i])
