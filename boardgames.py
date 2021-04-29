@@ -101,10 +101,10 @@ def boardgames_boolean(similar_games, disliked_games, filter_genres, boardgame_d
                     
     return filtered_games
         
-jaccard = boardgame_jaccard('XCOM: The Board Game', 'games_detailed_info.csv')
-cosine = boardgame_cosine_sim('XCOM: The Board Game', 'games_detailed_info.csv')
-# print(boardgame_jaccard('xcom', 'games_detailed_info.csv'))
-# print(boardgame_cosine_sim('xcom', 'games_detailed_info.csv'))
-# game_list = boardgame_cosine_sim('XCOM: The Board Game', 'games_detailed_info.csv')
-# print(boardgames_boolean(game_list, ['Metro 2033: Breakthrough'], ['Trivia'], 'games_detailed_info.csv'))
+jaccard = boardgame_jaccard('xcom', 'data/board-games/data/games_detailed_info.csv')
+cosine = boardgame_cosine_sim('xcom', 'data/board-games/data/games_detailed_info.csv')
+# print(boardgame_jaccard('xcom', 'data/board-games/data/games_detailed_info.csv'))
+# print(boardgame_cosine_sim('xcom', 'data/board-games/data/games_detailed_info.csv'))
+# game_list = boardgame_cosine_sim('XCOM: The Board Game', 'data/board-games/data/games_detailed_info.csv')
+# print(boardgames_boolean(game_list, ['Metro 2033: Breakthrough'], ['Trivia'], 'data/board-games/data/games_detailed_info.csv'))
 print(combine_cosine_jaccard(cosine, jaccard))
