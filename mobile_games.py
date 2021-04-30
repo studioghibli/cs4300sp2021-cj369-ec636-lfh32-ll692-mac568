@@ -281,7 +281,7 @@ final_score_list = mgs_jacc_cossim(output_jacc2, output_cossim2)
 
 print("\nQuery: " + test_app3)
 print('Final Similarity Scores:')
-for i in range(10):
+for i in range(50):
     print(final_score_list[i])
 
 print("\nFILTERED RESULTS")
