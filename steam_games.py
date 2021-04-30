@@ -12,6 +12,15 @@ GLOBAL VARIABLES
 # dataframe of general game info in Steam
 steam_df = pd.read_csv(r'data/steam-games/steam.csv')
 
+# dataframe of descriptions of games on Steam
+steam_descriptions_df = pd.read_csv(r'data/steam-games/steam_description_data.csv')
+
+# dataframe of descriptions of games on Steam
+steam_media_df = pd.read_csv(r'data/steam-games/steam_media_data.csv')
+
+# dataframe of descriptions of games on Steam
+steam_links_df = pd.read_csv(r'data/steam-games/steam_support_info.csv')
+
 # dictionary where key is app ID and value is set of genres
 steam_sets = dict()
 
@@ -233,39 +242,62 @@ def steam_bool_filter(score_list, genres_in=None, genres_ex=None, platforms_in=N
     return filtered
 
 def steam_get_rankings(score_list):
+    '''
+    list of tuples of ranked games
+    * values in tuple are:
+        * score: float
+        * name: string
+        * genres: list of strings
+        * platforms: list of strings
+        * price: float
+        * link to image: string
+        * link to site: string
+    '''
     result_list = list()
     for appid, score in score_list:
-        result_list.append((steam_id_to_name[appid], score))
-    return sorted(result_list, key=lambda x: x[1], reverse=True)
+        i = steam_id_to_idx[appid]
+        if type(steam_links_df['website'][i]) == float:
+            web = None
+        else:
+            web = steam_links_df['website'][i]
+        result_list.append((score, steam_df['name'][i], steam_df['genres'][i].split(';'), \
+            steam_df['platforms'][i].split(';'), steam_df['price'][i], \
+            steam_media_df['header_image'][i], web))
+    return sorted(result_list, key=lambda x: x[0], reverse=True)[:30]
 
 '''
 TESTING
 '''
 
 # print('jaccard')
-
 # output_jaccard = steam_get_rankings(steam_jaccard_list(steam_df['appid'][0]))
-# for i in range(50):
+# for i in range(30):
 #     print(output_jaccard[i])
 
 # print('cossim')
 # output_cossim = steam_get_rankings(steam_cossim_list(1069460))
-# for i in range(50):
+# for i in range(30):
 #     print(output_cossim[i])
 
 # print('sim')
 # output_sim = steam_get_rankings(steam_sim_list(1069460))
-# for i in range(50):
+# for i in range(30):
 #     print(output_sim[i])
 
 # print('boolean and jaccard')
 # output_jaccard = steam_jaccard_list(steam_df['appid'][0])
 # filtered_jaccard = steam_get_rankings(steam_bool_filter(output_jaccard, genres_in=['Casual']))
-# for i in range(50):
+# for i in range(30):
 #     print(filtered_jaccard[i])
 
 # print('boolean and cossim')
 # output_cossim = steam_cossim_list(steam_df['appid'][0])
 # filtered_cossim = steam_get_rankings(steam_bool_filter(output_cossim, min_price=10))
-# for i in range(50):
+# for i in range(30):
 #     print(filtered_cossim[i])
+
+# print('boolean and sim')
+# output_sim = steam_sim_list(steam_df['appid'][0])
+# filtered_sim = steam_get_rankings(steam_bool_filter(output_sim, min_price=10))
+# for i in range(30):
+#     print(filtered_sim[i])
