@@ -135,20 +135,20 @@ def mgs_get_rankings(score_list):
     return sorted(score_list, key=lambda x: x[1], reverse=True)
 
 
-test_app1 = game_apps['App'][0]
-print("\nQuery: " + test_app1)
+# test_app1 = game_apps['App'][0]
+# print("\nQuery: " + test_app1)
 
-print('Jaccard Similarity:')
-jaccard_scores = mgs_jaccard_list(test_app1)
-output_jaccard = mgs_get_rankings(jaccard_scores)
-for i in range(50):
-    print(output_jaccard[i])
+# print('Jaccard Similarity:')
+# jaccard_scores = mgs_jaccard_list(test_app1)
+# output_jaccard = mgs_get_rankings(jaccard_scores)
+# for i in range(50):
+#     print(output_jaccard[i])
 
 
-test_app2 = reviews['App'][0]
+# test_app2 = reviews['App'][0]
 
-print("\nQuery: " + test_app2)
-print('Cosine Similarity:')
-output_cossim = mgs_cossim_list(test_app2)
-for i in range(len(output_cossim)):
-    print(output_cossim[i])
+# print("\nQuery: " + test_app2)
+# print('Cosine Similarity:')
+# output_cossim = mgs_cossim_list(test_app2)
+# for i in range(len(output_cossim)):
+#     print(output_cossim[i])

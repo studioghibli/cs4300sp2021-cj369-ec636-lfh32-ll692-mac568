@@ -3,6 +3,7 @@ import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 def boardgame_jaccard(game_title, boardgame_data):
+    print(type(boardgame_data))
     boardgames_df = pd.read_csv(boardgame_data)
     
     shape = boardgames_df.shape
