@@ -11,8 +11,9 @@ import board_games as bg
 def search():
 	gt = request.args.get('gametype')
 	gn = request.args.get('game')
+	print(gn)
 	k = request.args.get('keys')
-
+	print(gt)
 	if gt == None or gn == None:
 		data = []
 		output_message = ''
@@ -32,4 +33,5 @@ def search():
 			output_message = 'Your query was invalid. Please try searching again.'
 			return render_template('search.html', output_message=output_message)
 		
+		data = [x[0] for x in data]
 		return render_template('search.html', output_message=output_message, data=data)

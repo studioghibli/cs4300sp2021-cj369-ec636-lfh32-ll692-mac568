@@ -6,6 +6,9 @@
   <link rel="stylesheet" href="/static/bootstrap.min.css">
   <link rel="stylesheet" href="/static/main.css">
   <script src="https://d3js.org/d3.v6.min.js"></script>
+  <style>
+
+  </style>
 </head>
 
 <body>
@@ -60,12 +63,25 @@
         <option value="mobilegames">Mobile Game</option>
         <option value="videogames">Video Game</option>
       </select>
+      <!-- <div name="gametype">
+        <label for="gametype1">Board Game</label>
+        <input type="checkbox" id="gametype1" name="gametype1" value="Board Games" />
+        <label for="gametype2">Mobile Game</label>
+        <input type="checkbox" id="gametype2" name="gametype2" value="Mobile Games" />
+        <label for="gametype3">Video Game</label>
+        <input type="checkbox" id="gametype3" name="gametype3" value="Video Games" />
+      </div> -->
       <br>
       <br>
-      <input id="input_game" type="text" name="game" class="form-control" placeholder="Enter a game to start">
+      <input list="browsers" name="game" class = "form-control" placeholder="Enter a game to start" />
+      <datalist id="input_game" style="font-family: Helvetica Neue; font-style: normal;">
+        <!--<option value="Yee">-->
+      </datalist>
+
       <input id="input_keyword" type="text" name="keys" class="form-control" placeholder="Keywords">
       <button id='go' type="submit" class="btn btn-info"> Go! </button>
     </div>
+
   </form>
 
 
