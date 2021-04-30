@@ -270,7 +270,6 @@ TESTING
 '''
 
 # print('jaccard')
-
 # output_jaccard = steam_get_rankings(steam_jaccard_list(steam_df['appid'][0]))
 # for i in range(30):
 #     print(output_jaccard[i])

@@ -272,19 +272,19 @@ def mgs_boolean_filter(score_list, included_genres=None, excluded_genres=None,
 # for i in range(len(output_cossim)):
 #     print(output_cossim[i])
 
-all_games_list = list(app_set)
-test_app3 = all_games_list[3]
-jacc2 = mgs_jaccard_list(test_app3)
-output_jacc2 = mgs_get_rankings(jacc2)
-output_cossim2 = mgs_cossim_list(test_app3)
-final_score_list = mgs_jacc_cossim(output_jacc2, output_cossim2)
+# all_games_list = list(app_set)
+# test_app3 = all_games_list[3]
+# jacc2 = mgs_jaccard_list(test_app3)
+# output_jacc2 = mgs_get_rankings(jacc2)
+# output_cossim2 = mgs_cossim_list(test_app3)
+# final_score_list = mgs_jacc_cossim(output_jacc2, output_cossim2)
 
-print("\nQuery: " + test_app3)
-print('Final Similarity Scores:')
-for i in range(50):
-    print(final_score_list[i])
+# print("\nQuery: " + test_app3)
+# print('Final Similarity Scores:')
+# for i in range(50):
+#     print(final_score_list[i])
 
-print("\nFILTERED RESULTS")
-filtered_results = mgs_boolean_filter(final_score_list, ['Strategy'])
-for i in range(50):
-    print(filtered_results[i])
+# print("\nFILTERED RESULTS")
+# filtered_results = mgs_boolean_filter(final_score_list, ['Strategy'])
+# for i in range(50):
+#     print(filtered_results[i])
