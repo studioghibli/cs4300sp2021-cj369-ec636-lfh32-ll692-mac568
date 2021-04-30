@@ -11,21 +11,21 @@ import board_games as bg
 def search():
 	gt = request.args.get('gametype')
 	gn = request.args.get('game')
-	print(gn)
+
 	k = request.args.get('keys')
-	print(gt)
+	data = {}
+	
 	if gt == None or gn == None:
-		data = []
 		output_message = ''
 		return render_template('search.html', output_message=output_message, data=data)
 	else:
 		try:
-			if gt == 'boardgames':
-				data = bg.boardgame_jaccard(gn, 'data/board-games/data/games_detailed_info.csv')
-			elif gt == 'mobilegames':
-				data = mg.mgs_get_rankings(mg.mgs_jaccard_list(gn))
+			if gt == 'Board Games':
+				data[gt] = bg.boardgame_jaccard(gn, 'data/board-games/data/games_detailed_info.csv')
+			elif gt == 'Mobile Games':
+				data[gt] = mg.mgs_get_rankings(mg.mgs_jaccard_list(gn))
 			else:
-				data = sg.steam_get_rankings(sg.steam_jaccard_list(gn))
+				data[gt] = sg.steam_get_rankings(sg.steam_jaccard_list(gn))
 
 			output_message = 'Results of games similar to {' + \
 				gn + ', ' + k + ', ' + gt + '}' + ':'
@@ -33,5 +33,6 @@ def search():
 			output_message = 'Your query was invalid. Please try searching again.'
 			return render_template('search.html', output_message=output_message)
 		
-		data = [x[0] for x in data]
+		data[gt] = [x[0] for x in data[gt]][0:30]
+		print(data)
 		return render_template('search.html', output_message=output_message, data=data)

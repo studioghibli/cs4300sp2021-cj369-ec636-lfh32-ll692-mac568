@@ -59,9 +59,9 @@
     <div class="form-group" style="text-align:center">
       <label for="gametype">Type of game:</label>
       <select id="gametype" name="gametype" class="form-control">
-        <option value="boardgames">Board Game</option>
-        <option value="mobilegames">Mobile Game</option>
-        <option value="videogames">Video Game</option>
+        <option value="Board Games">Board Game</option>
+        <option value="Mobile Games">Mobile Game</option>
+        <option value="Video Games">Video Game</option>
       </select>
       <!-- <div name="gametype">
         <label for="gametype1">Board Game</label>
@@ -75,7 +75,7 @@
       <br>
       <input list="browsers" name="game" class = "form-control" placeholder="Enter a game to start" />
       <datalist id="input_game" style="font-family: Helvetica Neue; font-style: normal;">
-        <!--<option value="Yee">-->
+        <option value="Yee">
       </datalist>
 
       <input id="input_keyword" type="text" name="keys" class="form-control" placeholder="Keywords">
@@ -86,11 +86,20 @@
 
 
   <form class="form-inline global-search">
-      {% for d in data %}
-      <br>
-      <p>{{d}}</p>
+    {%if data != None%}
+      {% for k, v in data.items() %}
+        <br>
+        <br>
+        <h3>{{k}}</h3>
+        {% for game in data[k] %}
+          <br>
+          <p>{{game}}</p>
+        {% endfor %}
       {% endfor %}
-      </form>
+      <br>
+      <br>
+    {% endif %}
+  </form>
 
 
 </body>
