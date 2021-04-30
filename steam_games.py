@@ -23,6 +23,13 @@ steam_links_df = pd.read_csv(r'data/steam-games/steam_support_info.csv')
 
 # dictionary where key is app ID and value is set of genres
 steam_sets = dict()
+
+# dictionary where key is app ID and value is name of game
+steam_id_to_name = dict()
+
+# dictionary where key is name and value is app ID of game
+steam_name_to_id = dict()
+
 for i in range(len(steam_df['appid'])):
     steam_sets[steam_df['appid'][i]] = set(steam_df['genres'][i].split(';'))
 
@@ -52,20 +59,22 @@ def steam_jaccard(appid1, appid2):
     return len(steam_sets[appid1].intersection(steam_sets[appid2])) \
         / len(steam_sets[appid1] | steam_sets[appid2])
 
-def steam_jaccard_list(appid):
+def steam_jaccard_list(name):
     '''
     returns tuple list of game app IDs and Jaccard similarity scores
     '''
     score_list = list()
     for x in steam_df['appid']:
+        appid = steam_name_to_id[name]
         if x != appid:
-            score_list.append((x, steam_jaccard(appid, x)))
+            score_list.append((steam_id_to_name[x], steam_jaccard(appid, x)))
     return score_list
 
 def steam_cossim_list(appid):
     '''
     returns tuple list of game app IDs and cosine similarity scores
     '''
+
     # inverted indices where key is term and value is (appid, term_count_in_description)
     inv_idx = dict()
     # key is appid and value is list of tokens
@@ -261,6 +270,7 @@ TESTING
 '''
 
 # print('jaccard')
+
 # output_jaccard = steam_get_rankings(steam_jaccard_list(steam_df['appid'][0]))
 # for i in range(30):
 #     print(output_jaccard[i])
