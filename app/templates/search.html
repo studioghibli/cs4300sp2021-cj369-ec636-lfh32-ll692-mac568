@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="/static/main.css">
   <script src="https://d3js.org/d3.v6.min.js"></script>
   <style>
-
   </style>
 </head>
 
@@ -51,9 +50,9 @@
   </h1>
   <h2 style="text-align:center">Game Recommendation Engine</h2>
 
-  
-  <h3 style="text-align:center">{{output_message}}</h3> 
-  
+
+  <h3 style="text-align:center">{{output_message}}</h3>
+
 
   <form  class="form-inline global-search">
     <div class="form-group" style="text-align:center">
@@ -84,24 +83,43 @@
 
   </form>
 
-
+  <div class = "container-fluid results">
   <form class="form-inline global-search">
     {%if data != None%}
       {% for k, v in data.items() %}
         <br>
+        <h3><strong>{{k}}</strong></h3>
         <br>
-        <h3>{{k}}</h3>
+        <br>
+      <div class = "row">
         {% for game in data[k] %}
-          <br>
-          <p>{{game}}</p>
+        <div class = "col-sm-4" style="padding: 5px;">
+          <div class = "result-box" style="display:block; height: 160px; padding: 50px 0; border-style: solid">
+            <div class="result-box-caption">
+              <div class="result-box-caption-content">
+                <div class="result-text">
+                <p><strong>{{game}}</strong></p>
+                </div>
+                <br>
+                <br>
+                <div class="result-expand">
+                  <p>Click here for more info</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
         {% endfor %}
+      </div>
+
       {% endfor %}
-      <br>
-      <br>
+
     {% endif %}
   </form>
+  </div>
 
-
-</body>
+  <br>
+  <br>
 
 </html>

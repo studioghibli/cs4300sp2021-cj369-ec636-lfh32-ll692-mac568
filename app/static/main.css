@@ -4,6 +4,25 @@
 }
 }
 @media (min-width:400px){
+
+/* styling for results
+.container {
+  display: flex
+}
+
+.displaygame {
+  width: 30%
+}
+
+.h3{
+  display: block;
+}
+*/
+
+.result-box {
+  height: 160px
+}
+
 .global-search {
   padding: 20px 0;
   text-align:center;
