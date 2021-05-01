@@ -32,10 +32,7 @@ steam_links_df = pd.read_csv(r'data/steam-games/steam_support_info.csv', \
     usecols=steam_links_df_dict, dtype=steam_links_df_dict)
 
 # dictionary where key is app ID and value is set of genres
-steam_sets = dict()    
-
-# dictionary where key is app ID and value is name of game
-steam_id_to_name = dict()
+steam_sets = dict()
 
 # dictionary where key is name and value is app ID of game
 steam_name_to_id = dict()
@@ -45,13 +42,8 @@ steam_id_to_idx = dict()
 
 for i in range(len(steam_df['appid'])):
     steam_sets[steam_df['appid'][i]] = set(steam_df['genres'][i].split(';'))
-    steam_id_to_name[steam_df['appid'][i]] = steam_df['name'][i]
     steam_name_to_id[steam_df['name'][i]] = steam_df['appid'][i]
     steam_id_to_idx[steam_df['appid'][i]] = i
-
-# tfidf_mat contains tf-idf vectors
-tfidf_vec = TfidfVectorizer(stop_words="english")
-tfidf_mat = tfidf_vec.fit_transform(list(steam_descriptions_df['short_description'])).toarray()
 
 '''
 FUNCTIONS
@@ -78,11 +70,13 @@ def steam_cossim_list(appid):
     '''
     returns tuple list of game app IDs and cosine similarity scores
     '''
-    num_steam_games = steam_descriptions_df.shape[0]
-    result = list()
+    # tfidf_mat contains tf-idf vectors
+    tfidf_vec = TfidfVectorizer(stop_words="english")
+    tfidf_mat = tfidf_vec.fit_transform(list(steam_descriptions_df['short_description'])).toarray()
+
     idx = steam_id_to_idx[appid]
-    
-    for i in range(num_steam_games):
+    result = list()
+    for i in range(steam_descriptions_df.shape[0]):
         q = tfidf_mat[i]
         d = tfidf_mat[idx]
         if i != idx:
