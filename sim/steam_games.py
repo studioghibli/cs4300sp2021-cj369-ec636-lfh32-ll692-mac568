@@ -232,32 +232,29 @@ def steam_get_rankings(score_list):
 TESTING
 '''
 
-print('jaccard')
-output_jaccard = steam_get_rankings(steam_jaccard_list(steam_df['appid'][0]))
-print(output_jaccard)
+# print('jaccard')
+# output_jaccard = steam_get_rankings(steam_jaccard_list(steam_df['appid'][0]))
+# print(output_jaccard)
 
-print('cossim')
-output_cossim = steam_get_rankings(steam_cossim_list(1069460))
-print(output_cossim)
+# print('cossim')
+# output_cossim = steam_get_rankings(steam_cossim_list(1069460))
+# print(output_cossim)
 
-print('sim')
-output_sim = steam_get_rankings(steam_sim_list(1069460))
-print(output_sim)
+# print('sim')
+# output_sim = steam_get_rankings(steam_sim_list(1069460))
+# print(output_sim)
 
 # print('boolean and jaccard')
 # output_jaccard = steam_jaccard_list(steam_df['appid'][0])
 # filtered_jaccard = steam_get_rankings(steam_bool_filter(output_jaccard, genres_in=['Casual']))
-# for i in range(30):
-#     print(filtered_jaccard[i])
+# print(filtered_jaccard)
 
 # print('boolean and cossim')
 # output_cossim = steam_cossim_list(steam_df['appid'][0])
 # filtered_cossim = steam_get_rankings(steam_bool_filter(output_cossim, min_price=10))
-# for i in range(30):
-#     print(filtered_cossim[i])
+# print(filtered_cossim)
 
 # print('boolean and sim')
 # output_sim = steam_sim_list(steam_df['appid'][0])
 # filtered_sim = steam_get_rankings(steam_bool_filter(output_sim, min_price=10))
-# for i in range(30):
-#     print(filtered_sim[i])
+# print(filtered_sim)
