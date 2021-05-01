@@ -53,9 +53,7 @@
   </h1>
   <h2 style="text-align:center">Game Recommendation Engine</h2>
 
-
   <h3 style="text-align:center">{{output_message}}</h3>
-
 
   <form class="form-inline global-search">
     <div class="form-group" style="text-align:center">
@@ -89,26 +87,19 @@
 
   </form>
 
-  <div class="container-fluid results">
-    <form class="form-inline global-search">
-      {%if data != None%}
+  <div class = "container-fluid results">
+  <form class="form-inline global-search">
+    {%if data != None%}
       {% for d in data %}
 
-      <div class="row">
-        <div class="col-sm-4" style="padding: 5px;">
-          <div class="result-box" style="display:block; height: 160px; width: 300%; padding: 50px 0; border-style: solid">
+
+        <div class = "col-sm-4" style="padding: 5px;">
+          <div class = "result-box" style="display:block; height: 160px; padding: 50px 0; border-style: solid">
             <div class="result-box-caption">
               <div class="result-box-caption-content">
                 <div class="result-text">
-                  <p>
-                    <strong>
-                      {%if gt == 'Video Games'%}
-                      {{d[1]}}
-                      {%else%}
-                      {{d[0]}}
-                      {% endif %}
-                    </strong>
-                  </p>
+                  <p><strong>{{d}}</strong></p>
+
                 </div>
                 <br>
                 <br>
@@ -120,15 +111,14 @@
 
           </div>
         </div>
-      </div>
 
       {% endfor %}
-
-      {% endif %}
-    </form>
+    {% endif %}
+    
+  </form>
   </div>
 
   <br>
   <br>
 
-  </html>
+</html>

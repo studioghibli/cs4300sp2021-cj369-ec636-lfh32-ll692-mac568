@@ -19,8 +19,8 @@ def search():
 	gt = request.args.get('gametype')
 	gn = request.args.get('game')
 	data = []
-
-	if gn == None:
+	
+	if gt == None or gn == None:
 		output_message = ''
 		return render_template('search.html', output_message=output_message, data=data)
 	else:
