@@ -51,7 +51,7 @@ for i in range(len(steam_df['appid'])):
 # inverted indices where key is term and value is (appid, term_count_in_description)
 inv_idx = dict()
 for i in range(len(steam_descriptions_df['steam_appid'])):
-    tok_list = re.findall(r'[a-z]+', steam_descriptions_df['short_description'][i].lower())
+    tok_list = re.findall(r'[a-z]+', steam_descriptions_df['short_description'][i].lower())[:50]
     doc_count = dict() # contains counts for each term in document i
     for token in tok_list:
         if token in doc_count:
