@@ -2,10 +2,10 @@ from . import *
 from app.irsystem.models.helpers import *
 from app.irsystem.models.helpers import NumpyEncoder as NumpyEncoder
 import pandas as pd
-import steam_games as sg
-import mobile_games as mg
-import board_games as bg
-import edit_distance as ed
+from sim import steam_games as sg
+from sim import mobile_games as mg
+from sim import board_games as bg
+from sim import edit_distance as ed
 
 
 @irsystem.route('/', methods=['GET', 'POST'])
@@ -38,8 +38,7 @@ def search():
 				data = mg.mgs_get_rankings(l)
 			else:
 				appid = sg.steam_name_to_id[gn]
-				l = sg.steam_sim_list(appid)
-				data = sg.steam_get_rankings(l)
+				data = sg.steam_get_rankings(sg.steam_sim_list(appid))
 		except Exception as e:
 			output_message = 'Your query was invalid. Please try searching again.'
 			return render_template('search.html', output_message=output_message)

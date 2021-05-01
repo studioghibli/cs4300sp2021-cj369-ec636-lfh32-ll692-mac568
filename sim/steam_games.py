@@ -4,6 +4,7 @@ import pandas as pd
 import re
 
 from collections import Counter
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 '''
 GLOBAL VARIABLES
@@ -48,43 +49,9 @@ for i in range(len(steam_df['appid'])):
     steam_name_to_id[steam_df['name'][i]] = steam_df['appid'][i]
     steam_id_to_idx[steam_df['appid'][i]] = i
 
-# inverted indices where key is term and value is (appid, term_count_in_description)
-inv_idx = dict()
-for i in range(len(steam_descriptions_df['steam_appid'])):
-    tok_list = re.findall(r'[a-z]+', steam_descriptions_df['short_description'][i].lower())[:50]
-    doc_count = dict() # contains counts for each term in document i
-    for token in tok_list:
-        if token in doc_count:
-            doc_count[token] += 1
-        else:
-            doc_count[token] = 1
-    for key in doc_count:
-        if key in inv_idx:
-            inv_idx[key].append((steam_descriptions_df['steam_appid'][i], doc_count[key]))
-        else:
-            inv_idx[key] = [(steam_descriptions_df['steam_appid'][i], doc_count[key])]
-
-# dictionary where key is term and value is idf
-idf = dict()
-n_docs = len(steam_descriptions_df['steam_appid'])
-for term in inv_idx:
-    df = len(inv_idx[term])
-    if df >= 50 and df / n_docs <= 0.9:
-        idf[term] = math.log2(n_docs / (df + 1))
-
-# norms[i] = the norm of description of game with appid i
-norms = dict()
-acc = 0
-for term in inv_idx:
-    for doc_count in inv_idx[term]:
-        doc_idx = doc_count[0]
-        if term in idf:
-            if doc_idx in norms:
-                norms[doc_idx] += (doc_count[1] * idf[term]) ** 2
-            else:
-                norms[doc_idx] = (doc_count[1] * idf[term]) ** 2
-for appid in norms:
-    norms[appid] = math.sqrt(norms[appid])
+# tfidf_mat contains tf-idf vectors
+tfidf_vec = TfidfVectorizer(stop_words="english")
+tfidf_mat = tfidf_vec.fit_transform(list(steam_descriptions_df['short_description'])).toarray()
 
 '''
 FUNCTIONS
@@ -111,40 +78,42 @@ def steam_cossim_list(appid):
     '''
     returns tuple list of game app IDs and cosine similarity scores
     '''
-    tf = Counter(re.findall(r'[a-z]+', steam_descriptions_df['short_description'] \
-        [steam_id_to_idx[appid]].lower()))
-    doc_score_dict = dict()
-
-    for token in tf:
-        if token in idf:
-            for d, c in inv_idx[token]:
-                if d in doc_score_dict:
-                    doc_score_dict[d] += tf[token] * c * (idf[token] ** 2)
-                else:
-                    doc_score_dict[d] = tf[token] * c * (idf[token] ** 2)
-
+    num_steam_games = steam_descriptions_df.shape[0]
     result = list()
-
-    for doc_id in doc_score_dict:
-        if doc_id != appid:
-            doc_score_dict[doc_id] /= norms[appid] * norms[doc_id]
-            result.append((doc_id, doc_score_dict[doc_id]))
-
-    for steam_appid in steam_df['appid']:
-        if steam_appid not in doc_score_dict and steam_appid != appid:
-            result.append((steam_appid, 0))
-
+    idx = steam_id_to_idx[appid]
+    
+    for i in range(num_steam_games):
+        q = tfidf_mat[i]
+        d = tfidf_mat[idx]
+        if i != idx:
+            if np.linalg.norm(q) * np.linalg.norm(d) == 0:
+                result.append((steam_descriptions_df['steam_appid'][i], 0))
+            else:
+                result.append((steam_descriptions_df['steam_appid'][i], \
+                    (np.dot(q, d)) / (np.linalg.norm(q) * np.linalg.norm(d))))
+    
     return result
 
 def steam_sim_list(appid):
     '''
     returns tuple list of game app IDs and average of cosine and Jaccard similarity scores
     '''
-    list_jaccard = sorted(steam_jaccard_list(appid), key=lambda pair: pair[0])
-    list_cosine = sorted(steam_cossim_list(appid), key=lambda pair: pair[0])
+    list_cosine = steam_cossim_list(appid)
+    list_jaccard = steam_jaccard_list(appid)
     list_both = list()
-    for i in range(len(list_jaccard)):
-        list_both.append((list_jaccard[i][0], (list_jaccard[i][1] + list_cosine[i][1]) / 2))
+
+    i = 0
+    j = 0
+    while i < len(list_cosine) and j < len(list_jaccard):
+        if list_cosine[i][0] == list_jaccard[j][0]:
+            list_both.append((list_cosine[i][0], (list_cosine[i][1] + list_jaccard[j][1]) / 2))
+            i += 1
+            j += 1
+        elif list_cosine[i][0] < list_jaccard[j][0]:
+            i += 1
+        else:
+            j += 1
+        
     return list_both
 
 def steam_bool_filter(score_list, genres_in=None, genres_ex=None, platforms_in=None, \
@@ -263,20 +232,17 @@ def steam_get_rankings(score_list):
 TESTING
 '''
 
-# print('jaccard')
-# output_jaccard = steam_get_rankings(steam_jaccard_list(steam_df['appid'][0]))
-# for i in range(30):
-#     print(output_jaccard[i])
+print('jaccard')
+output_jaccard = steam_get_rankings(steam_jaccard_list(steam_df['appid'][0]))
+print(output_jaccard)
 
-# print('cossim')
-# output_cossim = steam_get_rankings(steam_cossim_list(1069460))
-# for i in range(30):
-#     print(output_cossim[i])
+print('cossim')
+output_cossim = steam_get_rankings(steam_cossim_list(1069460))
+print(output_cossim)
 
-# print('sim')
-# output_sim = steam_get_rankings(steam_sim_list(1069460))
-# for i in range(30):
-#     print(output_sim[i])
+print('sim')
+output_sim = steam_get_rankings(steam_sim_list(1069460))
+print(output_sim)
 
 # print('boolean and jaccard')
 # output_jaccard = steam_jaccard_list(steam_df['appid'][0])
