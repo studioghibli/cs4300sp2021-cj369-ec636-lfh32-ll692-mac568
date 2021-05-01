@@ -73,40 +73,39 @@ for app in app_set:
             else:
                 tok_lists[app] = tokenized_review
 
-inv_idx = dict()
-for app in app_set:
-    tokens = tok_lists[app]
-    token_set = set(tokens)
-    for term in token_set:
-        tf = tokens.count(term)
-        inv_idx[term] = (app, tf)
-
-idf_dict = dict()
-for term in inv_idx:
-    df = len(inv_idx[term])
-    if df >= 50 and df / N <= 0.9:
-        idf[term] = math.log2(N / (df + 1))
-
-norms_dict = dict()
-acc = 0
-for term in inv_idx:
-    tup = inv_idx[term]
-    app_name = tup[0]
-    tf = tup[1]
-    if term in idf_dict:
-        idf = idf_dict[term]
-        if app_name in norms:
-            norms[app_name] += (tf * idf) ** 2
-        else:
-            norms[doc_idx] = (tf * idf) ** 2
-for app in norms_dict:
-    norms_dict[app] = math.sqrt(norms_dict[app])
-
-
 def mgs_cossim_list(app):
     '''
     returns sorted list of most similar games to appid based on cosine similarity
     '''
+    inv_idx = dict()
+    for app in app_set:
+        tokens = tok_lists[app]
+        token_set = set(tokens)
+        for term in token_set:
+            tf = tokens.count(term)
+            inv_idx[term] = (app, tf)
+
+    idf_dict = dict()
+    for term in inv_idx:
+        df = len(inv_idx[term])
+        if df >= 50 and df / N <= 0.9:
+            idf[term] = math.log2(N / (df + 1))
+
+    norms_dict = dict()
+    acc = 0
+    for term in inv_idx:
+        tup = inv_idx[term]
+        app_name = tup[0]
+        tf = tup[1]
+        if term in idf_dict:
+            idf = idf_dict[term]
+            if app_name in norms:
+                norms[app_name] += (tf * idf) ** 2
+            else:
+                norms[doc_idx] = (tf * idf) ** 2
+    for app in norms_dict:
+        norms_dict[app] = math.sqrt(norms_dict[app])
+
     tf = Counter(tok_lists[app])
     app_score_dict = dict()
 

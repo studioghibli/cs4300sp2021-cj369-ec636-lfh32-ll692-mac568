@@ -45,5 +45,5 @@ def search():
 			return render_template('search.html', output_message=output_message)
 		output_message = 'Results of games similar to {' + gn + ', ' + gt + '}' + ':'
 		data = data[0:30]
-		#data = [x[0] for x in data]
+		# data = [x[0] for x in data]
 		return render_template('search.html', output_message=output_message, gt = gt,  data=data)
