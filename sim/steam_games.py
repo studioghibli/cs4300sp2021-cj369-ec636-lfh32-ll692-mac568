@@ -5,14 +5,15 @@ import re
 
 from collections import Counter
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 '''
 GLOBAL VARIABLES
 '''
 
 # dataframe of general game info in Steam
-steam_df_dict = {'appid': np.int32, 'name': str, 'platforms': str, 'genres': str, \
-    'steamspy_tags': str, 'median_playtime': np.int32, 'price': np.float32 }
+steam_df_dict = {'appid': np.int32, 'name': str, 'platforms': str, 'categories': str, \
+    'genres': str, 'steamspy_tags': str, 'median_playtime': np.int32, 'price': np.float32 }
 steam_df = pd.read_csv(r'data/steam-games/steam.csv', usecols=steam_df_dict, \
     dtype=steam_df_dict)
 
@@ -37,13 +38,9 @@ steam_sets = dict()
 # dictionary where key is name and value is app ID of game
 steam_name_to_id = dict()
 
-# dictionary where key is app ID and value is index in steam_df
-steam_id_to_idx = dict()
-
 for i in range(len(steam_df['appid'])):
     steam_sets[steam_df['appid'][i]] = set(steam_df['genres'][i].split(';'))
     steam_name_to_id[steam_df['name'][i]] = steam_df['appid'][i]
-    steam_id_to_idx[steam_df['appid'][i]] = i
 
 '''
 FUNCTIONS
@@ -66,34 +63,27 @@ def steam_jaccard_list(appid):
             score_list.append((x, steam_jaccard(appid, x)))
     return score_list
 
+tfidf_vec = TfidfVectorizer(stop_words="english")
+tfidf_mat = tfidf_vec.fit_transform(steam_descriptions_df['short_description'])
+
 def steam_cossim_list(appid):
     '''
     returns tuple list of game app IDs and cosine similarity scores
     '''
-    # tfidf_mat contains tf-idf vectors
-    tfidf_vec = TfidfVectorizer(stop_words="english")
-    tfidf_mat = tfidf_vec.fit_transform(list(steam_descriptions_df['short_description'])).toarray()
-
-    idx = steam_id_to_idx[appid]
+    idx = steam_descriptions_df.index[steam_descriptions_df['steam_appid'] == appid][0]
+    query_tfidf = tfidf_vec.transform([str(steam_descriptions_df['short_description'][idx])])
+    cossims = cosine_similarity(query_tfidf, tfidf_mat).flatten()
     result = list()
-    for i in range(steam_descriptions_df.shape[0]):
-        q = tfidf_mat[i]
-        d = tfidf_mat[idx]
-        if i != idx:
-            if np.linalg.norm(q) * np.linalg.norm(d) == 0:
-                result.append((steam_descriptions_df['steam_appid'][i], 0))
-            else:
-                result.append((steam_descriptions_df['steam_appid'][i], \
-                    (np.dot(q, d)) / (np.linalg.norm(q) * np.linalg.norm(d))))
-    
+    for i in range(len(cossims)):
+        result.append((steam_descriptions_df['steam_appid'][i], cossims[i]))
     return result
 
 def steam_sim_list(appid):
     '''
     returns tuple list of game app IDs and average of cosine and Jaccard similarity scores
     '''
-    list_cosine = steam_cossim_list(appid)
-    list_jaccard = steam_jaccard_list(appid)
+    list_cosine = sorted(steam_cossim_list(appid), key=lambda x: x[0])
+    list_jaccard = sorted(steam_jaccard_list(appid), key=lambda x: x[0])
     list_both = list()
 
     i = 0
@@ -125,7 +115,7 @@ def steam_bool_filter(score_list, genres_in=None, genres_ex=None, platforms_in=N
     filtered = list()
     for appid, score in score_list:
         include = True
-        i = steam_id_to_idx[appid]
+        i = steam_df.index[steam_df['appid'] == appid][0]
 
         genres = set(steam_df['genres'][i].split(';'))
         if genres_ex != None:
@@ -212,14 +202,24 @@ def steam_get_rankings(score_list):
     result_list = list()
     score_list = sorted(score_list, key=lambda x: x[1], reverse=True)[:30]
     for appid, score in score_list:
-        i = steam_id_to_idx[appid]
-        if type(steam_links_df['website'][i]) == float:
+        i = steam_df.index[steam_df['appid'] == appid][0]
+        i_web = steam_links_df.index[steam_links_df['steam_appid'] == appid]
+        i_im = steam_media_df.index[steam_media_df['steam_appid'] == appid]
+
+        if len(i_web) == 0:
+            web = None
+        elif type(steam_links_df['website'][i_web[0]]) == float:
             web = None
         else:
-            web = steam_links_df['website'][i]
+            web = steam_links_df['website'][i_web[0]]
+        
+        if len(i_im) == 0:
+            im = None
+        else:
+            im = steam_media_df['header_image'][i_im[0]]
+
         result_list.append((score, steam_df['name'][i], steam_df['genres'][i].split(';'), \
-            steam_df['platforms'][i].split(';'), steam_df['price'][i], \
-            steam_media_df['header_image'][i], web))
+            steam_df['platforms'][i].split(';'), steam_df['price'][i], im, web))
     return result_list
 
 '''
@@ -231,24 +231,24 @@ TESTING
 # print(output_jaccard)
 
 # print('cossim')
-# output_cossim = steam_get_rankings(steam_cossim_list(1069460))
+# output_cossim = steam_get_rankings(steam_cossim_list(steam_df['appid'][0]))
 # print(output_cossim)
 
 # print('sim')
-# output_sim = steam_get_rankings(steam_sim_list(1069460))
+# output_sim = steam_get_rankings(steam_sim_list(steam_df['appid'][0]))
 # print(output_sim)
 
 # print('boolean and jaccard')
-# output_jaccard = steam_jaccard_list(steam_df['appid'][0])
+# output_jaccard = steam_jaccard_list(steam_df['appid'][1])
 # filtered_jaccard = steam_get_rankings(steam_bool_filter(output_jaccard, genres_in=['Casual']))
 # print(filtered_jaccard)
 
 # print('boolean and cossim')
-# output_cossim = steam_cossim_list(steam_df['appid'][0])
+# output_cossim = steam_cossim_list(steam_df['appid'][1])
 # filtered_cossim = steam_get_rankings(steam_bool_filter(output_cossim, min_price=10))
 # print(filtered_cossim)
 
 # print('boolean and sim')
-# output_sim = steam_sim_list(steam_df['appid'][0])
+# output_sim = steam_sim_list(steam_df['appid'][1])
 # filtered_sim = steam_get_rankings(steam_bool_filter(output_sim, min_price=10))
 # print(filtered_sim)
