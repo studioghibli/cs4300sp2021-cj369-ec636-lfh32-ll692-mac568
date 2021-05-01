@@ -21,17 +21,11 @@ steam_media_df = pd.read_csv(r'data/steam-games/steam_media_data.csv')
 # dataframe of descriptions of games on Steam
 steam_links_df = pd.read_csv(r'data/steam-games/steam_support_info.csv')
 
-# dictionary where key is app ID and value is set of genres
-steam_sets = dict()
-
 # dictionary where key is app ID and value is name of game
 steam_id_to_name = dict()
 
 # dictionary where key is name and value is app ID of game
 steam_name_to_id = dict()
-
-for i in range(len(steam_df['appid'])):
-    steam_sets[steam_df['appid'][i]] = set(steam_df['genres'][i].split(';'))
 
 # dictionary where key is app ID and value is name of game
 steam_id_to_name = dict()
@@ -43,7 +37,6 @@ steam_name_to_id = dict()
 steam_id_to_idx = dict()
 
 for i in range(len(steam_df['appid'])):
-    steam_sets[steam_df['appid'][i]] = set(steam_df['genres'][i].split(';'))
     steam_id_to_name[steam_df['appid'][i]] = steam_df['name'][i]
     steam_name_to_id[steam_df['name'][i]] = steam_df['appid'][i]
     steam_id_to_idx[steam_df['appid'][i]] = i
@@ -56,6 +49,10 @@ def steam_jaccard(appid1, appid2):
     '''
     returns Jaccard similarity score between appid1 and appid2
     '''
+    # dictionary where key is app ID and value is set of genres
+    steam_sets = dict()
+    for i in range(len(steam_df['appid'])):
+        steam_sets[steam_df['appid'][i]] = set(steam_df['genres'][i].split(';'))
     return len(steam_sets[appid1].intersection(steam_sets[appid2])) \
         / len(steam_sets[appid1] | steam_sets[appid2])
 

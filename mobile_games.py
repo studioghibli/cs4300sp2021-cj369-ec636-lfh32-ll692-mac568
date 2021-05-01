@@ -19,18 +19,15 @@ Filtered = pd.Series(booleans)
 game_apps = mgs[Filtered]
 game_apps = game_apps.reset_index(drop=True)
 
-# code for jaccard
-
-mgs_sets = dict()
-for i in range(len(game_apps['App'])):
-    key = game_apps['App'][i]
-    app_type = game_apps['Type'][i]
-    content = game_apps['Content Rating'][i]
-    genres = game_apps['Genres'][i].split(';')
-    mgs_sets[key] = set(app_type) | set(content) | set(genres)
-
 
 def mgs_jaccard(app1, app2):
+    mgs_sets = dict()
+    for i in range(len(game_apps['App'])):
+        key = game_apps['App'][i]
+        app_type = game_apps['Type'][i]
+        content = game_apps['Content Rating'][i]
+        genres = game_apps['Genres'][i].split(';')
+        mgs_sets[key] = set(app_type) | set(content) | set(genres)
     A_int_B = mgs_sets[app1].intersection(mgs_sets[app2])
     A_uni_B = mgs_sets[app1].union(mgs_sets[app2])
     return len(A_int_B) / len(A_uni_B)
@@ -47,36 +44,31 @@ def mgs_jaccard_list(app):
 def mgs_get_rankings(score_list):
     return sorted(score_list, key=lambda x: x[1], reverse=True)
 
-# code for cossim
-
-
-reviews = pd.read_csv(r'data/mobile-games/user_reviews_cleaned.csv')
-reviews = (reviews.dropna()).reset_index(drop=True)
-
-
 def tokenize(text):
     return [x for x in re.findall(r"[a-z]+", text.lower())]
-
-
-app_set = set(reviews['App'])
-N = len(app_set)
-
-tok_lists = dict()
-for app in app_set:
-    for j in range(len(reviews['App'])):
-        app_name = reviews['App'][j]
-        if app == app_name:
-            rev = reviews['Translated_Review'][j]
-            tokenized_review = tokenize(rev)
-            if app in tok_lists:
-                tok_lists[app] = tok_lists[app] + tokenized_review
-            else:
-                tok_lists[app] = tokenized_review
 
 def mgs_cossim_list(app):
     '''
     returns sorted list of most similar games to appid based on cosine similarity
     '''
+    reviews = pd.read_csv(r'data/mobile-games/user_reviews_cleaned.csv')
+    reviews = (reviews.dropna()).reset_index(drop=True)
+
+    app_set = set(reviews['App'])
+    N = len(app_set)
+
+    tok_lists = dict()
+    for app in app_set:
+        for j in range(len(reviews['App'])):
+            app_name = reviews['App'][j]
+            if app == app_name:
+                rev = reviews['Translated_Review'][j]
+                tokenized_review = tokenize(rev)
+                if app in tok_lists:
+                    tok_lists[app] = tok_lists[app] + tokenized_review
+                else:
+                    tok_lists[app] = tokenized_review
+
     inv_idx = dict()
     for app in app_set:
         tokens = tok_lists[app]
@@ -160,15 +152,6 @@ def mgs_jacc_cossim(jacc_list, cossim_list):
 
     return final_score_list
 
-
-# dictionary where key is name and value is index of game in dataset
-mgs_name_to_idx = dict()
-
-for i in range(len(game_apps['App'])):
-    app_name = game_apps['App'][i]
-    mgs_name_to_idx[app_name] = i
-
-
 def mgs_boolean_genre(score_list, included_genres, excluded_genres):
     filtered_games = []
 
@@ -212,6 +195,13 @@ def mgs_boolean_rating(score_list, included_rating):
 
 def mgs_boolean_filter(score_list, included_genres=None, excluded_genres=None,
                        included_price=None, included_rating=None):
+    # dictionary where key is name and value is index of game in dataset
+    mgs_name_to_idx = dict()
+
+    for i in range(len(game_apps['App'])):
+        app_name = game_apps['App'][i]
+        mgs_name_to_idx[app_name] = i
+    
     filtered_games = []
 
     for (game, score) in score_list:
