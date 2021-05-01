@@ -22,7 +22,7 @@ def search():
 
 	if gn == None:
 		output_message = ''
-		return render_template('search.html', output_message=output_message, data=data )
+		return render_template('search.html', output_message=output_message, data=data)
 	else:
 		try:
 			if gt == 'Board Games':
@@ -44,6 +44,6 @@ def search():
 			output_message = 'Your query was invalid. Please try searching again.'
 			return render_template('search.html', output_message=output_message)
 		output_message = 'Results of games similar to {' + gn + ', ' + gt + '}' + ':'
-		data = data[0:30]
+		data = data[:30]
 		# data = [x[0] for x in data]
 		return render_template('search.html', output_message=output_message, gt = gt,  data=data)

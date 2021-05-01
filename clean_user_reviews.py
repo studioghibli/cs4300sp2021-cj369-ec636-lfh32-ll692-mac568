@@ -2,7 +2,6 @@ import pandas as pd
 import re
 import csv
 
-
 mgs = pd.read_csv(r'data/mobile-games/googleplaystore.csv')
 
 app_categories = mgs['Category']
