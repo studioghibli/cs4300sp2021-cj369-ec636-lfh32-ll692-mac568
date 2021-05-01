@@ -6,10 +6,9 @@
   <link rel="stylesheet" href="/static/bootstrap.min.css">
   <link rel="stylesheet" href="/static/main.css">
   <script src="https://d3js.org/d3.v6.min.js"></script>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
   <style>
-    #gametype {
-      display: flex
-    }
+  
   </style>
 </head>
 
@@ -66,23 +65,22 @@
         <option value="Mobile Games">Mobile Game</option>
         <option value="Video Games">Video Game</option>
       </select>
-      <!-- <div name="gametype">
-        <label for="gametype1">Board Game</label>
-        <input type="checkbox" id="gametype1" name="gametype1" value="Board Games" />
-        <label for="gametype2">Mobile Game</label>
-        <input type="checkbox" id="gametype2" name="gametype2" value="Mobile Games" />
-        <label for="gametype3">Video Game</label>
-        <input type="checkbox" id="gametype3" name="gametype3" value="Video Games" />
-      </div> -->
+   
       <br>
-      <input list="input_game" name="game" class="form-control" placeholder="Enter a game to start" />
+      <input list="input_game" id= 'gn' name="gn" class="form-control" placeholder="Enter a game to start" />
       <datalist id="input_game" style="font-family: Helvetica Neue; font-style: normal;">
-        <option value="1">
-        <option value="2">
-        <option value="3">
-        <option value="4">
-        <option value="5">
+        <option id ='op0' value="1">
+        <option id = 'op1' value="2">
+        <option id = 'op2' value="3">
+        <option id = 'op3' value="4">
+        <option id = 'op4' value="5">
+        <option id = 'op5' value="6">
+        <option id = 'op6' value="7">
+        <option id = 'op7' value="8">
+        <option id = 'op8' value="9">
+        <option id = 'op9' value="10">
       </datalist>
+
 
       <button id='go' type="submit" class="btn btn-info"> Go! </button>
     </div>
@@ -100,7 +98,15 @@
             <div class="result-box-caption">
               <div class="result-box-caption-content">
                 <div class="result-text">
-                  <p><strong>{{d[0]}}</strong></p>
+                  <p>
+                    <strong>
+                      {%if gt == 'Video Games'%}
+                      {{d[1]}}
+                      {%else%}
+                      {{d[0]}}
+                      {% endif %}
+                    </strong>
+                </p>
                 </div>
                 <br>
                 <br>
@@ -122,5 +128,40 @@
 
   <br>
   <br>
+
+  <script>
+    var prev;
+
+    function edDist(gn){
+      var res = $.ajax({
+        type: "POST",
+        
+        url: "/app/irsystem/controllers/search_controller.py",
+        data:{param: gn},
+        success: hallelujah
+      });
+      prev = res;
+      return res;
+    }
+
+    function hallelujah(response) {
+        // do something with the response
+        console.log(response);
+      }
+
+      let gn = d3.select('#gn');
+
+      gn.on('input', function(){
+        if ( document.getElementById('gn').value === null || prev === document.getElementById('gn').value){
+          return;
+        }
+  
+        let ans = edDist(document.getElementById('gn').value);
+        for (let i = 0; i < ans.length; i++){
+          document.getElementById('op' + toString(i)).value = ans[i];
+        }
+      })
+
+  </script>
 
   </html>
