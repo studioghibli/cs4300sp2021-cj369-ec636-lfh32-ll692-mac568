@@ -10,22 +10,28 @@ GLOBAL VARIABLES
 '''
 
 # dataframe of general game info in Steam
-steam_df = pd.read_csv(r'data/steam-games/steam.csv')
+steam_df_dict = {'appid': np.int32, 'name': str, 'platforms': str, 'genres': str, \
+    'steamspy_tags': str, 'median_playtime': np.int32, 'price': np.float32 }
+steam_df = pd.read_csv(r'data/steam-games/steam.csv', usecols=steam_df_dict, \
+    dtype=steam_df_dict)
 
 # dataframe of descriptions of games on Steam
-steam_descriptions_df = pd.read_csv(r'data/steam-games/steam_description_data.csv')
+steam_descriptions_df_dict = {'steam_appid': np.int32, 'short_description': str }
+steam_descriptions_df = pd.read_csv(r'data/steam-games/steam_description_data.csv', \
+    usecols=steam_descriptions_df_dict, dtype=steam_descriptions_df_dict)
 
 # dataframe of descriptions of games on Steam
-steam_media_df = pd.read_csv(r'data/steam-games/steam_media_data.csv')
+steam_media_df_dict = {'steam_appid': np.int32, 'header_image': str }
+steam_media_df = pd.read_csv(r'data/steam-games/steam_media_data.csv', \
+    usecols=steam_media_df_dict, dtype=steam_media_df_dict)
 
 # dataframe of descriptions of games on Steam
-steam_links_df = pd.read_csv(r'data/steam-games/steam_support_info.csv')
+steam_links_df_dict = {'steam_appid': np.int32, 'website': str }
+steam_links_df = pd.read_csv(r'data/steam-games/steam_support_info.csv', \
+    usecols=steam_links_df_dict, dtype=steam_links_df_dict)
 
-# dictionary where key is app ID and value is name of game
-steam_id_to_name = dict()
-
-# dictionary where key is name and value is app ID of game
-steam_name_to_id = dict()
+# dictionary where key is app ID and value is set of genres
+steam_sets = dict()    
 
 # dictionary where key is app ID and value is name of game
 steam_id_to_name = dict()
@@ -37,9 +43,48 @@ steam_name_to_id = dict()
 steam_id_to_idx = dict()
 
 for i in range(len(steam_df['appid'])):
+    steam_sets[steam_df['appid'][i]] = set(steam_df['genres'][i].split(';'))
     steam_id_to_name[steam_df['appid'][i]] = steam_df['name'][i]
     steam_name_to_id[steam_df['name'][i]] = steam_df['appid'][i]
     steam_id_to_idx[steam_df['appid'][i]] = i
+
+# inverted indices where key is term and value is (appid, term_count_in_description)
+inv_idx = dict()
+for i in range(len(steam_descriptions_df['steam_appid'])):
+    tok_list = re.findall(r'[a-z]+', steam_descriptions_df['short_description'][i].lower())
+    doc_count = dict() # contains counts for each term in document i
+    for token in tok_list:
+        if token in doc_count:
+            doc_count[token] += 1
+        else:
+            doc_count[token] = 1
+    for key in doc_count:
+        if key in inv_idx:
+            inv_idx[key].append((steam_descriptions_df['steam_appid'][i], doc_count[key]))
+        else:
+            inv_idx[key] = [(steam_descriptions_df['steam_appid'][i], doc_count[key])]
+
+# dictionary where key is term and value is idf
+idf = dict()
+n_docs = len(steam_descriptions_df['steam_appid'])
+for term in inv_idx:
+    df = len(inv_idx[term])
+    if df >= 50 and df / n_docs <= 0.9:
+        idf[term] = math.log2(n_docs / (df + 1))
+
+# norms[i] = the norm of description of game with appid i
+norms = dict()
+acc = 0
+for term in inv_idx:
+    for doc_count in inv_idx[term]:
+        doc_idx = doc_count[0]
+        if term in idf:
+            if doc_idx in norms:
+                norms[doc_idx] += (doc_count[1] * idf[term]) ** 2
+            else:
+                norms[doc_idx] = (doc_count[1] * idf[term]) ** 2
+for appid in norms:
+    norms[appid] = math.sqrt(norms[appid])
 
 '''
 FUNCTIONS
@@ -49,10 +94,6 @@ def steam_jaccard(appid1, appid2):
     '''
     returns Jaccard similarity score between appid1 and appid2
     '''
-    # dictionary where key is app ID and value is set of genres
-    steam_sets = dict()
-    for i in range(len(steam_df['appid'])):
-        steam_sets[steam_df['appid'][i]] = set(steam_df['genres'][i].split(';'))
     return len(steam_sets[appid1].intersection(steam_sets[appid2])) \
         / len(steam_sets[appid1] | steam_sets[appid2])
 
@@ -70,50 +111,8 @@ def steam_cossim_list(appid):
     '''
     returns tuple list of game app IDs and cosine similarity scores
     '''
-
-    # inverted indices where key is term and value is (appid, term_count_in_description)
-    inv_idx = dict()
-    # key is appid and value is list of tokens
-    tok_lists = dict()
-    for i in range(len(steam_descriptions_df['steam_appid'])):
-        text = re.sub(r'<[^<>]+>', '', steam_descriptions_df['detailed_description'][i].lower())
-        tok_list = re.findall(r'[a-z]+', text)
-        tok_lists[steam_descriptions_df['steam_appid'][i]] = tok_list
-        doc_count = dict() # contains counts for each term in document i
-        for token in tok_list:
-            if token in doc_count:
-                doc_count[token] += 1
-            else:
-                doc_count[token] = 1
-        for key in doc_count:
-            if key in inv_idx:
-                inv_idx[key].append((steam_descriptions_df['steam_appid'][i], doc_count[key]))
-            else:
-                inv_idx[key] = [(steam_descriptions_df['steam_appid'][i], doc_count[key])]
-
-    # dictionary where key is term and value is idf
-    idf = dict()
-    n_docs = len(steam_descriptions_df['steam_appid'])
-    for term in inv_idx:
-        df = len(inv_idx[term])
-        if df >= 50 and df / n_docs <= 0.9:
-            idf[term] = math.log2(n_docs / (df + 1))
-
-    # norms[i] = the norm of description of game with appid i
-    norms = dict()
-    acc = 0
-    for term in inv_idx:
-        for doc_count in inv_idx[term]:
-            doc_idx = doc_count[0]
-            if term in idf:
-                if doc_idx in norms:
-                    norms[doc_idx] += (doc_count[1] * idf[term]) ** 2
-                else:
-                    norms[doc_idx] = (doc_count[1] * idf[term]) ** 2
-    for appid in norms:
-        norms[appid] = math.sqrt(norms[appid])
-
-    tf = Counter(tok_lists[appid])
+    tf = Counter(re.findall(r'[a-z]+', steam_descriptions_df['short_description'] \
+        [steam_id_to_idx[appid]].lower()))
     doc_score_dict = dict()
 
     for token in tf:
@@ -130,8 +129,6 @@ def steam_cossim_list(appid):
         if doc_id != appid:
             doc_score_dict[doc_id] /= norms[appid] * norms[doc_id]
             result.append((doc_id, doc_score_dict[doc_id]))
-
-    result = sorted(result, key=lambda pair: (-pair[0], pair[1]))
 
     for steam_appid in steam_df['appid']:
         if steam_appid not in doc_score_dict and steam_appid != appid:
@@ -250,6 +247,7 @@ def steam_get_rankings(score_list):
         * link to site: string
     '''
     result_list = list()
+    score_list = sorted(score_list, key=lambda x: x[1], reverse=True)[:30]
     for appid, score in score_list:
         i = steam_id_to_idx[appid]
         if type(steam_links_df['website'][i]) == float:
@@ -259,7 +257,7 @@ def steam_get_rankings(score_list):
         result_list.append((score, steam_df['name'][i], steam_df['genres'][i].split(';'), \
             steam_df['platforms'][i].split(';'), steam_df['price'][i], \
             steam_media_df['header_image'][i], web))
-    return sorted(result_list, key=lambda x: x[0], reverse=True)[:30]
+    return result_list
 
 '''
 TESTING
