@@ -10,11 +10,11 @@ import edit_distance as ed
 
 @irsystem.route('/', methods=['GET', 'POST'])
 def search():
-	if request.method == 'POST':
-		gn = request.form['param']
-		print(gn)
-		ed_dis = ed.edit_distance_list(gn)
-		return ed_dis
+	# if request.method == 'POST':
+	# 	gn = request.form['param']
+	# 	ed_dis = ed.edit_distance_list(gn)
+	# 	ed_dis = [x[0] for x in ed_dis]
+	# 	return render_template('search.html', ed_dis=ed_dis)
 
 	gt = request.args.get('gametype')
 	gn = request.args.get('game')
@@ -46,4 +46,4 @@ def search():
 		# 	return render_template('search.html', output_message=output_message)
 		data = data[0:30]
 		#data = [x[0] for x in data]
-		return render_template('search.html', output_message=output_message, gt = gt,  data=data, func=ed.edit_distance_list)
+		return render_template('search.html', output_message=output_message, gt = gt,  data=data)
