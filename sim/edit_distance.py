@@ -76,14 +76,23 @@ def edit_distance(query, message):
     edit_mat = edit_matrix(query, message)
     return edit_mat[len(query), len(message)]
 
-def edit_distance_list(query):
+def edit_distance_list(query, game_type):
     """
     returns ranked list of tuples where first value is name and second value is edit distance
     """
     ranked_names = list()
+    all_names = list()
+    if game_type == 'Board Games':
+        all_names = board_games
+    elif game_type == 'Mobile Games':
+        all_names = mobile_games
+    elif game_type == 'Video Games':
+        all_names = steam_games
     for name in all_names:
         ranked_names.append((name, edit_distance(query, name)))
-    return sorted(ranked_names, key=lambda x: x[1])[:10]
-
+    result = ''
+    for tup in sorted(ranked_names, key=lambda x: x[1])[:5]:
+        result += tup[0] + ';'
+    return result
 # print(edit_distance_list('hello'))
 # print(edit_distance_list('stanley'))
