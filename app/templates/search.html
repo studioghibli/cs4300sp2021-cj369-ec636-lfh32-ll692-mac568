@@ -7,8 +7,8 @@
   <link rel="stylesheet" href="/static/main.css">
   <script src="https://d3js.org/d3.v6.min.js"></script>
   <style>
-    #gametype{
-      display:flex
+    #gametype {
+      display: flex
     }
   </style>
 </head>
@@ -53,13 +53,11 @@
   </h1>
   <h2 style="text-align:center">Game Recommendation Engine</h2>
 
-
   <h3 style="text-align:center">{{output_message}}</h3>
 
-
-  <form  class="form-inline global-search">
+  <form class="form-inline global-search">
     <div class="form-group" style="text-align:center">
-      <label id = 'typelabel' for="gametype">Type of game:</label>
+      <label id='typelabel' for="gametype">Type of game:</label>
       <br>
       <select id="gametype" name="gametype" class="form-control">
         <option value="Board Games">Board Game</option>
@@ -75,7 +73,7 @@
         <input type="checkbox" id="gametype3" name="gametype3" value="Video Games" />
       </div> -->
       <br>
-      <input list="input_game" name="game" class = "form-control" placeholder="Enter a game to start" />
+      <input list="input_game" name="game" class="form-control" placeholder="Enter a game to start" />
       <datalist id="input_game" style="font-family: Helvetica Neue; font-style: normal;">
         <option value="1">
         <option value="2">
@@ -101,6 +99,7 @@
               <div class="result-box-caption-content">
                 <div class="result-text">
                   <p><strong>{{d}}</strong></p>
+
                 </div>
                 <br>
                 <br>
@@ -113,10 +112,9 @@
           </div>
         </div>
 
-
       {% endfor %}
-
     {% endif %}
+    
   </form>
   </div>
 
