@@ -2,12 +2,24 @@ import pandas as pd
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-def boardgame_jaccard(game_title, boardgame_data, link_data):
-    boardgames_df = pd.read_csv(boardgame_data)
-    links_df = pd.read_csv(link_data)
-    
-    shape = boardgames_df.shape
-    num_boardgames = shape[0]
+boardgames_dict = {'boardgamecategory': str, 'boardgamemechanic': str, 'description': str, 'id': np.int32, 'image': str, 'maxplayers': np.int32,
+                   'maxplaytime': np.int32, 'minplayers': np.int32, 'minplaytime': np.int32, 'primary': str}
+
+links_dict = {'id': np.int32, 'url': str}
+
+boardgames_df = pd.read_csv('data/board-games/data/games_detailed_info.csv', usecols=boardgames_dict, dtype=boardgames_dict)
+links_df = pd.read_csv('data/board-games/data/2019_05_02.csv', usecols=links_dict, dtype=links_dict)
+
+boardgames_shape = boardgames_df.shape
+num_boardgames = boardgames_shape[0]
+index = boardgames_df.index
+
+def boardgame_jaccard(game_title, boardgames_df, links_df, num_boardgames, index):
+    # boardgames_df = pd.read_csv(boardgame_data)
+    # links_df = pd.read_csv(link_data)
+    # 
+    # shape = boardgames_df.shape
+    # num_boardgames = shape[0]
     sims_jac = []
     
     # game_titles = pd.Series(boardgames_df['primary']).str.lower()
@@ -15,7 +27,7 @@ def boardgame_jaccard(game_title, boardgame_data, link_data):
     # matching_games = game_indices[game_indices].index
 
     try:
-        index = boardgames_df.index
+        # index = boardgames_df.index
         game_index = index[game_title == boardgames_df['primary']]
         # game_index = matching_games[0]
         game_genres = boardgames_df.at[game_index[0], 'boardgamecategory'][1:-1].replace("'", "")
@@ -58,13 +70,13 @@ def boardgame_jaccard(game_title, boardgame_data, link_data):
     return sorted(sims_jac, key=lambda x: x[0])
     # return sorted(sims_jac, key=lambda x: -x[1])
 
-def boardgame_cosine_sim(game_title, boardgame_data):
-    boardgames_df = pd.read_csv(boardgame_data)
-    shape = boardgames_df.shape
-    num_boardgames = shape[0]
+def boardgame_cosine_sim(game_title, boardgames_df, num_boardgames, index):
+    # boardgames_df = pd.read_csv(boardgame_data)
+    # shape = boardgames_df.shape
+    # num_boardgames = shape[0]
     cosine_sims = []
     
-    index = boardgames_df.index
+    # index = boardgames_df.index
     game_index = index[boardgames_df['primary'] == game_title]
     
     # game_titles = pd.Series(boardgames_df['primary']).str.lower()
@@ -109,7 +121,7 @@ def combine_cosine_jaccard(cosine_list, jaccard_list):
 
 
 def boardgames_boolean(similar_games, disliked_games=['None'], disliked_genres=['None'], liked_genres=[], liked_mechanics=[],
-                       disliked_mechanics=['None'], min_time=0, max_time=float('inf'), min_players=0, max_players=float('inf')):
+                       disliked_mechanics=['None'], min_time=0, max_time=np.inf, min_players=0, max_players=np.inf):
     filtered_games = []
     for game in similar_games:
         if game[0] not in disliked_games:
@@ -131,8 +143,8 @@ def boardgames_boolean(similar_games, disliked_games=['None'], disliked_genres=[
                     
     return filtered_games
 
-def get_categories(boardgame_data):
-    boardgames_df = pd.read_csv(boardgame_data)
+def get_categories(boardgames_df):
+    # boardgames_df = pd.read_csv(boardgame_data)
     categories = set()
     
     game_genres = pd.Series(boardgames_df['boardgamecategory'])
@@ -148,8 +160,8 @@ def get_categories(boardgame_data):
         
     return sorted(list(categories))
     
-def get_mechanics(boardgame_data):
-    boardgames_df = pd.read_csv(boardgame_data)
+def get_mechanics(boardgames_df):
+    # boardgames_df = pd.read_csv(boardgame_data)
     mechanics = set()
     
     game_mechanics = pd.Series(boardgames_df['boardgamemechanic'])
@@ -166,14 +178,13 @@ def get_mechanics(boardgame_data):
     return sorted(list(mechanics))
 
         
-# jaccard = boardgame_jaccard('XCOM: The Board Game', 'data/board-games/data/games_detailed_info.csv', 'data/board-games/data/2019_05_02.csv')
-# cosine = boardgame_cosine_sim('XCOM: The Board Game', 'data/board-games/data/games_detailed_info.csv')
-# print(boardgame_jaccard('XCOM: The Board Game', 'data/board-games/data/games_detailed_info.csv', 'data/board-games/data/2019_05_02.csv'))
-# print(boardgame_cosine_sim('xcom', 'data/board-games/data/games_detailed_info.csv'))
-# game_list = boardgame_cosine_sim('XCOM: The Board Game', 'data/board-games/data/games_detailed_info.csv')
-# game_list = combine_cosine_jaccard(cosine, jaccard)
-# print(boardgames_boolean(game_list, disliked_games=['Project: ELITE'], disliked_genres=['Trivia'],liked_genres=['Puzzle'],
-#                          liked_mechanics=['Tile Placement']))
+jaccard = boardgame_jaccard('XCOM: The Board Game', boardgames_df, links_df, num_boardgames, index)
+cosine = boardgame_cosine_sim('XCOM: The Board Game', boardgames_df, num_boardgames, index)
+# print(boardgame_jaccard('XCOM: The Board Game', boardgames_df, links_df, num_boardgames, index))
+# print(boardgame_cosine_sim('XCOM: The Board Game', boardgames_df, num_boardgames, index))
+game_list = combine_cosine_jaccard(cosine, jaccard)
+print(boardgames_boolean(game_list, disliked_games=['Project: ELITE'], disliked_genres=['Trivia'],liked_genres=['Puzzle'],
+                         liked_mechanics=['Tile Placement']))
 # print(combine_cosine_jaccard(cosine, jaccard))
-# print(get_categories('data/board-games/data/games_detailed_info.csv'))
-# print(get_mechanics('data/board-games/data/games_detailed_info.csv'))
+# print(get_categories(boardgames_df))
+# print(get_mechanics(boardgames_df))
