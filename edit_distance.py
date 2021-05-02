@@ -85,5 +85,5 @@ def edit_distance_list(query):
         ranked_names.append((name, edit_distance(query, name)))
     return sorted(ranked_names, key=lambda x: x[1])[:10]
 
-print(edit_distance_list('hello'))
-print(edit_distance_list('stanley'))
+# print(edit_distance_list('hello'))
+# print(edit_distance_list('stanley'))
