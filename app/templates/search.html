@@ -6,11 +6,6 @@
     <link rel="stylesheet" href="/static/main.css">
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-    <style>
-    #gametype {
-      display: flex
-    }
-    </style>
 </head>
 <body>
     <div class="topcorner">
@@ -59,30 +54,17 @@
                 <option value="Mobile Games">Mobile Game</option>
                 <option value="Video Games">Video Game</option>
             </select>
-            <!-- <div name="gametype">
-              <label for="gametype1">Board Game</label>
-              <input type="checkbox" id="gametype1" name="gametype1" value="Board Games" />
-              <label for="gametype2">Mobile Game</label>
-              <input type="checkbox" id="gametype2" name="gametype2" value="Mobile Games" />
-              <label for="gametype3">Video Game</label>
-              <input type="checkbox" id="gametype3" name="gametype3" value="Video Games" />
-            </div> -->
             <br>
             <input
-                type="search"
                 list="input_game"
                 id="gn"
                 name="game"
                 class="form-control"
                 placeholder="Enter a game to start"
+                autocomplete="off"
             >
-            <datalist id="input_game" style="font-family: Helvetica Neue; font-style: normal;">
-                <option id="opt0">
-                <option id="opt1">
-                <option id="opt2">
-                <option id="opt3">
-                <option id="opt4">
-            </datalist>
+            <!-- type="search" -->
+            <datalist id="input_game" style="font-family: Helvetica Neue; font-style: normal;"></datalist>
             <button id="go" type="submit" class="btn btn-info"> Go!</button>
         </div>
     </form>
@@ -114,11 +96,12 @@
                                     {% elif gt == 'Board Games' %}
                                     {{ d[3] }}
                                     {% endif %}
-                                "> 
-                                {% if gt == 'Mobile Games' %}
+                                ">
+                                    {% if gt == 'Mobile Games' %}
                                 {% else %}
                                 Click here for more info
-                                {% endif %} </a>
+                                {% endif %}
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -130,12 +113,7 @@
     </div>
     <br>
     <br>
-
     <script>
-        // console.log(document.getElementById('gn'))
-
-        var prev;
-    
         async function edDist(gn, gt){
           var res = await $.ajax({
             url: "/",
@@ -143,7 +121,6 @@
             data: { 'game_name': gn, 'game_type': gt },
             success: hallelujah
           });
-          prev = res;
           return res;
         }
     
@@ -153,19 +130,24 @@
     
         let gn = d3.select('#gn');
         gn.on('input', function(){
-            if (document.getElementById('gn').value === null ||
-                prev === document.getElementById('gn').value){ return; }
+            var x = document.getElementById('input_game');
+            while (x.lastChild) {
+                x.removeChild(x.lastChild);
+            }
+
+            if (document.getElementById('gn').value == '' ||
+                document.getElementById('gn').value == null) { return; }
 
             edDist(document.getElementById('gn').value, document.getElementById('gametype').value)
                 .then(val => {
                     let ans = val.split(';');
-                    console.log(document.getElementById('opt0'))
                     for (let i = 0; i < 5; i++) {
-                        // console.log('opt' + i.toString())
-                        document.getElementById('opt' + i.toString()).value = ans[i];
+                        var op = document.createElement('option');
+                        op.setAttribute("value", ans[i]);
+                        document.getElementById('input_game').appendChild(op);
                     }
+                    console.log('complete ' + val)
                 });
         });
-    
-      </script>
+    </script>
 </html>
