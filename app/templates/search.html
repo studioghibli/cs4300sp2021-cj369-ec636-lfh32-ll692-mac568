@@ -47,14 +47,14 @@
     <h3 style="text-align:center">{{output_message}}</h3>
     <form class="form-inline global-search">
         <div class="form-group" style="text-align:center">
-            <label id="typelabel" for="gametype">Type of game:</label>
+            <!-- <label id="typelabel" for="gametype">Type of game:</label>
             <br>
             <select id="gametype" name="gametype" class="form-control">
                 <option value="Board Games">Board Game</option>
                 <option value="Mobile Games">Mobile Game</option>
                 <option value="Video Games">Video Game</option>
             </select>
-            <br>
+            <br> -->
             <input
                 list="input_game"
                 id="gn"
@@ -118,7 +118,7 @@
           var res = await $.ajax({
             url: "/",
             type: "POST",
-            data: { 'game_name': gn, 'game_type': gt },
+            data: { 'game_name': gn },
             success: hallelujah
           });
           return res;
@@ -138,7 +138,7 @@
             if (document.getElementById('gn').value == '' ||
                 document.getElementById('gn').value == null) { return; }
 
-            edDist(document.getElementById('gn').value, document.getElementById('gametype').value)
+            edDist(document.getElementById('gn').value)
                 .then(val => {
                     let ans = val.split(';');
                     for (let i = 0; i < 5; i++) {

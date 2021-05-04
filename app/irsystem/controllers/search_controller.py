@@ -11,10 +11,11 @@ from sim import edit_distance as ed
 @irsystem.route('/', methods=['GET', 'POST'])
 def search():
     if request.method == 'POST':
-        return ed.edit_distance_list(request.form['game_name'], request.form['game_type'])
+        return ed.edit_distance_list(request.form['game_name'])
 
-    gt = request.args.get('gametype')
+    # gt = request.args.get('gametype')
     gn = request.args.get('game')
+    gt = ed.get_game_type(gn)
     data = []
 
     if gt == None or gn == None:
