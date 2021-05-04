@@ -1,33 +1,31 @@
+import numpy as np
 import pandas as pd
 import re
 import math
-from collections import Counter
 
-# make the dataset usable
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
-mgs = pd.read_csv(r'data/mobile-games/googleplaystore.csv')
+mobile_games_df_dict = {'App': str, 'Rating': np.float16, 'Type': str,
+                        'Price': str, 'Content Rating': str, 'Genres': str, 'Web Link': str}
+mobile_games_df = pd.read_csv(r'data/mobile-games/googleplaystore.csv',
+                              usecols=mobile_games_df_dict, dtype=mobile_games_df_dict)
 
-app_categories = mgs['Category']
-booleans = []
-for cat in app_categories:
-    if not re.search('GAME', cat):
-        booleans.append(False)
-    else:
-        booleans.append(True)
 
-Filtered = pd.Series(booleans)
-game_apps = mgs[Filtered]
-game_apps = game_apps.reset_index(drop=True)
+'''
+JACCARD SIMILARITY
+'''
+
+mgs_sets = dict()
+for i in range(len(mobile_games_df['App'])):
+    key = mobile_games_df['App'][i]
+    app_type = mobile_games_df['Type'][i]
+    content = mobile_games_df['Content Rating'][i]
+    genres = mobile_games_df['Genres'][i].split(';')
+    mgs_sets[key] = set([app_type, content] + genres)
 
 
 def mgs_jaccard(app1, app2):
-    mgs_sets = dict()
-    for i in range(len(game_apps['App'])):
-        key = game_apps['App'][i]
-        app_type = game_apps['Type'][i]
-        content = game_apps['Content Rating'][i]
-        genres = game_apps['Genres'][i].split(';')
-        mgs_sets[key] = set(app_type) | set(content) | set(genres)
     A_int_B = mgs_sets[app1].intersection(mgs_sets[app2])
     A_uni_B = mgs_sets[app1].union(mgs_sets[app2])
     return len(A_int_B) / len(A_uni_B)
@@ -35,113 +33,57 @@ def mgs_jaccard(app1, app2):
 
 def mgs_jaccard_list(app):
     score_list = []
-    for app_name in game_apps['App']:
+    for app_name in mobile_games_df['App']:
         if app_name != app:
             score_list.append((app_name, mgs_jaccard(app, app_name)))
+    sorted(score_list, key=lambda x: x[1], reverse=True)
     return score_list
 
 
-def mgs_get_rankings(score_list):
-    return sorted(score_list, key=lambda x: x[1], reverse=True)
+'''
+COSINE SIMILARITY
+'''
 
-def tokenize(text):
-    return [x for x in re.findall(r"[a-z]+", text.lower())]
+reviews_dict = {'App': str, 'Translated_Review': str}
+reviews_df = pd.read_csv(r'data/mobile-games/user_reviews_cleaned.csv',
+                         usecols=reviews_dict, dtype=reviews_dict).dropna()
+reviews_df = reviews_df.groupby('App')['Translated_Review'].apply(
+    ';'.join).reset_index()
+
+tfidf_vec = TfidfVectorizer(stop_words="english")
+tfidf_mat = tfidf_vec.fit_transform(reviews_df['Translated_Review'])
+
 
 def mgs_cossim_list(app):
-    '''
-    returns sorted list of most similar games to appid based on cosine similarity
-    '''
-    reviews = pd.read_csv(r'data/mobile-games/user_reviews_cleaned.csv')
-    reviews = (reviews.dropna()).reset_index(drop=True)
-
-    app_set = set(reviews['App'])
-    N = len(app_set)
-
-    tok_lists = dict()
-    for app in app_set:
-        for j in range(len(reviews['App'])):
-            app_name = reviews['App'][j]
-            if app == app_name:
-                rev = reviews['Translated_Review'][j]
-                tokenized_review = tokenize(rev)
-                if app in tok_lists:
-                    tok_lists[app] = tok_lists[app] + tokenized_review
-                else:
-                    tok_lists[app] = tokenized_review
-
-    inv_idx = dict()
-    for app in app_set:
-        tokens = tok_lists[app]
-        token_set = set(tokens)
-        for term in token_set:
-            tf = tokens.count(term)
-            inv_idx[term] = (app, tf)
-
-    idf_dict = dict()
-    for term in inv_idx:
-        df = len(inv_idx[term])
-        if df >= 50 and df / N <= 0.9:
-            idf[term] = math.log2(N / (df + 1))
-
-    norms_dict = dict()
-    acc = 0
-    for term in inv_idx:
-        tup = inv_idx[term]
-        app_name = tup[0]
-        tf = tup[1]
-        if term in idf_dict:
-            idf = idf_dict[term]
-            if app_name in norms:
-                norms[app_name] += (tf * idf) ** 2
-            else:
-                norms[doc_idx] = (tf * idf) ** 2
-    for app in norms_dict:
-        norms_dict[app] = math.sqrt(norms_dict[app])
-
-    tf = Counter(tok_lists[app])
-    app_score_dict = dict()
-
-    for token in tf:
-        if token in idf_dict:
-            for app_name, count in inv_idx[token]:
-                if app_name in app_score_dict:
-                    app_score_dict[d] += tf[token] * \
-                        count * (idf_dict[token] ** 2)
-                else:
-                    app_score_dict[d] = tf[token] * \
-                        count * (idf_dict[token] ** 2)
-
-    cossim = list()
-
-    for app_name in app_score_dict:
-        if app_name != app:
-            app_score_dict[app_name] = app_score_dict[app_name] / \
-                (norms_dict[app] * norms_dict[app_name])
-            cossim.append((app_name, app_score_dict[app_name]))
-
-    result = sorted(cossim, key=lambda pair: (-pair[0], pair[1]))
-
-    for app_name in app_set:
-        if app_name not in app_score_dict and app_name != app:
-            cossim.append((app_name, 0))
-
-    return cossim
+    if reviews_df['App'][reviews_df['App'] == app].count() > 0:
+        idx = reviews_df.index[reviews_df['App'] == app][0]
+        query_tfidf = tfidf_vec.transform(
+            [str(reviews_df['Translated_Review'][idx])])
+        cossims = cosine_similarity(query_tfidf, tfidf_mat).flatten()
+        result = list()
+        for i in range(len(cossims)):
+            result.append((reviews_df['App'][i], cossims[i]))
+        return result
+    return None
 
 
-# code for combining jaccard and cossim
+'''
+COMBINE JACCARD AND COSINE SIMILARITY
+'''
+
 
 def mgs_jacc_cossim(jacc_list, cossim_list):
+    if cossim_list == None:
+        return jacc_list
+
     avg_dict = dict()
 
-    for tup in jacc_list:
-        game = tup[0]
-        score = tup[1]
-        avg_dict[game] = score
+    for game, j_score in jacc_list:
+        avg_dict[game] = j_score / 2
 
-    for tup in cossim_list:
-        game = tup[0]
-        score = tup[1]
-        avg_dict[game] = (avg_dict[game] + score) / 2
+    for game, c_score in cossim_list:
+        if game in avg_dict:
+            avg_dict[game] += c_score / 2
 
     final_score_list = []
     for game in avg_dict:
@@ -149,93 +91,52 @@ def mgs_jacc_cossim(jacc_list, cossim_list):
         final_score_list.append((game, score))
 
     final_score_list.sort(key=lambda x: x[1], reverse=True)
-
     return final_score_list
 
-def mgs_boolean_genre(score_list, included_genres, excluded_genres):
-    filtered_games = []
 
-    for i in range(len(game_apps['App'])):
-        genres = game_apps['Genres'][i].split(';')
-        for g in genres:
-            if g in included_genres and g not in excluded_genres:
-                game = game_apps['App'][i]
-                filtered_games.append(game)
-
-    return filtered_games
-
-
-def mgs_boolean_price(score_list, included_price):
-    filtered_games = []
-
-    for i in range(len(game_apps['App'])):
-        price_str = game_apps['Price'][i]
-        price_str_list = price.split("$")
-        price = 0
-        if len(price_str_list) == 2:
-            price = float(price_str_list[1])
-        if price <= included_price:
-            game = game_apps['App'][i]
-            filtered_games.append(game)
-
-    return filtered_games
-
-
-def mgs_boolean_rating(score_list, included_rating):
-    filtered_games = []
-
-    for i in range(len(game_apps['App'])):
-        rating = float(game_apps['Rating'][i])
-        if rating >= included_rating:
-            game = game_apps['App'][i]
-            filtered_games.append(game)
-
-    return filtered_games
+'''
+BOOLEAN SEARCH
+'''
 
 
 def mgs_boolean_filter(score_list, included_genres=None, excluded_genres=None,
-                       included_price=None, included_rating=None):
-    # dictionary where key is name and value is index of game in dataset
-    mgs_name_to_idx = dict()
-
-    for i in range(len(game_apps['App'])):
-        app_name = game_apps['App'][i]
-        mgs_name_to_idx[app_name] = i
-    
+                       max_price=None, min_price=None, min_rating=None):
     filtered_games = []
 
     for (game, score) in score_list:
-        i = mgs_name_to_idx[game]
+        i = mobile_games_df.index[mobile_games_df['App'] == game][0]
 
         if included_genres != None and excluded_genres != None:
-            genres = game_apps['Genres'][i].split(';')
+            genres = mobile_games_df['Genres'][i].split(';')
             for g in genres:
-                if not (g in included_genres and g not in excluded_genres):
+                if g not in included_genres or g in excluded_genres:
                     continue
         elif included_genres != None and excluded_genres == None:
-            genres = game_apps['Genres'][i].split(';')
+            genres = mobile_games_df['Genres'][i].split(';')
             for g in genres:
                 if g not in included_genres:
                     continue
         elif excluded_genres != None and included_genres == None:
-            genres = game_apps['Genres'][i].split(';')
+            genres = mobile_games_df['Genres'][i].split(';')
             for g in genres:
                 if g in excluded_genres:
                     continue
 
-        if included_price != None:
-            price_str = game_apps['Price'][i]
-            price_str_list = price.split("$")
-            price = 0
-            if len(price_str_list) == 2:
-                price = float(price_str_list[1])
-            if not price <= included_price:
+        if min_price != None or max_price != None:
+            price_str = mobile_games_df['Price'][i]
+            if len(price_str) == 1:
+                price = 0
+            else:
+                price = float(price(str[1:]))
+
+            if min_price != None and price < min_price:
+                continue
+            if max_price != None and price > max_price:
                 continue
 
-        rating = int()
-        if included_rating != None:
-            rating = float(game_apps['Rating'][i])
-            if not rating >= included_rating:
+        if min_rating != None:
+            rating = float(mobile_games_df['Rating'][i])
+            if rating < min_rating:
                 continue
 
         filtered_games.append(game)
@@ -243,7 +144,52 @@ def mgs_boolean_filter(score_list, included_genres=None, excluded_genres=None,
     return filtered_games
 
 
-# test_app1 = game_apps['App'][0]
+'''
+SORT RANKINGS
+'''
+
+
+def mgs_get_rankings(score_list):
+    result_list = list()
+
+    for game, score in score_list:
+        i = mobile_games_df.index[mobile_games_df['App'] == game][0]
+
+        genres = mobile_games_df['Genres'][i].split(';')
+        rating = mobile_games_df['Rating'][i]
+        paid_or_free = mobile_games_df['Type'][i]
+        content = mobile_games_df['Content Rating'][i]
+
+        web_link = str()
+        if type(mobile_games_df['Web Link'][i]) != None:
+            web_link = mobile_games_df['Web Link'][i]
+
+        if web_link != '':
+            result_list.append(
+                (game, "Similarity Score: " + str(score), "Genres: " + str(genres), "Rating: "
+                    + str(rating) + " out of 5", "Payment Type: " + str(paid_or_free), "Content Rated: " + str(content), web_link)
+            )
+        else:
+            result_list.append(
+                (game, "Similarity Score: " + str(score), "Genres: " + str(genres), "Rating: "
+                    + str(rating) + " out of 5", "Payment Type: " +
+                str(paid_or_free), "Content Rated: " + str(content))
+            )
+
+    result_list = sorted(result_list, key=lambda x: x[1], reverse=True)[:30]
+
+    return result_list
+
+
+# j = mgs_jaccard_list('Helix')
+# print(j)
+# c = mgs_cossim_list('Helix')
+# print(c)
+# l = mgs_jacc_cossim(j, c)
+# data = mgs_get_rankings(l)
+# print(data)
+
+# test_app1 = mobile_games_df['App'][0]
 # print("\nQuery: " + test_app1)
 
 # print('Jaccard Similarity:')
@@ -252,9 +198,7 @@ def mgs_boolean_filter(score_list, included_genres=None, excluded_genres=None,
 # for i in range(50):
 #     print(output_jaccard[i])
 
-
-# test_app2 = reviews['App'][0]
-
+# test_app2 = reviews_df['App'][0]
 # print("\nQuery: " + test_app2)
 # print('Cosine Similarity:')
 # output_cossim = mgs_cossim_list(test_app2)
@@ -262,18 +206,24 @@ def mgs_boolean_filter(score_list, included_genres=None, excluded_genres=None,
 #     print(output_cossim[i])
 
 # all_games_list = list(app_set)
-# test_app3 = all_games_list[3]
-# jacc2 = mgs_jaccard_list(test_app3)
-# output_jacc2 = mgs_get_rankings(jacc2)
-# output_cossim2 = mgs_cossim_list(test_app3)
+# test_app = all_games_list[3]
+# output_jacc2 = mgs_jaccard_list(test_app)
+# output_cossim2 = mgs_cossim_list(test_app)
 # final_score_list = mgs_jacc_cossim(output_jacc2, output_cossim2)
 
-# print("\nQuery: " + test_app3)
+# print("\nQUERY: " + test_app)
+# print("\n")
 # print('Final Similarity Scores:')
 # for i in range(50):
 #     print(final_score_list[i])
 
 # print("\nFILTERED RESULTS")
-# filtered_results = mgs_boolean_filter(final_score_list, ['Strategy'])
+# filtered_results = mgs_boolean_filter(
+#     final_score_list, ['Strategy'], ['Adventure'])
 # for i in range(50):
 #     print(filtered_results[i])
+
+# result = mgs_get_rankings(final_score_list)
+# for i in range(len(result)):
+#     print(result[i])
+#     print("\n")

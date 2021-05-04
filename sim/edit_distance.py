@@ -9,7 +9,7 @@ import pandas as pd
 board_df = pd.read_csv(r'data/board-games/data/games_detailed_info.csv')
 
 board_games = set(pd.Series(board_df['primary'], dtype=str))
-mobile_games = set(pd.Series(mg.game_apps['App'], dtype=str))
+mobile_games = set(pd.Series(mg.mobile_games_df['App'], dtype=str))
 steam_games = set(pd.Series(sg.steam_df['name'], dtype=str))
 
 all_names = board_games | mobile_games | steam_games

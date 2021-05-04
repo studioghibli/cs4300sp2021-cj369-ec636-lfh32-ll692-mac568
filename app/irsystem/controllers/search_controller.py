@@ -30,7 +30,7 @@ def search():
                 data = bg.combine_cosine_jaccard(c, j)
             elif gt == 'Mobile Games':
                 j = mg.mgs_jaccard_list(gn)
-                c = mg.mgs_jaccard_list(gn)
+                c = mg.mgs_cossim_list(gn)
                 l = mg.mgs_jacc_cossim(j, c)
                 data = mg.mgs_get_rankings(l)
             else:
