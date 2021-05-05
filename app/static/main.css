@@ -1,23 +1,4 @@
-@media (min-width: 1200px) {
-.container {
-    max-width: 970px;
-}
-}
-@media (min-width:400px){
 
-/* styling for results
-.container {
-  display: flex
-}
-
-.displaygame {
-  width: 30%
-}
-
-.h3{
-  display: block;
-}
-*/
 
 .result-box {
   height: 160px
@@ -28,7 +9,7 @@
   text-align:center;
 }
 body {
-  padding-top: 15%;
+  padding-top: 15px;
   padding-bottom: 15px;
   background-color: lightgrey;
 }
@@ -36,6 +17,7 @@ body {
 .global-search {
   text-align:center;
   padding:10px;
+  z-index: 10;
 }
 .global-search .form-control {
   width:500px;
@@ -44,12 +26,7 @@ body {
   display:inline-block;
   margin-bottom:0;
 }
-}
-.topcorner{
-  position:absolute;
-  top:0;
-  right:2%;
-}
+
 .btn{
   background-color: #4285F4;
   border: none
