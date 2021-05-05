@@ -165,20 +165,10 @@ def mgs_get_rankings(score_list):
         if type(mobile_games_df['Web Link'][i]) != None:
             web_link = mobile_games_df['Web Link'][i]
 
-        if web_link != '':
-            result_list.append(
-                (game, "Similarity Score: " + str(score), "Genres: " + str(genres), "Rating: "
-                    + str(rating) + " out of 5", "Payment Type: " + str(paid_or_free), "Content Rated: " + str(content), web_link)
-            )
-        else:
-            result_list.append(
-                (game, "Similarity Score: " + str(score), "Genres: " + str(genres), "Rating: "
-                    + str(rating) + " out of 5", "Payment Type: " +
-                 str(paid_or_free), "Content Rated: " + str(content))
-            )
+        result_list.append(game, score, genres, rating,
+                           paid_or_free, content, web_link)
 
     result_list = sorted(result_list, key=lambda x: x[1], reverse=True)[:30]
-
     return result_list
 
 
