@@ -110,6 +110,8 @@
                                     Click here for more info
                                 </a>
                             </div>
+                            <br>
+                            <button type="button" id="modal-btn">Open Modal</button>
                         </div>
                     </div>
                 </div>
@@ -117,10 +119,35 @@
             {% endfor %}
             {% endif %}
         </form>
+        <div id="modal-pop-up" class="modal">
+            <div class="modal-content">
+                <div>
+                    <span class="close">&times;</span>
+                    <p>Some text. Some text. Some text.</p>
+                    <p>Some text. Some text. Some text.</p>
+                </div>
+            </div>
+        </div>
     </div>
     <br>
     <br>
     <script>
+        var modal = document.getElementById("modal-pop-up");
+        var btn = document.getElementById("modal-btn");
+        var span = document.getElementsByClassName("close")[0];
+
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
         async function edDist(gn, gt){
           var res = await $.ajax({
             url: "/",
