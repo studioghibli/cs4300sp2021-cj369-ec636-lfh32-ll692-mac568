@@ -15,20 +15,23 @@ steam_games = set(pd.Series(sg.steam_df['name'], dtype=str))
 all_names = board_games | mobile_games | steam_games
 
 
-def edit_distance_list(query, game_type):
+def get_game_type(game):
+    if game in board_games:
+        return 'Board Games'
+    if game in mobile_games:
+        return 'Mobile Games'
+    if game in steam_games:
+        return 'Video Games'
+    return None
+
+
+def edit_distance_list(query):
     """
     returns ranked list of tuples where first value is name and second value is edit distance
     """
     ranked_names = list()
-    all_names = list()
-    if game_type == 'Board Games':
-        all_names = board_games
-    elif game_type == 'Mobile Games':
-        all_names = mobile_games
-    elif game_type == 'Video Games':
-        all_names = steam_games
     for name in all_names:
-        if query[0].lower() == name[0].lower():
+        if query.lower()[0] == name.lower()[0]:
             ranked_names.append(
                 (name, nltk.edit_distance(query.lower(), name.lower())))
     result = ''

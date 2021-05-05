@@ -4,7 +4,7 @@
     <!-- <meta http-equiv="refresh" content="10"> -->
     <title>Game Recommendations</title>
     <link rel="stylesheet" href="/static/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/main.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
     <style>
@@ -19,6 +19,8 @@
     <div class="topcorner">
         <a href="account" class="btn btn-warning">Sign In</a>
     </div>
+<body style="padding:0px">
+
     <div class="navbar navbar-default navbar-fixed-bottom" role="navigation">
         <nav>
             <ul class="nav navbar-nav">
@@ -43,26 +45,38 @@
             <p class="navbar-text pull-right">Built by: cj369, ec636, lfh32, ll692, mac568</p>
         </div>
     </div>
-    <h1 style="font-size: 55px; font-family:Futura; color: #4285F4; text-align:center">
-        C
-        <span style="color: #EA4335; ">S</span>
-        <span style="color: #FBBC05; ">4</span>
-        3
-        <span style="color: #34A853; ">0</span>
-        <span style="color: #EA4335; ">0</span>
-    </h1>
-    <h2 style="text-align:center">Game Recommendation Engine</h2>
-    <h3 id = 'res' name = 'res' style="text-align:center">{{output_message}}</h3>
-    <form class="form-inline global-search">
+
+
+      <!-- Slideshow -->
+    <div class="slideshow-container" style="padding:0%; position: static;">
+
+      <!-- Full-width images with number and caption text
+
+      <img class="mySlides" src="{{ url_for('static', filename='img/slideshow1.jpg') }}" alt="slideshow1" style="width: 100%;" > -->
+      <img class="mySlides" src="{{ url_for('static', filename='img/p1.jpeg') }}" alt="slideshow2" style="width: 100%; height: 100%; filter: brightness(50%);">
+      <img class="mySlides" src="{{ url_for('static', filename='img/p2.jpeg') }}" alt="slideshow3" style="width: 100%; height: 100%; filter: brightness(50%);">
+      <img class="mySlides" src="{{ url_for('static', filename='img/p3.jpeg') }}" alt="slideshow4" style="width: 100%; height: 100%; filter: brightness(50%);">
+      <img class="mySlides" src="{{ url_for('static', filename='img/p4.jpeg') }}" alt="slideshow5" style="width: 100%; height: 100%; filter: brightness(50%);">
+      <img class="mySlides" src="{{ url_for('static', filename='img/p6.jpeg') }}" alt="slideshow7" style="width: 100%; height: 100%; filter: brightness(50%);">
+      <img class="mySlides" src="{{ url_for('static', filename='img/p8.png') }}" alt="slideshow8" style="width: 100%; height: 100%; filter: brightness(50%);">
+      <img class="mySlides" src="{{ url_for('static', filename='img/p9.jpeg') }}" alt="slideshow9" style="width: 100%; height: 100%; filter: brightness(50%);">
+      <img class="mySlides" src="{{ url_for('static', filename='img/p10.png') }}" alt="slideshow10" style="width: 100%; height: 100%; filter: brightness(50%);">
+
+      <!--
+      <img class="mySlides" src="{{ url_for('static', filename='img/slideshow8.jpeg') }}" alt="slideshow8" style="width: 100%;">
+      <img class="mySlides" src="{{ url_for('static', filename='img/slideshow9.png') }}" alt="slideshow9" style="width: 100%;">
+      <img class="mySlides" src="{{ url_for('static', filename='img/slideshow10.png') }}" alt="slideshow10" style="width: 100%;" >
+      -->
+
+    </div>
+
+    <form class="form-inline global-search" style="position: absolute;
+                                                  top: 50%;
+                                                  left: 50%;
+                                                  transform: translate(-50%, -200%);">
+        <img class="tite-image" src="{{ url_for('static', filename='img/title.png') }}" alt="title2" style="width: 100%; padding: 5%;">
+
         <div class="form-group" style="text-align:center">
-            <label id="typelabel" for="gametype">Type of game:</label>
-            <br>
-            <select id="gametype" name="gametype" class="form-control">
-                <option value="Board Games">Board Game</option>
-                <option value="Mobile Games">Mobile Game</option>
-                <option value="Video Games">Video Game</option>
-            </select>
-            <br>
             <input
                 list="input_game"
                 id="gn"
@@ -154,12 +168,30 @@
             </div>
         </div>
     </form>
+
+    <div id="output">
+      <h4 style="text-align:center">{{output_message}}</h4>
+    </div>
+
     <div class="container-fluid results">
         <form class="form-inline global-search">
             {% if data != None %}
             {% for d in data %}
-            <div class="col-sm-4" style="padding: 5px;">
-                <div class="result-box" style="display:block; height: 160px; padding: 50px 0; border-style: solid">
+            <div class="col-sm-4 overlay-container" style="padding: 5px;">
+                <div class="result-box overlay"
+                style="
+                display: block;
+                height: 160px;
+                padding: 50px 0;
+                background-size: cover;
+                background-position: center;
+                background-image: url(
+                    {% if gt == 'Video Games' %}
+                    {{ d[5] }}
+                    {% elif gt == 'Board Games' %}
+                    {{ d[2] }}
+                    {% endif %}
+                );">
                     <div class="result-box-caption">
                         <div class="result-box-caption-content">
                             <div class="result-text">
@@ -176,29 +208,50 @@
                             <br>
                             <br>
                             <div class="result-expand">
-                                <a href="
-                                    {% if gt == 'Video Games' %}
-                                    {{ d[6] }}
-                                    {% elif gt == 'Board Games' %}
-                                    {{ d[3] }}
-                                    {% endif %}
-                                ">
-                                    {% if gt == 'Mobile Games' %}
-                                {% else %}
-                                Click here for more info
-                                {% endif %}
-                                </a>
+
                             </div>
+                            <br>
+                            <button type="button" class="modal-btn btn btn-info">More info</button>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="modal-pop-up modal">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">
+                          {% if gt == 'Video Games' %}
+                          {{ d[1] }}
+                          {% else %}
+                          {{ d[0] }}
+                          {% endif %}
+                      </h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                      <div class="modal-body">
+
+                          <p><a href="
+                              {% if gt == 'Video Games' or gt == 'Mobile Games' %}
+                              {{ d[6] }}
+                              {% elif gt == 'Board Games' %}
+                              {{ d[3] }}
+                              {% endif %}
+                          ">
+                              Click here for more info
+                          </a></p>
+                          <p>Some text. Some text. Some text.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             {% endfor %}
             {% endif %}
         </form>
     </div>
-    <br>
-    <br>
+
     <script>
     
     function get_filters (x){
@@ -258,22 +311,43 @@
         };
 
       });
+        var modals = document.getElementsByClassName("modal-pop-up");
+        var btns = document.getElementsByClassName("modal-btn");
+        var spans = document.getElementsByClassName("close");
+
+        for (let i = 0; i < modals.length; i++) {
+            modal = modals[i]
+            btn = btns[i]
+            span = spans[i]
+
+            btn.onclick = function() {
+                modal.style.display = "block !important";
+            }
+            span.onclick = function() {
+                modal.style.display = "none !important";
+            }
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none !important";
+                }
+            }
+        }
+
 
         async function edDist(gn, gt){
           var res = await $.ajax({
             url: "/",
             type: "POST",
-            data: { 'game_name': gn, 'game_type': gt },
+            data: { 'game_name': gn },
             success: hallelujah
           });
           return res;
         }
 
-    
         function hallelujah(response) {
             console.log(response)
         }
-    
+
         let gn = d3.select('#gn');
         gn.on('input', function(){
             var x = document.getElementById('input_game');
@@ -284,7 +358,7 @@
             if (document.getElementById('gn').value == '' ||
                 document.getElementById('gn').value == null) { return; }
 
-            edDist(document.getElementById('gn').value, document.getElementById('gametype').value)
+            edDist(document.getElementById('gn').value)
                 .then(val => {
                     let ans = val.split(';');
                     for (let i = 0; i < 5; i++) {
@@ -295,5 +369,22 @@
                     console.log('complete ' + val)
                 });
         });
+    </script>
+
+    <script>
+      var slideIndex = 0;
+      carousel();
+
+      function carousel() {
+        var i;
+        var x = document.getElementsByClassName("mySlides");
+        for (i = 0; i < x.length; i++) {
+          x[i].style.display = "none";
+        }
+        slideIndex++;
+        if (slideIndex > x.length) {slideIndex = 1}
+        x[slideIndex-1].style.display = "block";
+        setTimeout(carousel, 3000); // Change image every 2 seconds
+      }
     </script>
 </html>
