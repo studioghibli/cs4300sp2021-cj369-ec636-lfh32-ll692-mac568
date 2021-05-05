@@ -43,6 +43,7 @@
 
 .container {
   max-width: 970px;
+  margin   : 0%;
 }
 
 .modal {
@@ -56,6 +57,13 @@
   overflow           : auto;
   background-color   : rgb(0, 0, 0);
   background-color   : rgba(0, 0, 0, 0.4);
+}
+
+.tag {
+  border-radius: 20px;
+  font-size    : 17px;
+  border-style : groove;
+  margin-top   : 5px;
 }
 
 .modal-content {
@@ -148,6 +156,13 @@ body {
   padding            : 50px 0;
   background-size    : cover;
   background-position: center;
+  text-align         : center;
+  background         : rgba(0, 0, 0, 0.1);
+}
+
+.result-text {
+  font-size: medium;
+  color    : white;
 }
 
 .signin {
