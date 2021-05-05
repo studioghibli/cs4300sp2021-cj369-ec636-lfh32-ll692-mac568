@@ -3,11 +3,11 @@
     <meta charset="UTF-8">
     <title>Game Recommendations</title>
     <link rel="stylesheet" href="/static/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/main.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 </head>
-<body style="padding-top:0px">
+<body style="padding:0px">
 
     <div class="navbar navbar-default navbar-fixed-bottom" role="navigation">
         <nav>
@@ -34,31 +34,36 @@
         </div>
     </div>
 
-    <!-- Slideshow -->
-    <div class="slideshow-container">
+
+      <!-- Slideshow -->
+    <div class="slideshow-container" style="padding:0%; position: static;">
 
       <!-- Full-width images with number and caption text
 
       <img class="mySlides" src="{{ url_for('static', filename='img/slideshow1.jpg') }}" alt="slideshow1" style="width: 100%;" > -->
-      <img class="mySlides" src="{{ url_for('static', filename='img/slideshow2.jpeg') }}" alt="slideshow2" style="width: 100%; ">
-      <img class="mySlides" src="{{ url_for('static', filename='img/slideshow3.jpeg') }}" alt="slideshow3" style="width: 100%;">
-      <img class="mySlides" src="{{ url_for('static', filename='img/slideshow4.jpeg') }}" alt="slideshow4" style="width: 100%;">
-      <img class="mySlides" src="{{ url_for('static', filename='img/slideshow5.png') }}" alt="slideshow5" style="width: 100%;">
-      <img class="mySlides" src="{{ url_for('static', filename='img/slideshow6.jpeg') }}" alt="slideshow6" style="width: 100%;">
-      <img class="mySlides" src="{{ url_for('static', filename='img/slideshow7.jpeg') }}" alt="slideshow7" style="width: 100%;">
+      <img class="mySlides" src="{{ url_for('static', filename='img/p1.jpeg') }}" alt="slideshow2" style="width: 100%; height: 100%; filter: brightness(50%);">
+      <img class="mySlides" src="{{ url_for('static', filename='img/p2.jpeg') }}" alt="slideshow3" style="width: 100%; height: 100%; filter: brightness(50%);">
+      <img class="mySlides" src="{{ url_for('static', filename='img/p3.jpeg') }}" alt="slideshow4" style="width: 100%; height: 100%; filter: brightness(50%);">
+      <img class="mySlides" src="{{ url_for('static', filename='img/p4.jpeg') }}" alt="slideshow5" style="width: 100%; height: 100%; filter: brightness(50%);">
+      <img class="mySlides" src="{{ url_for('static', filename='img/p6.jpeg') }}" alt="slideshow7" style="width: 100%; height: 100%; filter: brightness(50%);">
+      <img class="mySlides" src="{{ url_for('static', filename='img/p8.png') }}" alt="slideshow8" style="width: 100%; height: 100%; filter: brightness(50%);">
+      <img class="mySlides" src="{{ url_for('static', filename='img/p9.jpeg') }}" alt="slideshow9" style="width: 100%; height: 100%; filter: brightness(50%);">
+      <img class="mySlides" src="{{ url_for('static', filename='img/p10.png') }}" alt="slideshow10" style="width: 100%; height: 100%; filter: brightness(50%);">
+
+      <!--
       <img class="mySlides" src="{{ url_for('static', filename='img/slideshow8.jpeg') }}" alt="slideshow8" style="width: 100%;">
       <img class="mySlides" src="{{ url_for('static', filename='img/slideshow9.png') }}" alt="slideshow9" style="width: 100%;">
       <img class="mySlides" src="{{ url_for('static', filename='img/slideshow10.png') }}" alt="slideshow10" style="width: 100%;" >
+      -->
 
     </div>
 
-    <br>
+    <form class="form-inline global-search" style="position: absolute;
+                                                  top: 50%;
+                                                  left: 50%;
+                                                  transform: translate(-50%, -200%);">
+        <img class="tite-image" src="{{ url_for('static', filename='img/title.png') }}" alt="title2" style="width: 100%; padding: 5%;">
 
-
-
-    <h1 style="text-align:center ">Game Recommendation Engine</h1>
-
-    <form class="form-inline global-search" style="z-index: 10;">
         <div class="form-group" style="text-align:center">
             <input
                 list="input_game"
@@ -70,23 +75,24 @@
             >
             <!-- type="search" -->
             <datalist id="input_game" style="font-family: Helvetica Neue; font-style: normal;"></datalist>
-            <button id="go" type="submit" class="btn btn-info"> Go!</button>
+            <button id="go" type="submit" class="btn btn-info">Go!</button>
         </div>
     </form>
 
-    <h4 style="text-align:center">{{output_message}}</h4>
+    <div id="output">
+      <h4 style="text-align:center">{{output_message}}</h4>
+    </div>
 
     <div class="container-fluid results">
         <form class="form-inline global-search">
             {% if data != None %}
             {% for d in data %}
-            <div class="col-sm-4" style="padding: 5px;">
-                <div class="result-box"
+            <div class="col-sm-4 overlay-container" style="padding: 5px;">
+                <div class="result-box overlay"
                 style="
                 display: block;
                 height: 160px;
                 padding: 50px 0;
-                border-style: solid;
                 background-size: cover;
                 background-position: center;
                 background-image: url(
@@ -95,7 +101,7 @@
                     {% elif gt == 'Board Games' %}
                     {{ d[2] }}
                     {% endif %}
-                )">
+                );">
                     <div class="result-box-caption">
                         <div class="result-box-caption-content">
                             <div class="result-text">
@@ -112,60 +118,73 @@
                             <br>
                             <br>
                             <div class="result-expand">
-                                <a href="
-                                    {% if gt == 'Video Games' or gt == 'Mobile Games' %}
-                                    {{ d[6] }}
-                                    {% elif gt == 'Board Games' %}
-                                    {{ d[3] }}
-                                    {% endif %}
-                                ">
-                                    Click here for more info
-                                </a>
+
                             </div>
                             <br>
-                            <button type="button" class="modal-btn">Open Modal</button>
+                            <button type="button" class="modal-btn btn btn-info">More info</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="modal-pop-up modal" style="display: none !important;">
+            <div class="modal-pop-up modal">
+              <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
-                    <div>
-                        <span class="close">&times;</span>
-                        <p>Some text. Some text. Some text.</p>
-                        <p>Some text. Some text. Some text.</p>
+                    <div class="modal-header">
+                      <h5 class="modal-title">
+                          {% if gt == 'Video Games' %}
+                          {{ d[1] }}
+                          {% else %}
+                          {{ d[0] }}
+                          {% endif %}
+                      </h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                      <div class="modal-body">
+
+                          <p><a href="
+                              {% if gt == 'Video Games' or gt == 'Mobile Games' %}
+                              {{ d[6] }}
+                              {% elif gt == 'Board Games' %}
+                              {{ d[3] }}
+                              {% endif %}
+                          ">
+                              Click here for more info
+                          </a></p>
+                          <p>Some text. Some text. Some text.</p>
+                      </div>
                     </div>
+                  </div>
                 </div>
-            </div>
+              </div>
             {% endfor %}
             {% endif %}
         </form>
     </div>
-    <br>
-    <br>
+
     <script>
         var modals = document.getElementsByClassName("modal-pop-up");
         var btns = document.getElementsByClassName("modal-btn");
         var spans = document.getElementsByClassName("close");
 
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < modals.length; i++) {
             modal = modals[i]
             btn = btns[i]
             span = spans[i]
 
             btn.onclick = function() {
-                modal.style.display = "block";
+                modal.style.display = "block !important";
             }
             span.onclick = function() {
-                modal.style.display = "none";
+                modal.style.display = "none !important";
             }
             window.onclick = function(event) {
                 if (event.target == modal) {
-                    modal.style.display = "none";
+                    modal.style.display = "none !important";
                 }
             }
         }
-        
+
 
         async function edDist(gn, gt){
           var res = await $.ajax({

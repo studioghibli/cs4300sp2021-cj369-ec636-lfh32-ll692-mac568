@@ -106,43 +106,115 @@ def mgs_boolean_filter(score_list, included_genres=None, excluded_genres=None,
 
     for (game, score) in score_list:
         i = mobile_games_df.index[mobile_games_df['App'] == game][0]
+        include = True
 
-        if included_genres != None and excluded_genres != None:
-            genres = mobile_games_df['Genres'][i].split(';')
-            for g in genres:
-                if g not in included_genres or g in excluded_genres:
-                    continue
-        elif included_genres != None and excluded_genres == None:
-            genres = mobile_games_df['Genres'][i].split(';')
-            for g in genres:
-                if g not in included_genres:
-                    continue
-        elif excluded_genres != None and included_genres == None:
-            genres = mobile_games_df['Genres'][i].split(';')
-            for g in genres:
-                if g in excluded_genres:
-                    continue
-
-        if min_price != None or max_price != None:
-            price_str = mobile_games_df['Price'][i]
-            if len(price_str) == 1:
-                price = 0
-            else:
-                price = float(price(str[1:]))
-
-            if min_price != None and price < min_price:
+        genres = set(mobile_games_df['Genres'][i].split(';'))
+        if excluded_genres != None:
+            for genre in excluded_genres:
+                if genre in genres:
+                    include = False
+                    break
+            if not include:
                 continue
-            if max_price != None and price > max_price:
+
+        if included_genres != None:
+            for genre in included_genres:
+                if genre not in genres:
+                    include = False
+                    break
+            if not include:
+                continue
+
+        if min_price != None:
+            price_str = mobile_games_df['Price'][i]
+            price_str_list = price_str.split("$")
+            price = 0
+            if len(price_str_list) == 2:
+                num_as_str = price_str_list[1]
+                price = float(num_as_str)
+            if price < min_price:
+                continue
+
+        if max_price != None:
+            price_str = mobile_games_df['Price'][i]
+            price_str_list = price_str.split("$")
+            price = 0
+            if len(price_str_list) == 2:
+                num_as_str = price_str_list[1]
+                price = float(num_as_str)
+            if price > max_price:
                 continue
 
         if min_rating != None:
-            rating = float(mobile_games_df['Rating'][i])
-            if rating < min_rating:
+            if int(mobile_games_df['Rating'][i]) < min_rating:
                 continue
 
-        filtered_games.append(game)
+        filtered_games.append((game, score))
 
     return filtered_games
+
+
+'''
+SENTIMENT ANALYSIS
+'''
+
+
+def mgs_sentiment_list(score_list):
+    sent_dict = dict()
+    for game, score in score_list:
+        if game in reviews_df['App']:
+            i = reviews_df.index[reviews_df['App'] == game][0]
+            sentiment = reviews_df['Sentiment'][i]
+            if game in sent_dict:
+                sent_dict[game].append(sentiment)
+            else:
+                sent_dict[game] = list()
+                sent_dict[game].append(sentiment)
+        else:
+            sent_dict[game] = list()
+
+    game_sent_mapping = dict()
+    for game in sent_dict:
+        game_sentiments = sent_dict[game]
+        num_positives = game_sentiments.count("Positive")
+        num_negatives = game_sentiments.count("Negative")
+        if num_negatives == 0 or num_positives == 0:
+            game_sent_mapping[game] = "Neutral"
+        elif num_negatives == 0 and num_positives > 0:
+            game_sent_mapping[game] = "Positive"
+        elif (num_positives / num_negatives) >= 2.0:
+            game_sent_mapping[game] = "Positive"
+        elif num_positives == 0 and num_negatives > 0:
+            game_sent_mapping[game] = "Negative"
+        elif (num_negatives / num_positives) >= 2.0:
+            game_sent_mapping[game] = "Negative"
+        else:
+            game_sent_mapping[game] = "Neutral"
+
+    final_rankings = list()
+    games_with_no_reviews = list()
+    for game, score in score_list:
+        if game in reviews_df['App']:
+            if game_sent_mapping[game] == "Positive":
+                final_rankings.append((game, score))
+        else:
+            games_with_no_reviews.append((game, score))
+    for game, score in score_list:
+        if game in reviews_df['App']:
+            if game_sent_mapping[game] == "Neutral":
+                final_rankings.append((game, score))
+        else:
+            games_with_no_reviews.append((game, score))
+    for game, score in score_list:
+        if game in reviews_df['App']:
+            if game_sent_mapping[game] == "Negative":
+                final_rankings.append((game, score))
+        else:
+            games_with_no_reviews.append((game, score))
+    for game, score in games_with_no_reviews:
+        final_rankings.append((game, score))
+
+    return final_rankings
 
 
 '''
@@ -151,8 +223,9 @@ SORT RANKINGS
 
 
 def mgs_get_rankings(score_list):
-    result_list = list()
+    score_list = mgs_sentiment_list(score_list)
 
+    result_list = list()
     for game, score in score_list:
         i = mobile_games_df.index[mobile_games_df['App'] == game][0]
 
@@ -165,56 +238,32 @@ def mgs_get_rankings(score_list):
         if type(mobile_games_df['Web Link'][i]) != None:
             web_link = mobile_games_df['Web Link'][i]
 
-        result_list.append(game, score, genres, rating,
-                           paid_or_free, content, web_link)
+        if (game, score, genres, rating, paid_or_free, content, web_link) not in result_list:
+            result_list.append((game, score, genres, rating,
+                                paid_or_free, content, web_link))
 
     result_list = sorted(result_list, key=lambda x: x[1], reverse=True)[:30]
+
     return result_list
 
 
+'''
+TESTS
+'''
+
+# print("\nQUERY: Helix")
+
+# print("\nNON-FILTERED RESULTS:")
 # j = mgs_jaccard_list('Helix')
-# print(j)
 # c = mgs_cossim_list('Helix')
-# print(c)
 # l = mgs_jacc_cossim(j, c)
-# data = mgs_get_rankings(l)
-# print(data)
+# data1 = mgs_get_rankings(l)
+# for i in range(len(data1)):
+#     print(data1[i])
 
-# test_app1 = mobile_games_df['App'][0]
-# print("\nQuery: " + test_app1)
-
-# print('Jaccard Similarity:')
-# jaccard_scores = mgs_jaccard_list(test_app1)
-# output_jaccard = mgs_get_rankings(jaccard_scores)
-# for i in range(50):
-#     print(output_jaccard[i])
-
-# test_app2 = reviews_df['App'][0]
-# print("\nQuery: " + test_app2)
-# print('Cosine Similarity:')
-# output_cossim = mgs_cossim_list(test_app2)
-# for i in range(len(output_cossim)):
-#     print(output_cossim[i])
-
-# all_games_list = list(app_set)
-# test_app = all_games_list[3]
-# output_jacc2 = mgs_jaccard_list(test_app)
-# output_cossim2 = mgs_cossim_list(test_app)
-# final_score_list = mgs_jacc_cossim(output_jacc2, output_cossim2)
-
-# print("\nQUERY: " + test_app)
-# print("\n")
-# print('Final Similarity Scores:')
-# for i in range(50):
-#     print(final_score_list[i])
-
-# print("\nFILTERED RESULTS")
-# filtered_results = mgs_boolean_filter(
-#     final_score_list, ['Strategy'], ['Adventure'])
-# for i in range(50):
-#     print(filtered_results[i])
-
-# result = mgs_get_rankings(final_score_list)
-# for i in range(len(result)):
-#     print(result[i])
-#     print("\n")
+# print("\nFILTERED RESULTS:")
+# filtered_l = mgs_boolean_filter(
+#     l, included_genres=['Arcade'], excluded_genres=['Adventure'], max_price=1)
+# data2 = mgs_get_rankings(filtered_l)
+# for i in range(len(data2)):
+#     print(data2[i])

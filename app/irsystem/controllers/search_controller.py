@@ -38,6 +38,5 @@ def search():
         except Exception as e:
             output_message = 'Your query was invalid. Please try searching again.'
             return render_template('search.html', output_message=output_message)
-        output_message = 'Results of games similar to {' + \
-            gn + ', ' + gt + '}' + ':'
+        output_message = 'Results of games similar to: ' + gn
         return render_template('search.html', output_message=output_message, gt=gt, data=data)

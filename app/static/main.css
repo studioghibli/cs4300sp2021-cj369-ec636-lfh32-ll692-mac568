@@ -1,3 +1,10 @@
+.slideshow-container{
+  width: 100%;
+  padding:0px;
+
+}
+
+
 .container {
   max-width: 970px;
 }
@@ -5,9 +12,9 @@
 .modal {
   display: none !important; /* Hidden by default */
   position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
+  z-index: 10 !important; /* Sit on top */
   left: 0;
-  top: 0;
+  top: 50%;
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
@@ -42,10 +49,14 @@ padding: 20px 0;
 text-align:center;
 }
 
+.overlay-container:hover .overlay {
+  opacity: 1;
+}
+
 body {
   padding-top: 15px;
   padding-bottom: 15px;
-  background-color: lightgrey;
+  /* background-image: url(img/webb-dark.png); */
 }
 
 .global-search {
