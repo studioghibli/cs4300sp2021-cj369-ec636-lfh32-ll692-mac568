@@ -14,23 +14,23 @@ GLOBAL VARIABLES
 steam_df_dict = {'appid': np.int32, 'name': str, 'platforms': str, 'categories': str,
                  'genres': str, 'steamspy_tags': str, 'positive_ratings': np.int32,
                  'negative_ratings': np.int32, 'median_playtime': np.int32, 'price': np.float32}
-steam_df = pd.read_csv(r'../data/steam-games/steam.csv', usecols=steam_df_dict,
+steam_df = pd.read_csv(r'data/steam-games/steam.csv', usecols=steam_df_dict,
                        dtype=steam_df_dict)
 
 # dataframe of descriptions of games on Steam
 steam_descriptions_df_dict = {
     'steam_appid': np.int32, 'short_description': str}
-steam_descriptions_df = pd.read_csv(r'../data/steam-games/steam_description_data.csv',
+steam_descriptions_df = pd.read_csv(r'data/steam-games/steam_description_data.csv',
                                     usecols=steam_descriptions_df_dict, dtype=steam_descriptions_df_dict)
 
 # dataframe of descriptions of games on Steam
 steam_media_df_dict = {'steam_appid': np.int32, 'header_image': str}
-steam_media_df = pd.read_csv(r'../data/steam-games/steam_media_data.csv',
+steam_media_df = pd.read_csv(r'data/steam-games/steam_media_data.csv',
                              usecols=steam_media_df_dict, dtype=steam_media_df_dict)
 
 # dataframe of descriptions of games on Steam
 steam_links_df_dict = {'steam_appid': np.int32, 'website': str}
-steam_links_df = pd.read_csv(r'../data/steam-games/steam_support_info.csv',
+steam_links_df = pd.read_csv(r'data/steam-games/steam_support_info.csv',
                              usecols=steam_links_df_dict, dtype=steam_links_df_dict)
 
 # dictionary where key is app ID and value is set of genres
@@ -261,9 +261,9 @@ TESTING
 # output_cossim = steam_get_rankings(steam_cossim_list(steam_df['appid'][0]))
 # print(output_cossim)
 
-print('sim')
-output_sim = steam_get_rankings(steam_sim_list(steam_df['appid'][0]))
-print(output_sim)
+# print('sim')
+# output_sim = steam_get_rankings(steam_sim_list(steam_df['appid'][0]))
+# print(output_sim)
 
 # print('boolean and jaccard')
 # output_jaccard = steam_jaccard_list(steam_df['appid'][1])

@@ -3,12 +3,11 @@
     <meta charset="UTF-8">
     <title>Game Recommendations</title>
     <link rel="stylesheet" href="/static/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     <script src="https://d3js.org/d3.v6.min.js"></script>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 </head>
 <body style="padding:0px">
-
     <div class="navbar navbar-default navbar-fixed-bottom" role="navigation">
         <nav>
             <ul class="nav navbar-nav">
@@ -33,68 +32,50 @@
             <p class="navbar-text pull-right">Built by: cj369, ec636, lfh32, ll692, mac568</p>
         </div>
     </div>
-
-
-      <!-- Slideshow -->
-    <div class="slideshow-container" style="padding:0%; position: static;">
-
-      <!-- Full-width images with number and caption text
-
-      <img class="mySlides" src="{{ url_for('static', filename='img/slideshow1.jpg') }}" alt="slideshow1" style="width: 100%;" > -->
-      <img class="mySlides" src="{{ url_for('static', filename='img/p1.jpeg') }}" alt="slideshow2" style="width: 100%; height: 100%; filter: brightness(50%);">
-      <img class="mySlides" src="{{ url_for('static', filename='img/p2.jpeg') }}" alt="slideshow3" style="width: 100%; height: 100%; filter: brightness(50%);">
-      <img class="mySlides" src="{{ url_for('static', filename='img/p3.jpeg') }}" alt="slideshow4" style="width: 100%; height: 100%; filter: brightness(50%);">
-      <img class="mySlides" src="{{ url_for('static', filename='img/p4.jpeg') }}" alt="slideshow5" style="width: 100%; height: 100%; filter: brightness(50%);">
-      <img class="mySlides" src="{{ url_for('static', filename='img/p6.jpeg') }}" alt="slideshow7" style="width: 100%; height: 100%; filter: brightness(50%);">
-      <img class="mySlides" src="{{ url_for('static', filename='img/p8.png') }}" alt="slideshow8" style="width: 100%; height: 100%; filter: brightness(50%);">
-      <img class="mySlides" src="{{ url_for('static', filename='img/p9.jpeg') }}" alt="slideshow9" style="width: 100%; height: 100%; filter: brightness(50%);">
-      <img class="mySlides" src="{{ url_for('static', filename='img/p10.png') }}" alt="slideshow10" style="width: 100%; height: 100%; filter: brightness(50%);">
-
-      <!--
-      <img class="mySlides" src="{{ url_for('static', filename='img/slideshow8.jpeg') }}" alt="slideshow8" style="width: 100%;">
-      <img class="mySlides" src="{{ url_for('static', filename='img/slideshow9.png') }}" alt="slideshow9" style="width: 100%;">
-      <img class="mySlides" src="{{ url_for('static', filename='img/slideshow10.png') }}" alt="slideshow10" style="width: 100%;" >
-      -->
-
+    <!-- Slideshow -->
+    <div class="slideshow-container">
+        <!-- Full-width images with number and caption text -->
+        <img class="mySlides" src="{{ url_for('static', filename='img/p1.jpeg') }}" alt="slideshow2">
+        <img class="mySlides" src="{{ url_for('static', filename='img/p2.jpeg') }}" alt="slideshow3">
+        <img class="mySlides" src="{{ url_for('static', filename='img/p3.jpeg') }}" alt="slideshow4">
+        <img class="mySlides" src="{{ url_for('static', filename='img/p4.jpeg') }}" alt="slideshow5">
+        <img class="mySlides" src="{{ url_for('static', filename='img/p6.jpeg') }}" alt="slideshow7">
+        <img class="mySlides" src="{{ url_for('static', filename='img/p8.png') }}" alt="slideshow8">
+        <img class="mySlides" src="{{ url_for('static', filename='img/p9.jpeg') }}" alt="slideshow9">
+        <img class="mySlides" src="{{ url_for('static', filename='img/p10.png') }}" alt="slideshow10">
     </div>
-
-    <form class="form-inline global-search" style="position: absolute;
-                                                  top: 50%;
-                                                  left: 50%;
-                                                  transform: translate(-50%, -200%);">
-        <img class="tite-image" src="{{ url_for('static', filename='img/title.png') }}" alt="title2" style="width: 100%; padding: 5%;">
-
-        <div class="form-group" style="text-align:center">
-            <input
-                list="input_game"
-                id="gn"
-                name="game"
-                class="form-control"
-                placeholder="Enter a game to start"
-                autocomplete="off"
-            >
-            <!-- type="search" -->
-            <datalist id="input_game" style="font-family: Helvetica Neue; font-style: normal;"></datalist>
-            <button id="go" type="submit" class="btn btn-info">Go!</button>
+    <form class="global-search">
+        <img class="title-image" src="{{ url_for('static', filename='img/title.png') }}" alt="title2">
+        <div class="form-group autocomplete">
+            <div style="display: flex;">
+                <div>
+                    <input
+                        id="gn"
+                        name="game"
+                        class="form-control"
+                        placeholder="Enter a game to start"
+                        autocomplete="off"
+                    >
+                    <div id="input_game" class="autocomplete-items"></div>
+                </div>
+                <button
+                    id="go"
+                    type="submit"
+                    class="btn btn-info"
+                    style="margin-left: 15px;"
+                >Go!</button>
+            </div>
         </div>
     </form>
-
     <div id="output">
-      <h4 style="text-align:center">{{output_message}}</h4>
+        <h4 style="text-align:center">{{output_message}}</h4>
     </div>
-
     <div class="container-fluid results">
-        <form class="form-inline global-search">
+        <form class="form-inline">
             {% if data != None %}
             {% for d in data %}
             <div class="col-sm-4 overlay-container" style="padding: 5px;">
-                <div class="result-box overlay"
-                style="
-                display: block;
-                height: 160px;
-                padding: 50px 0;
-                background-size: cover;
-                background-position: center;
+                <div class="result-box overlay" style="
                 background-image: url(
                     {% if gt == 'Video Games' %}
                     {{ d[5] }}
@@ -117,9 +98,7 @@
                             </div>
                             <br>
                             <br>
-                            <div class="result-expand">
-
-                            </div>
+                            <div class="result-expand"></div>
                             <br>
                             <button type="button" class="modal-btn btn btn-info">More info</button>
                         </div>
@@ -127,42 +106,99 @@
                 </div>
             </div>
             <div class="modal-pop-up modal">
-              <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title">
-                          {% if gt == 'Video Games' %}
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">
+                                {% if gt == 'Video Games' %}
                           {{ d[1] }}
                           {% else %}
                           {{ d[0] }}
                           {% endif %}
-                      </h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                      <div class="modal-body">
-
-                          <p><a href="
+                            </h5>
+                            <button
+                                type="button"
+                                class="close"
+                                data-dismiss="modal"
+                                aria-label="Close"
+                            >
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <div class="modal-body">
+                                <p>
+                                    <a href="
                               {% if gt == 'Video Games' or gt == 'Mobile Games' %}
                               {{ d[6] }}
                               {% elif gt == 'Board Games' %}
                               {{ d[3] }}
                               {% endif %}
                           ">
-                              Click here for more info
-                          </a></p>
-                          <p>Some text. Some text. Some text.</p>
-                      </div>
+                                        Click here for more info
+                                    </a>
+                                </p>
+                                <p>Some text. Some text. Some text.</p>
+                            </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
-              </div>
+            </div>
             {% endfor %}
             {% endif %}
         </form>
     </div>
-
     <script>
+        $(document).ready(function () {
+            // call edit distance function
+            async function edDist(gn, gt){
+                var res = await $.ajax({
+                    url: "/",
+                    type: "POST",
+                    data: { 'game_name': gn },
+                    success: hallelujah
+                });
+                return res;
+            }
+
+            function hallelujah(response) {
+                console.log(response)
+            }
+
+            // add options to dropdown
+            let gn = d3.select('#gn');
+            gn.on('input', function(){
+                var x = document.getElementById('input_game');
+                while (x.lastChild) {
+                    x.removeChild(x.lastChild)
+                }
+
+                if (document.getElementById('gn').value == '' ||
+                    document.getElementById('gn').value == null) { return; }
+
+                edDist(document.getElementById('gn').value)
+                    .then(val => {
+                        let ans = val.split(';');
+                        for (let i = 0; i < 5; i++) {
+                            var op = document.createElement('div');
+                            op.innerHTML = ans[i];
+                            op.setAttribute("style",
+                                "padding: 10px; cursor:pointer; background-color: #fff; border-bottom: 1px solid #d4d4d4; width: 100%")
+                            op.addEventListener("click", function(e) {
+                                document.getElementById('gn').value = ans[i];
+                                while (x.lastChild) {
+                                    x.removeChild(x.lastChild)
+                                }
+                            });
+                            x.appendChild(op);
+                            console.log(document.getElementById('input_game').lastChild)
+                        }
+                        console.log(document.getElementById('input_game'))
+                        console.log('complete ' + val)
+                    });
+            });
+        });
+    </script>
+    <script>
+        // modals
         var modals = document.getElementsByClassName("modal-pop-up");
         var btns = document.getElementsByClassName("modal-btn");
         var spans = document.getElementsByClassName("close");
@@ -173,70 +209,32 @@
             span = spans[i]
 
             btn.onclick = function() {
-                modal.style.display = "block !important";
+                modal.style.display = "block";
             }
             span.onclick = function() {
-                modal.style.display = "none !important";
+                modal.style.display = "none";
             }
             window.onclick = function(event) {
                 if (event.target == modal) {
-                    modal.style.display = "none !important";
+                    modal.style.display = "none";
                 }
             }
         }
 
+        // background
+        var slideIndex = 0;
+        carousel();
 
-        async function edDist(gn, gt){
-          var res = await $.ajax({
-            url: "/",
-            type: "POST",
-            data: { 'game_name': gn },
-            success: hallelujah
-          });
-          return res;
-        }
-
-        function hallelujah(response) {
-            console.log(response)
-        }
-
-        let gn = d3.select('#gn');
-        gn.on('input', function(){
-            var x = document.getElementById('input_game');
-            while (x.lastChild) {
-                x.removeChild(x.lastChild);
+        function carousel() {
+            var i;
+            var x = document.getElementsByClassName("mySlides");
+            for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
             }
-
-            if (document.getElementById('gn').value == '' ||
-                document.getElementById('gn').value == null) { return; }
-
-            edDist(document.getElementById('gn').value)
-                .then(val => {
-                    let ans = val.split(';');
-                    for (let i = 0; i < 5; i++) {
-                        var op = document.createElement('option');
-                        op.setAttribute("value", ans[i]);
-                        document.getElementById('input_game').appendChild(op);
-                    }
-                    console.log('complete ' + val)
-                });
-        });
-    </script>
-
-    <script>
-      var slideIndex = 0;
-      carousel();
-
-      function carousel() {
-        var i;
-        var x = document.getElementsByClassName("mySlides");
-        for (i = 0; i < x.length; i++) {
-          x[i].style.display = "none";
+            slideIndex++;
+            if (slideIndex > x.length) {slideIndex = 1}
+            x[slideIndex-1].style.display = "block";
+            setTimeout(carousel, 3000); // change image every 2 seconds
         }
-        slideIndex++;
-        if (slideIndex > x.length) {slideIndex = 1}
-        x[slideIndex-1].style.display = "block";
-        setTimeout(carousel, 3000); // Change image every 2 seconds
-      }
     </script>
 </html>
