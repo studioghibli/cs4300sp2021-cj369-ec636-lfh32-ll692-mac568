@@ -251,7 +251,7 @@ def mgs_get_rankings(score_list):
 TESTS
 '''
 
-print("\nQUERY: Helix")
+# print("\nQUERY: Helix")
 
 # print("\nNON-FILTERED RESULTS:")
 # j = mgs_jaccard_list('Helix')
@@ -261,9 +261,9 @@ print("\nQUERY: Helix")
 # for i in range(len(data1)):
 #     print(data1[i])
 
-print("\nFILTERED RESULTS:")
-filtered_l = mgs_boolean_filter(
-    l, included_genres=['Arcade'], excluded_genres=['Adventure'], max_price=1)
-data2 = mgs_get_rankings(filtered_l)
-for i in range(len(data2)):
-    print(data2[i])
+# print("\nFILTERED RESULTS:")
+# filtered_l = mgs_boolean_filter(
+#     l, included_genres=['Arcade'], excluded_genres=['Adventure'], max_price=1)
+# data2 = mgs_get_rankings(filtered_l)
+# for i in range(len(data2)):
+#     print(data2[i])
