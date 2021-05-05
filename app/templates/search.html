@@ -1,12 +1,24 @@
 <!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
+    <!-- <meta http-equiv="refresh" content="10"> -->
     <title>Game Recommendations</title>
     <link rel="stylesheet" href="/static/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <style>
+      .tag{
+        border-radius: 20px;
+        font-size: 17px;
+        border-style: groove;
+      }
+    </style>
 </head>
+<body id = 'b'>
+    <div class="topcorner">
+        <a href="account" class="btn btn-warning">Sign In</a>
+    </div>
 <body style="padding:0px">
 
     <div class="navbar navbar-default navbar-fixed-bottom" role="navigation">
@@ -75,7 +87,85 @@
             >
             <!-- type="search" -->
             <datalist id="input_game" style="font-family: Helvetica Neue; font-style: normal;"></datalist>
-            <button id="go" type="submit" class="btn btn-info">Go!</button>
+            <button id="go" type="submit" action = ''class="btn btn-info"> Go!</button>
+            <br/>
+            <br/>
+            <div id = 'Steam Games' style ='border-color: #4285F4;border-width: 5px;'>
+              <div>
+                <h4>Genres to Include:</h4>
+                <ul name = 'genres_in' id = 'genres_in'>
+                  <button class ='tag' type='button'>Accounting</button>
+                  <button class = 'tag' type='button'>Action</button>
+                  <button class='tag' type='button'>Adventure</button>
+                  <button class='tag' type='button'>Animation & Modeling</button>
+                  <button class='tag' type='button'>Audio Production</button>
+                  <button class='tag' type='button'>Casual</button>
+                  <button class='tag' type='button'>Design & Illustration</button>
+                  <button class='tag' type='button'>Documentary</button>
+                  <button class='tag' type='button'>Early Access</button>
+                  <button class='tag' type='button'>Education</button>
+                  <button class='tag' type='button'>Free to Play</button>
+                  <button class='tag' type='button'>Game Development</button>
+                  <button class='tag' type='button'>Gore</button>
+                  <button class='tag' type='button'>Indie</button>
+                  <button class='tag' type='button'>Massively Multiplayer</button>
+                  <button class='tag' type='button'>Nudity</button>
+                  <button class='tag' type='button'>Photo Editing</button>
+                  <button class='tag' type='button'>Racing</button>
+                  <button class='tag' type='button'>RPG</button>
+                  <button class='tag' type='button'>Sexual Content</button>
+                  <button class='tag' type='button'>Simulation</button>
+                  <button class='tag' type='button'>Software Training</button>
+                  <button class='tag' type='button'>Sports</button>
+                  <button class='tag' type='button'>Strategy</button>
+                  <button class='tag' type='button'>Tutorial</button>
+                  <button class='tag' type='button'>Utilities</button>
+                  <button class='tag' type='button'>Video Production</button>
+                  <button class='tag' type='button'>Violent</button>
+                  <button class='tag' type='button'>Web Publishing</button>
+                </ul>
+              </div>
+              <br>
+              <div>
+                <h4>Genres to Exclude:</h4>
+                <ul name = 'genres_ex' id='genres_ex'>
+                  <button class='tag' type='button'>Accounting</button>
+                  <button class='tag' type='button'>Action</button>
+                  <button class='tag' type='button'>Adventure</button>
+                  <button class='tag' type='button'>Animation & Modeling</button>
+                  <button class='tag' type='button'>Audio Production</button>
+                  <button class='tag' type='button'>Casual</button>
+                  <button class='tag' type='button'>Design & Illustration</button>
+                  <button class='tag' type='button'>Documentary</button>
+                  <button class='tag' type='button'>Early Access</button>
+                  <button class='tag' type='button'>Education</button>
+                  <button class='tag' type='button'>Free to Play</button>
+                  <button class='tag' type='button'>Game Development</button>
+                  <button class='tag' type='button'>Gore</button>
+                  <button class='tag' type='button'>Indie</button>
+                  <button class='tag' type='button'>Massively Multiplayer</button>
+                  <button class='tag' type='button'>Nudity</button>
+                  <button class='tag' type='button'>Photo Editing</button>
+                  <button class='tag' type='button'>Racing</button>
+                  <button class='tag' type='button'>RPG</button>
+                  <button class='tag' type='button'>Sexual Content</button>
+                  <button class='tag' type='button'>Simulation</button>
+                  <button class='tag' type='button'>Software Training</button>
+                  <button class='tag' type='button'>Sports</button>
+                  <button class='tag' type='button'>Strategy</button>
+                  <button class='tag' type='button'>Tutorial</button>
+                  <button class='tag' type='button'>Utilities</button>
+                  <button class='tag' type='button'>Video Production</button>
+                  <button class='tag' type='button'>Violent</button>
+                  <button class='tag' type='button'>Web Publishing</button>
+                </ul>
+              </div>
+              <br>
+              <div id = ''>
+
+              </div>
+            <button type ='button' class='filter'>Filter</button>
+            </div>
         </div>
     </form>
 
@@ -106,7 +196,7 @@
                         <div class="result-box-caption-content">
                             <div class="result-text">
                                 <p>
-                                    <strong>
+                                    <strong class = 'rankings'>
                                         {% if gt == 'Video Games' %}
                                         {{ d[1] }}
                                         {% else %}
@@ -163,6 +253,64 @@
     </div>
 
     <script>
+    
+    function get_filters (x){
+      var f = $(x).find('button').map(function () {
+        var item = []
+        if (window.getComputedStyle(this)['backgroundColor'] === "rgb(135, 206, 235)") {
+          item.push(this.textContent);
+        }
+        return item;
+      });
+      return f;
+    }
+    
+    $('.filter').click(function(){
+       let post_data = {
+         gi: get_filters($('#genres_in')),
+         ge: get_filters($('#genres_ex')) ,
+       }
+       post_data = JSON.stringify(post_data)
+      $.ajax({
+        url: window.location.href,
+        type: 'POST',
+        contentType: 'application/json',
+        data: post_data,
+        dataType: 'json',
+        success: function(data){
+          let d = data['data'].replaceAll('[', '').replaceAll(']', '').split(')')
+          console.log(d)
+          for (let i = 0; i < d.length; i++) {
+            d[i] = d[i].replace('(', '').split(',')
+            if (d[i][0] === '') {
+              d[i].shift()
+            }
+
+          $('.rankings').each(function (j, obj) {
+               obj.innerHTML = d[j][1]
+             });
+          }
+        },
+        error: function(){
+          console.log('FAIL')
+        }
+      });
+    });
+
+
+      $('.tag').each(function(i, obj){
+        obj.onclick = function(){
+          console.log(obj.style.backgroundColor.localeCompare('skyblue'))
+          if (obj.style.backgroundColor.localeCompare('skyblue') === 0){
+            obj.style.background = '#f0f0f0';
+          }
+          else{
+             obj.style.backgroundColor = 'skyblue';
+            }
+
+        };
+
+      });
         var modals = document.getElementsByClassName("modal-pop-up");
         var btns = document.getElementsByClassName("modal-btn");
         var spans = document.getElementsByClassName("close");
