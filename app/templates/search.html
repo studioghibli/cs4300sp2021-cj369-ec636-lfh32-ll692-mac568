@@ -47,14 +47,6 @@
     <h3 style="text-align:center">{{output_message}}</h3>
     <form class="form-inline global-search">
         <div class="form-group" style="text-align:center">
-            <!-- <label id="typelabel" for="gametype">Type of game:</label>
-            <br>
-            <select id="gametype" name="gametype" class="form-control">
-                <option value="Board Games">Board Game</option>
-                <option value="Mobile Games">Mobile Game</option>
-                <option value="Video Games">Video Game</option>
-            </select>
-            <br> -->
             <input
                 list="input_game"
                 id="gn"
@@ -73,9 +65,13 @@
             {% if data != None %}
             {% for d in data %}
             <div class="col-sm-4" style="padding: 5px;">
-                <div class="result-box" style="display:block; height: 160px;
-                padding: 50px 0; border-style: solid;
-                background-size: 100%;
+                <div class="result-box"
+                style="
+                display: block;
+                height: 160px;
+                padding: 50px 0;
+                border-style: solid;
+                background-size: cover;
                 background-position: center;
                 background-image: url(
                     {% if gt == 'Video Games' %}
@@ -111,42 +107,49 @@
                                 </a>
                             </div>
                             <br>
-                            <button type="button" id="modal-btn">Open Modal</button>
+                            <button type="button" class="modal-btn">Open Modal</button>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-pop-up modal" style="display: none !important;">
+                <div class="modal-content">
+                    <div>
+                        <span class="close">&times;</span>
+                        <p>Some text. Some text. Some text.</p>
+                        <p>Some text. Some text. Some text.</p>
                     </div>
                 </div>
             </div>
             {% endfor %}
             {% endif %}
         </form>
-        <div id="modal-pop-up" class="modal">
-            <div class="modal-content">
-                <div>
-                    <span class="close">&times;</span>
-                    <p>Some text. Some text. Some text.</p>
-                    <p>Some text. Some text. Some text.</p>
-                </div>
-            </div>
-        </div>
     </div>
     <br>
     <br>
     <script>
-        var modal = document.getElementById("modal-pop-up");
-        var btn = document.getElementById("modal-btn");
-        var span = document.getElementsByClassName("close")[0];
+        var modals = document.getElementsByClassName("modal-pop-up");
+        var btns = document.getElementsByClassName("modal-btn");
+        var spans = document.getElementsByClassName("close");
 
-        btn.onclick = function() {
-            modal.style.display = "block";
-        }
-        span.onclick = function() {
-            modal.style.display = "none";
-        }
-        window.onclick = function(event) {
-            if (event.target == modal) {
+        for (let i = 0; i < 5; i++) {
+            modal = modals[i]
+            btn = btns[i]
+            span = spans[i]
+
+            btn.onclick = function() {
+                modal.style.display = "block";
+            }
+            span.onclick = function() {
                 modal.style.display = "none";
             }
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
         }
+        
 
         async function edDist(gn, gt){
           var res = await $.ajax({
