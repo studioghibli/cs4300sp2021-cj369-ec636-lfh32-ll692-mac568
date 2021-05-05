@@ -80,7 +80,8 @@ def steam_cossim_list(appid):
     cossims = cosine_similarity(query_tfidf, tfidf_mat).flatten()
     result = list()
     for i in range(len(cossims)):
-        result.append((steam_descriptions_df['steam_appid'][i], cossims[i]))
+        if i != idx:
+            result.append((steam_descriptions_df['steam_appid'][i], cossims[i]))
     return result
 
 

@@ -62,7 +62,8 @@ def mgs_cossim_list(app):
         cossims = cosine_similarity(query_tfidf, tfidf_mat).flatten()
         result = list()
         for i in range(len(cossims)):
-            result.append((reviews_df['App'][i], cossims[i]))
+            if i != idx:
+                result.append((reviews_df['App'][i], cossims[i]))
         return result
     return None
 
@@ -173,7 +174,7 @@ def mgs_get_rankings(score_list):
             result_list.append(
                 (game, "Similarity Score: " + str(score), "Genres: " + str(genres), "Rating: "
                     + str(rating) + " out of 5", "Payment Type: " +
-                str(paid_or_free), "Content Rated: " + str(content))
+                 str(paid_or_free), "Content Rated: " + str(content))
             )
 
     result_list = sorted(result_list, key=lambda x: x[1], reverse=True)[:30]
