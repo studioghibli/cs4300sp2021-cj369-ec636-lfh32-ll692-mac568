@@ -10,36 +10,82 @@ from sim import edit_distance as ed
 
 @irsystem.route('/', methods=['GET', 'POST'])
 def search():
-    if request.method == 'POST':
-        return ed.edit_distance_list(request.form['game_name'], request.form['game_type'])
+	if request.method == 'POST':
+		json = request.get_json()
+		if json != None:
+			gi = []
+			ge = []
+			len1 = 0
+			len2 = 0
+			gt = request.args.get('gametype')
+			gn = request.args.get('game')
+			data = []
+			for j in json['gi'].keys():
+				try:
+					if isinstance(int(j), int):
+						gi.extend([json['gi'][j]])
+				except Exception as l:
+					continue
+			for k in json['ge'].keys():
+				try:
+					if isinstance(int(k), int):
+						ge.extend([json['ge'][k]])
+				except Exception as o:
+					continue
+			try:
+				if gt == 'Board Games':
+					src = 'data/board-games/data/games_detailed_info.csv'
+					link = 'data/board-games/data/2019_05_02.csv'
+					j = bg.boardgame_jaccard(gn, src, link)
+					c = bg.boardgame_cosine_sim(gn, src)
+					d = bg.combine_cosine_jaccard(c, j)
+					data = bg.boardgames_boolean(d, ['None'], ge, gi, [],  [
+					                             'None'], 0, float('inf'), 0, float('inf'))
+				elif gt == 'Mobile Games':
+					j = mg.mgs_jaccard_list(gn)
+					c = mg.mgs_cossim_list(gn)
+					l = mg.mgs_jacc_cossim(j, c)
+					d = mg.mgs_get_rankings(l)
+					data = mg.mgs_boolean_filter(d,gi,ge)
+				else:
+					appid = sg.steam_name_to_id[gn]
+					d = sg.steam_bool_filter(sg.steam_sim_list(appid), genres_in = gi, genres_ex = ge)
+					data = sg.steam_get_rankings(d)
+			except Exception as n:
+				output_message = 'Your query was invalid. Please try searching again.'
+				return render_template('search.html', output_message=output_message)
+			output_message = 'Results of games similar to {' + gn + ', ' + gt + '}' + ':'
+			#print(data)
+			return jsonify({'gt':gt, 'data':str(data)}) 
+		else:
+			return ed.edit_distance_list(request.form['game_name'], request.form['game_type'])
+	
+	gt = request.args.get('gametype')
+	gn = request.args.get('game')
+	data = []
 
-    gt = request.args.get('gametype')
-    gn = request.args.get('game')
-    data = []
-
-    if gt == None or gn == None:
-        output_message = ''
-        return render_template('search.html', output_message=output_message, data=data)
-    else:
-        try:
-            if gt == 'Board Games':
-                src = 'data/board-games/data/games_detailed_info.csv'
-                link = 'data/board-games/data/2019_05_02.csv'
-                j = bg.boardgame_jaccard(gn, src, link)
-                c = bg.boardgame_cosine_sim(gn, src)
-                data = bg.combine_cosine_jaccard(c, j)
-            elif gt == 'Mobile Games':
-                j = mg.mgs_jaccard_list(gn)
-                c = mg.mgs_cossim_list(gn)
-                l = mg.mgs_jacc_cossim(j, c)
-                data = mg.mgs_get_rankings(l)
-            else:
-                appid = sg.steam_name_to_id[gn]
-                data = sg.steam_get_rankings(sg.steam_sim_list(appid))
-        except Exception as e:
-            output_message = 'Your query was invalid. Please try searching again.'
-            return render_template('search.html', output_message=output_message)
-        output_message = 'Results of games similar to {' + \
-            gn + ', ' + gt + '}' + ':'
-        data = data[:30]
-        return render_template('search.html', output_message=output_message, gt=gt, data=data)
+	if gt == None or gn == None:
+		output_message = ''
+		return render_template('search.html', output_message=output_message, data=data)
+	else:
+		try:
+			if gt == 'Board Games':
+				src = 'data/board-games/data/games_detailed_info.csv'
+				link = 'data/board-games/data/2019_05_02.csv'
+				j = bg.boardgame_jaccard(gn, src, link)
+				c = bg.boardgame_cosine_sim(gn, src)
+				data = bg.combine_cosine_jaccard(c, j)
+			elif gt == 'Mobile Games':
+					j = mg.mgs_jaccard_list(gn)
+					c = mg.mgs_cossim_list(gn)
+					l = mg.mgs_jacc_cossim(j, c)
+					data = mg.mgs_get_rankings(l)
+			else:
+					appid = sg.steam_name_to_id[gn]
+					data = sg.steam_get_rankings(sg.steam_sim_list(appid))
+		except Exception as e:
+			output_message = 'Your query was invalid. Please try searching again.'
+			return render_template('search.html', output_message=output_message)
+		output_message = 'Results of games similar to {' + gn + ', ' + gt + '}' + ':'
+		data = data[:30]
+		return render_template('search.html', output_message=output_message, gt=gt, data=data)
