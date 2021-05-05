@@ -2,10 +2,10 @@ import pandas as pd
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-boardgames_dict = {'boardgamecategory': str, 'boardgamemechanic': str, 'description': str, 'id': np.int32, 'image': str, 'maxplayers': np.int32,
-                   'maxplaytime': np.int32, 'minplayers': np.int32, 'minplaytime': np.int32, 'primary': str}
+boardgames_dict = {'bayesaverage': np.float32, 'boardgamecategory': str, 'boardgamemechanic': str, 'description': str, 'id': np.int32, 'image': str,
+                   'maxplayers': np.int32, 'maxplaytime': np.int32, 'minplayers': np.int32, 'minplaytime': np.int32, 'primary': str,}
 
-links_dict = {'id': np.int32, 'url': str}
+links_dict = {'id': np.int32, 'rank': np.int32, 'url': str}
 
 boardgames_df = pd.read_csv('data/board-games/data/games_detailed_info.csv', usecols=boardgames_dict, dtype=boardgames_dict)
 links_df = pd.read_csv('data/board-games/data/2019_05_02.csv', usecols=links_dict, dtype=links_dict)
@@ -61,11 +61,15 @@ def boardgame_jaccard(game_title, boardgames_df, links_df, num_boardgames, index
             max_time = boardgames_df.at[i,'maxplaytime']
             min_players = boardgames_df.at[i,'minplayers']
             max_players = boardgames_df.at[i,'maxplayers']
+            
+            rating = boardgames_df.at[i, 'bayesaverage']
+            rating_weight = (rating / 10) + 1            
+            
             if len(cat_i) == 0 or len(game_genres) == 0:
                 sims_jac.append((boardgames_df.at[i,'primary'],0, image, link, cat_i, mech_i, min_time, max_time, min_players, max_players))
             else:
-                sims_jac.append((boardgames_df.at[i,'primary'],(len(cat_i & game_genres) / len(cat_i | game_genres)), image, link, cat_i, mech_i,
-                                 min_time, max_time, min_players, max_players))
+                sims_jac.append((boardgames_df.at[i,'primary'],(len(cat_i & game_genres) / len(cat_i | game_genres)) * rating_weight, image, link,
+                                 cat_i, mech_i, min_time, max_time, min_players, max_players))
         
     return sorted(sims_jac, key=lambda x: x[0])
     # return sorted(sims_jac, key=lambda x: -x[1])
@@ -101,10 +105,12 @@ def boardgame_cosine_sim(game_title, boardgames_df, num_boardgames, index):
         q = tfidf_mat[i]
         d = tfidf_mat[game_index[0]]
         if boardgames_df.at[i,'primary'] != game_title:
+            rating = boardgames_df.at[i, 'bayesaverage']
+            rating_weight = (rating / 10) + 1
             if np.linalg.norm(q) * np.linalg.norm(d) == 0:
                 cosine_sims.append((boardgames_df.at[i,'primary'], 0))
             else:
-                cosine_sims.append((boardgames_df.at[i,'primary'], (np.dot(q, d)) / (np.linalg.norm(q) * np.linalg.norm(d))))
+                cosine_sims.append((boardgames_df.at[i,'primary'], (np.dot(q, d)) / (np.linalg.norm(q) * np.linalg.norm(d)) * rating_weight))
     
     return sorted(cosine_sims)
     # return sorted(cosine_sims, key=lambda x: -x[1])
@@ -178,13 +184,13 @@ def get_mechanics(boardgames_df):
     return sorted(list(mechanics))
 
         
-jaccard = boardgame_jaccard('XCOM: The Board Game', boardgames_df, links_df, num_boardgames, index)
-cosine = boardgame_cosine_sim('XCOM: The Board Game', boardgames_df, num_boardgames, index)
+# jaccard = boardgame_jaccard('XCOM: The Board Game', boardgames_df, links_df, num_boardgames, index)
+# cosine = boardgame_cosine_sim('XCOM: The Board Game', boardgames_df, num_boardgames, index)
 # print(boardgame_jaccard('XCOM: The Board Game', boardgames_df, links_df, num_boardgames, index))
 # print(boardgame_cosine_sim('XCOM: The Board Game', boardgames_df, num_boardgames, index))
-game_list = combine_cosine_jaccard(cosine, jaccard)
-print(boardgames_boolean(game_list, disliked_games=['Project: ELITE'], disliked_genres=['Trivia'],liked_genres=['Puzzle'],
-                         liked_mechanics=['Tile Placement']))
-# print(combine_cosine_jaccard(cosine, jaccard))
+# game_list = combine_cosine_jaccard(cosine, jaccard)
+# print(boardgames_boolean(game_list, disliked_games=['Project: ELITE'], disliked_genres=['Trivia'],liked_genres=['Puzzle'],
+#                          liked_mechanics=['Tile Placement']))
+# print(combine_cosine_jaccard(cosine, jaccard)[:10])
 # print(get_categories(boardgames_df))
 # print(get_mechanics(boardgames_df))
