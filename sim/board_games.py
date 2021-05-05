@@ -84,8 +84,6 @@ def boardgame_cosine_sim(game_title):
 
 def combine_cosine_jaccard(cosine_list, jaccard_list):
     combine_list = []
-    print(len(cosine_list))
-    print(len(jaccard_list))
     for game in range(len(cosine_list)):
         combine_list.append((jaccard_list[game][0], (cosine_list[game][1] + jaccard_list[game][1]) / 2,
                              jaccard_list[game][2], jaccard_list[game][3], jaccard_list[game][4],
