@@ -73,7 +73,17 @@
             {% if data != None %}
             {% for d in data %}
             <div class="col-sm-4" style="padding: 5px;">
-                <div class="result-box" style="display:block; height: 160px; padding: 50px 0; border-style: solid">
+                <div class="result-box" style="display:block; height: 160px;
+                padding: 50px 0; border-style: solid;
+                background-size: 100%;
+                background-position: center;
+                background-image: url(
+                    {% if gt == 'Video Games' %}
+                    {{ d[5] }}
+                    {% elif gt == 'Board Games' %}
+                    {{ d[2] }}
+                    {% endif %}
+                )">
                     <div class="result-box-caption">
                         <div class="result-box-caption-content">
                             <div class="result-text">
@@ -91,16 +101,13 @@
                             <br>
                             <div class="result-expand">
                                 <a href="
-                                    {% if gt == 'Video Games' %}
+                                    {% if gt == 'Video Games' or gt == 'Mobile Games' %}
                                     {{ d[6] }}
                                     {% elif gt == 'Board Games' %}
                                     {{ d[3] }}
                                     {% endif %}
                                 ">
-                                    {% if gt == 'Mobile Games' %}
-                                {% else %}
-                                Click here for more info
-                                {% endif %}
+                                    Click here for more info
                                 </a>
                             </div>
                         </div>
