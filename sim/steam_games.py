@@ -12,7 +12,8 @@ GLOBAL VARIABLES
 
 # dataframe of general game info in Steam
 steam_df_dict = {'appid': np.int32, 'name': str, 'platforms': str, 'categories': str,
-                 'genres': str, 'steamspy_tags': str, 'median_playtime': np.int32, 'price': np.float32}
+                 'genres': str, 'steamspy_tags': str, 'positive_ratings': np.int32,
+                 'negative_ratings': np.int32, 'median_playtime': np.int32, 'price': np.float32}
 steam_df = pd.read_csv(r'data/steam-games/steam.csv', usecols=steam_df_dict,
                        dtype=steam_df_dict)
 
@@ -60,7 +61,14 @@ def steam_jaccard_list(appid):
     returns tuple list of game app IDs and Jaccard similarity scores
     '''
     score_list = list()
-    for x in steam_df['appid']:
+    # for x in steam_df['appid']:
+    for i in range(len(steam_df)):
+        x = steam_df.at[i, 'appid']
+        pos_ratings = steam_df.at[i, 'positive_ratings']
+        neg_ratings = steam_df.at[i, 'negative_ratings']
+        # rating_weight = ((pos_ratings + 1) / (neg_ratings + 2))
+        rating_weight = min(((((pos_ratings + 1) / (pos_ratings + neg_ratings + 2)))
+                    - (((neg_ratings + 1) / (pos_ratings + neg_ratings + 2))) + 0.5), 1)
         if x != appid:
             score_list.append((x, steam_jaccard(appid, x)))
     return score_list
@@ -81,6 +89,14 @@ def steam_cossim_list(appid):
     result = list()
     for i in range(len(cossims)):
         if i != idx:
+            index = steam_df.index[steam_descriptions_df.at[i, 'steam_appid'] == steam_df['appid']]
+            if len(index) > 0:
+                pos_ratings = steam_df.at[index[0], 'positive_ratings']
+                neg_ratings = steam_df.at[index[0], 'negative_ratings']
+                rating_weight = min(((((pos_ratings + 1) / (pos_ratings + neg_ratings + 2)))
+                    - (((neg_ratings + 1) / (pos_ratings + neg_ratings + 2))) + 0.5), 1)
+            else:
+                rating_weight = 1
             result.append((steam_descriptions_df['steam_appid'][i], cossims[i]))
     return result
 

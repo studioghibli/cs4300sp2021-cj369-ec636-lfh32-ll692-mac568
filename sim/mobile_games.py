@@ -231,16 +231,17 @@ def mgs_get_rankings(score_list):
 
         genres = mobile_games_df['Genres'][i].split(';')
         rating = mobile_games_df['Rating'][i]
-        paid_or_free = mobile_games_df['Type'][i]
+        payment_type = mobile_games_df['Type'][i]
+        price = mobile_games_df['Price'][i]
         content = mobile_games_df['Content Rating'][i]
 
         web_link = str()
         if type(mobile_games_df['Web Link'][i]) != None:
             web_link = mobile_games_df['Web Link'][i]
 
-        if (game, score, genres, rating, paid_or_free, content, web_link) not in result_list:
+        if (game, score, genres, rating, payment_type, content, web_link) not in result_list:
             result_list.append((game, score, genres, rating,
-                                paid_or_free, content, web_link))
+                                payment_type, price, content, web_link))
 
     result_list = sorted(result_list, key=lambda x: x[1], reverse=True)[:30]
 

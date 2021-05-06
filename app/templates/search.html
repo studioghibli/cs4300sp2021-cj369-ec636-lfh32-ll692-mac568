@@ -3,34 +3,14 @@
     <meta charset="UTF-8">
     <title>Game Recommendations</title>
     <link rel="stylesheet" href="/static/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     <script src="https://d3js.org/d3.v6.min.js"></script>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 </head>
 <body style="padding:0px">
-
     <div class="navbar navbar-default navbar-fixed-bottom" role="navigation">
-        <nav>
-            <ul class="nav navbar-nav">
-                <li>
-                    <a href="/">Search</a>
-                </li>
-                <li>
-                    <a href="popular">Popular</a>
-                </li>
-                <li>
-                    <a href="videogames">Video Games</a>
-                </li>
-                <li>
-                    <a href="mobilegames">Mobile Games</a>
-                </li>
-                <li>
-                    <a href="boardgames">Board Games</a>
-                </li>
-            </ul>
-        </nav>
         <div class="container">
-            <p class="navbar-text pull-right">Built by: cj369, ec636, lfh32, ll692, mac568</p>
+            <p class="navbar-text">Built by: cj369, ec636, lfh32, ll692, mac568</p>
         </div>
     </div>
 
@@ -79,9 +59,86 @@
             <button id="go" type="submit" class="btn btn-info">Go!</button>
         </div>
     </form>
-
-    <div id="output">
-      <h4 style="text-align:center">{{output_message}}</h4>
+    <div id="Steam Games" style="border-color: #4285F4;border-width: 5px;">
+        <div>
+            <h4 style="padding-left: 20px; padding-top: 10px;">Genres to Include:</h4>
+            <ul name="genres_in" id="genres_in">
+                <button class="tag" type="button">Accounting</button>
+                <button class="tag" type="button">Action</button>
+                <button class="tag" type="button">Adventure</button>
+                <button class="tag" type="button">Animation & Modeling</button>
+                <button class="tag" type="button">Audio Production</button>
+                <button class="tag" type="button">Casual</button>
+                <button class="tag" type="button">Design & Illustration</button>
+                <button class="tag" type="button">Documentary</button>
+                <button class="tag" type="button">Early Access</button>
+                <button class="tag" type="button">Education</button>
+                <button class="tag" type="button">Free to Play</button>
+                <button class="tag" type="button">Game Development</button>
+                <button class="tag" type="button">Gore</button>
+                <button class="tag" type="button">Indie</button>
+                <button class="tag" type="button">Massively Multiplayer</button>
+                <button class="tag" type="button">Nudity</button>
+                <button class="tag" type="button">Photo Editing</button>
+                <button class="tag" type="button">Racing</button>
+                <button class="tag" type="button">RPG</button>
+                <button class="tag" type="button">Sexual Content</button>
+                <button class="tag" type="button">Simulation</button>
+                <button class="tag" type="button">Software Training</button>
+                <button class="tag" type="button">Sports</button>
+                <button class="tag" type="button">Strategy</button>
+                <button class="tag" type="button">Tutorial</button>
+                <button class="tag" type="button">Utilities</button>
+                <button class="tag" type="button">Video Production</button>
+                <button class="tag" type="button">Violent</button>
+                <button class="tag" type="button">Web Publishing</button>
+            </ul>
+        </div>
+        <br>
+        <div>
+            <h4 style="padding-left: 20px;">Genres to Exclude:</h4>
+            <ul name="genres_ex" id="genres_ex">
+                <button class="tag" type="button">Accounting</button>
+                <button class="tag" type="button">Action</button>
+                <button class="tag" type="button">Adventure</button>
+                <button class="tag" type="button">Animation & Modeling</button>
+                <button class="tag" type="button">Audio Production</button>
+                <button class="tag" type="button">Casual</button>
+                <button class="tag" type="button">Design & Illustration</button>
+                <button class="tag" type="button">Documentary</button>
+                <button class="tag" type="button">Early Access</button>
+                <button class="tag" type="button">Education</button>
+                <button class="tag" type="button">Free to Play</button>
+                <button class="tag" type="button">Game Development</button>
+                <button class="tag" type="button">Gore</button>
+                <button class="tag" type="button">Indie</button>
+                <button class="tag" type="button">Massively Multiplayer</button>
+                <button class="tag" type="button">Nudity</button>
+                <button class="tag" type="button">Photo Editing</button>
+                <button class="tag" type="button">Racing</button>
+                <button class="tag" type="button">RPG</button>
+                <button class="tag" type="button">Sexual Content</button>
+                <button class="tag" type="button">Simulation</button>
+                <button class="tag" type="button">Software Training</button>
+                <button class="tag" type="button">Sports</button>
+                <button class="tag" type="button">Strategy</button>
+                <button class="tag" type="button">Tutorial</button>
+                <button class="tag" type="button">Utilities</button>
+                <button class="tag" type="button">Video Production</button>
+                <button class="tag" type="button">Violent</button>
+                <button class="tag" type="button">Web Publishing</button>
+            </ul>
+        </div>
+        <br>
+        <div id=""></div>
+        <button type="button" class="filter" style="margin-left: 20px;">Filter</button>
+    </div>
+    <div id="output" style="padding-top: 20px;">
+        <p style="text-align:center; font-size: large;">Showing results for:
+            <strong>
+                {{ output_message }}
+            </strong>
+        </p>
     </div>
 
     <div class="container-fluid results" style="padding-bottom: 75px;">
@@ -197,13 +254,120 @@
 
                   </div>
                 </div>
-              </div>
+            </div>
             {% endfor %}
             {% endif %}
         </form>
     </div>
-
     <script>
+        $(document).ready(function () {
+            // call edit distance function
+            async function edDist(gn, gt){
+                var res = await $.ajax({
+                    url: "/",
+                    type: "POST",
+                    data: { 'game_name': gn },
+                    success: hallelujah
+                });
+                return res;
+            }
+
+            function hallelujah(response) {
+                console.log(response)
+            }
+
+            // add options to dropdown
+            let gn = d3.select('#gn');
+            gn.on('input', function(){
+                var x = document.getElementById('input_game');
+                while (x.lastChild) {
+                    x.removeChild(x.lastChild)
+                }
+
+                if (document.getElementById('gn').value == '' ||
+                    document.getElementById('gn').value == null) { return; }
+
+                edDist(document.getElementById('gn').value)
+                    .then(val => {
+                        let ans = val.split(';');
+                        for (let i = 0; i < 5; i++) {
+                            var op = document.createElement('div');
+                            op.innerHTML = ans[i];
+                            op.setAttribute("style",
+                                "padding: 10px; cursor:pointer; background-color: #fff; border-bottom: 1px solid #d4d4d4; width: 100%")
+                            op.addEventListener("click", function(e) {
+                                document.getElementById('gn').value = ans[i];
+                                while (x.lastChild) {
+                                    x.removeChild(x.lastChild)
+                                }
+                            });
+                            x.appendChild(op);
+                            console.log(document.getElementById('input_game').lastChild)
+                        }
+                        console.log(document.getElementById('input_game'))
+                        console.log('complete ' + val)
+                    });
+            });
+        });
+    </script>
+    <script>
+        function get_filters(x){
+            var f = $(x).find('button').map(function () {
+                var item = []
+                if (window.getComputedStyle(this)['backgroundColor'] === "rgb(135, 206, 235)") {
+                    item.push(this.textContent);
+                }
+                return item;
+            });
+            return f;
+        }
+
+        $('.filter').click(function(){
+            let post_data = {
+                gi: get_filters($('#genres_in')),
+                ge: get_filters($('#genres_ex')) ,
+            }
+            post_data = JSON.stringify(post_data)
+            $.ajax({
+                url: window.location.href,
+                type: 'POST',
+                contentType: 'application/json',
+                data: post_data,
+                dataType: 'json',
+                success: function(data){
+                    let d = data['data'].replaceAll('[', '').replaceAll(']', '').split(')')
+                    console.log(d)
+                    for (let i = 0; i < d.length; i++) {
+                        d[i] = d[i].replace('(', '').split(',')
+                        if (d[i][0] === '') {
+                            d[i].shift()
+                        }
+
+                        $('.rankings').each(function (j, obj) {
+                            obj.innerHTML = d[j][1]
+                        });
+                    }
+                },
+                error: function(){
+                    console.log('FAIL')
+                }
+            });
+        });
+
+
+        $('.tag').each(function(i, obj){
+            obj.onclick = function(){
+                console.log(obj.style.backgroundColor.localeCompare('skyblue'))
+                if (obj.style.backgroundColor.localeCompare('skyblue') === 0){
+                    obj.style.background = '#f0f0f0';
+                }
+                else {
+                    obj.style.backgroundColor = 'skyblue';
+                }
+            };
+        });
+
+        // modals
         var modals = document.getElementsByClassName("modal-pop-up");
         var btns = document.getElementsByClassName("modal-btn");
         var spans = document.getElementsByClassName("close");
@@ -213,26 +377,6 @@
         console.log(spans)
 
         for (let i = 0; i < modals.length; i++) {
-            // btns[i].onclick = function() {
-            //     modals[i].style.display = "block";
-            //     console.log(i)
-            // }
-            // spans[i].onclick = function() {
-            //     modals[i].style.display = "none";
-            //     console.log(i)
-            // }
-            // window.onclick = function(event) {
-            //     if (event.target == modals[i]) {
-            //         modals[i].style.display = "none";
-            //     }
-            // }
-
-            // modal = modals[i]
-            // btn = btns[i]
-            // span = spans[i]
-
-            console.log("poo")
-
             btns[i].onclick = function() {
                 modals[i].style.display = "block";
             }
@@ -240,11 +384,7 @@
                 modals[i].style.display = "none";
             }
             window.onclick = function(event) {
-              console.log("xd")
-              console.log(event.target)
-              console.log(i)
                 if (event.target == modals[i]) {
-                  console.log("LOL")
                     modals[i].style.display = "none";
                 }
             }
@@ -275,58 +415,20 @@
         // }
 
 
+        // background
+        var slideIndex = 0;
+        carousel();
 
-        async function edDist(gn, gt){
-          var res = await $.ajax({
-            url: "/",
-            type: "POST",
-            data: { 'game_name': gn },
-            success: hallelujah
-          });
-          return res;
-        }
-
-        function hallelujah(response) {
-            console.log(response)
-        }
-
-        let gn = d3.select('#gn');
-        gn.on('input', function(){
-            var x = document.getElementById('input_game');
-            while (x.lastChild) {
-                x.removeChild(x.lastChild);
+        function carousel() {
+            var i;
+            var x = document.getElementsByClassName("mySlides");
+            for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
             }
-
-            if (document.getElementById('gn').value == '' ||
-                document.getElementById('gn').value == null) { return; }
-
-            edDist(document.getElementById('gn').value)
-                .then(val => {
-                    let ans = val.split(';');
-                    for (let i = 0; i < 5; i++) {
-                        var op = document.createElement('option');
-                        op.setAttribute("value", ans[i]);
-                        document.getElementById('input_game').appendChild(op);
-                    }
-                    console.log('complete ' + val)
-                });
-        });
-    </script>
-
-    <script>
-      var slideIndex = 0;
-      carousel();
-
-      function carousel() {
-        var i;
-        var x = document.getElementsByClassName("mySlides");
-        for (i = 0; i < x.length; i++) {
-          x[i].style.display = "none";
+            slideIndex++;
+            if (slideIndex > x.length) {slideIndex = 1}
+            x[slideIndex-1].style.display = "block";
+            setTimeout(carousel, 3000); // change image every 2 seconds
         }
-        slideIndex++;
-        if (slideIndex > x.length) {slideIndex = 1}
-        x[slideIndex-1].style.display = "block";
-        setTimeout(carousel, 3000); // Change image every 2 seconds
-      }
     </script>
 </html>
