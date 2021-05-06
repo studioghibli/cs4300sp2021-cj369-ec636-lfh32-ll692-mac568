@@ -284,14 +284,14 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">
+                            <h3 class="modal-title">
                                 {% if gt == 'Video Games' %}
                                 {{ d[1] }}
                                 {% else %}
                                 {{ d[0] }}
                                 {% endif %}
-                            </h5>
-                            <span class="close" id="close-{{loop.index0}}" style="size=200%;">&times;</span>
+                            </h3>
+                            <span class="close" id="close-{{loop.index0}}" style="size=200%; font: 50px; transform: translateY(calc(-25px - 25%))">&times;</span>
                             <!-- <span class="close" id="close-{{loop.index0}}">x</span> -->
                         </div>
                         <div class="modal-body">
@@ -309,13 +309,16 @@
                             >
                             <p>
                                 <a href="
-                                    {% if gt == 'Video Games' or gt == 'Mobile Games' %}
+                                    {% if gt == 'Video Games'%}
                                     {{ d[6] }}
                                     {% elif gt == 'Board Games' %}
                                     {{ d[3] }}
                                     {% endif %}
                                 ">
+                                    {% if gt == 'Mobile Games' %}
+                                    {% else %}
                                     Click here for more info
+                                    {% endif %}
                                 </a>
                             </p>
                             <p>
