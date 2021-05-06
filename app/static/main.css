@@ -94,11 +94,7 @@
   border-style : groove;
   margin-top   : 5px;
   background-color: lightgrey;
-<<<<<<< HEAD
 } */
-=======
-}
->>>>>>> 6753a492c4a4514ef719ae8297a1baf446f450f6
 
 .modal-content {
   background-color: #fefefe;
@@ -143,10 +139,7 @@
   top       : 50%;
   left      : 50%;
   transform : translate(-50%, -200%);
-<<<<<<< HEAD
   size: 150%
-=======
->>>>>>> 6753a492c4a4514ef719ae8297a1baf446f450f6
 }
 
 .overlay-container:hover .overlay {
