@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> 
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 
     <meta charset="UTF-8">
     <title>Game Recommendations</title>
@@ -327,13 +327,13 @@
                                 {% if gt == 'Video Games'%}
                                 Price: {{ d[4] }}
                                 {% elif gt == 'Mobile Games' %}
-                                Price: {{ d[2] }}
+                                Price: {{ d[4] }}
 
                                 {% endif %}
                             </p>
                             <p>
                                 Tags: {% if gt == 'Video Games'%}
-                                {{ d[0] }}
+                                {{ d[2] }}
                                 {% elif gt == 'Mobile Games' %}
                                 {{ d[2] }}
                                 {% elif gt == 'Board Games' %}
