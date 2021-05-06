@@ -223,7 +223,7 @@ SORT RANKINGS
 
 
 def mgs_get_rankings(score_list):
-    score_list = mgs_sentiment_list(score_list)
+    # score_list = mgs_sentiment_list(score_list)
 
     result_list = list()
     for game, score in score_list:
@@ -239,7 +239,7 @@ def mgs_get_rankings(score_list):
         if type(mobile_games_df['Web Link'][i]) != None:
             web_link = mobile_games_df['Web Link'][i]
 
-        if (game, score, genres, rating, payment_type, content, web_link) not in result_list:
+        if (game, score, genres, rating, payment_type, price, content, web_link) not in result_list:
             result_list.append((game, score, genres, rating,
                                 payment_type, price, content, web_link))
 
@@ -252,15 +252,15 @@ def mgs_get_rankings(score_list):
 TESTS
 '''
 
-# print("\nQUERY: Helix")
+print("\nQUERY: slither.io")
 
-# print("\nNON-FILTERED RESULTS:")
-# j = mgs_jaccard_list('Helix')
-# c = mgs_cossim_list('Helix')
-# l = mgs_jacc_cossim(j, c)
-# data1 = mgs_get_rankings(l)
-# for i in range(len(data1)):
-#     print(data1[i])
+print("\nNON-FILTERED RESULTS:")
+j = mgs_jaccard_list('slither.io')
+c = mgs_cossim_list('slither.io')
+l = mgs_jacc_cossim(j, c)
+data1 = mgs_get_rankings(l)
+for i in range(len(data1)):
+    print(data1[i])
 
 # print("\nFILTERED RESULTS:")
 # filtered_l = mgs_boolean_filter(
