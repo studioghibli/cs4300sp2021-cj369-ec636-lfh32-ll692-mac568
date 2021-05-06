@@ -63,7 +63,6 @@
 .overlay-container:hover .overlay {
   opacity: 1;
 }
-
 .result-box-caption {
   color: white;
   font-size: 20px;
@@ -79,9 +78,9 @@
 .modal {
   display            : none;
   position           : fixed;
-  /* z-index         : 10 !important; */
+  z-index         : 10 !important;
   left               : 0;
-  top                : 50%;
+  top                : 0;
   width              : 100%;
   height             : 100%;
   overflow           : auto;
@@ -89,13 +88,17 @@
   background-color   : rgba(0, 0, 0, 0.4);
 }
 
-.tag {
+/* .tag {
   border-radius: 20px;
   font-size    : 17px;
   border-style : groove;
   margin-top   : 5px;
   background-color: lightgrey;
+<<<<<<< HEAD
+} */
+=======
 }
+>>>>>>> 6753a492c4a4514ef719ae8297a1baf446f450f6
 
 .modal-content {
   background-color: #fefefe;
@@ -111,7 +114,7 @@
 
 }
 .close {
-  color      : #aaa;
+  color      : black;
   float      : right;
   font-size  : 28px;
   font-weight: bold;
@@ -140,6 +143,10 @@
   top       : 50%;
   left      : 50%;
   transform : translate(-50%, -200%);
+<<<<<<< HEAD
+  size: 150%
+=======
+>>>>>>> 6753a492c4a4514ef719ae8297a1baf446f450f6
 }
 
 .overlay-container:hover .overlay {
@@ -191,7 +198,7 @@ body {
 
 .result-text {
   font-size: medium;
-  color    : white;
+  color    : black;
 }
 
 .signin {
