@@ -45,7 +45,7 @@
                                                   text-align:center;">
         <img class="tite-image" src="{{ url_for('static', filename='img/title.png') }}" alt="title2" style="width: 100%; padding: 5%;">
 
-        <div class="form-group" style="text-align:center">
+        <div class="form-group" style="text-align:center; ">
             <input
                 list="input_game"
                 id="gn"
@@ -59,6 +59,7 @@
             <button id="go" type="submit" class="btn btn-info">Go!</button>
         </div>
     </form>
+
     <div id="Steam Games" style="border-color: #4285F4;border-width: 5px;">
         <div>
             <h4 style="padding-left: 20px; padding-top: 10px;">Genres to Include:</h4>
@@ -133,6 +134,7 @@
         <div id=""></div>
         <button type="button" class="filter" style="margin-left: 20px;">Filter</button>
     </div>
+
     <div id="output" style="padding-top: 20px;">
         <p style="text-align:center; font-size: large;">Showing results for:
             <strong>
@@ -183,12 +185,12 @@
                         </p>
                       </div>
 
-                      <br>
-                      <br>
                       <!-- More info button -->
                       <div class="result-expand">
                         <button type="button" class="modal-btn btn btn-info" id="button">More info</button>
                       </div>
+                      <br>
+
 
                     </div>
                   </div>
@@ -383,11 +385,11 @@
             spans[i].onclick = function() {
                 modals[i].style.display = "none";
             }
-            window.onclick = function(event) {
-                if (event.target == modals[i]) {
-                    modals[i].style.display = "none";
-                }
-            }
+            // window.onclick = function(event) {
+            //     if (event.target == modals[i]) {
+            //         modals[i].style.display = "none";
+            //     }
+            // }
           }
 
         // // When the user clicks the button, open the modal
