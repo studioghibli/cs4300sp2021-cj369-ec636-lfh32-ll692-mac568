@@ -92,6 +92,7 @@
             </div>
         </div>
     </form>
+    {% if output_message != null and output_message != "" %}
     {% if gt == "Video Games" %}
     <div id="Video Games" style="border-color: #4285F4;border-width: 5px;">
         <div>
@@ -729,6 +730,7 @@
         </div>
     </div>
     {% endif %}
+    
     <button
         type="submit"
         class="filter"
@@ -870,6 +872,7 @@
             {% endif %}
         </form>
     </div>
+    {% endif %}
     <script>
         $(document).ready(function () {
             // call edit distance function
