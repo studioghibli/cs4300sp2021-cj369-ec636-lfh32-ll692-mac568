@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> 
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 
     <meta charset="UTF-8">
     <title>Game Recommendations</title>
@@ -24,49 +24,49 @@
             class="mySlides"
             src="{{ url_for('static', filename='img/p1.jpeg') }}"
             alt="slideshow2"
-            style="width: 100%; height: 100%; filter: brightness(80%);"
+            style="width: 100%; height: 100%; filter: brightness(50%);"
         >
         <img
             class="mySlides"
             src="{{ url_for('static', filename='img/p2.jpeg') }}"
             alt="slideshow3"
-            style="width: 100%; height: 100%; filter: brightness(80%);"
+            style="width: 100%; height: 100%; filter: brightness(50%);"
         >
         <img
             class="mySlides"
             src="{{ url_for('static', filename='img/p3.jpeg') }}"
             alt="slideshow4"
-            style="width: 100%; height: 100%; filter: brightness(80%);"
+            style="width: 100%; height: 100%; filter: brightness(50%);"
         >
         <img
             class="mySlides"
             src="{{ url_for('static', filename='img/p4.jpeg') }}"
             alt="slideshow5"
-            style="width: 100%; height: 100%; filter: brightness(80%);"
+            style="width: 100%; height: 100%; filter: brightness(50%);"
         >
         <img
             class="mySlides"
             src="{{ url_for('static', filename='img/p6.jpeg') }}"
             alt="slideshow7"
-            style="width: 100%; height: 100%; filter: brightness(80%);"
+            style="width: 100%; height: 100%; filter: brightness(50%);"
         >
         <img
             class="mySlides"
             src="{{ url_for('static', filename='img/p8.png') }}"
             alt="slideshow8"
-            style="width: 100%; height: 100%; filter: brightness(80%);"
+            style="width: 100%; height: 100%; filter: brightness(50%);"
         >
         <img
             class="mySlides"
             src="{{ url_for('static', filename='img/p9.jpeg') }}"
             alt="slideshow9"
-            style="width: 100%; height: 100%; filter: brightness(80%);"
+            style="width: 100%; height: 100%; filter: brightness(50%);"
         >
         <img
             class="mySlides"
             src="{{ url_for('static', filename='img/p10.png') }}"
             alt="slideshow10"
-            style="width: 100%; height: 100%; filter: brightness(80%);"
+            style="width: 100%; height: 100%; filter: brightness(50%);"
         >
     </div>
     <form class="global-search" method="GET">
@@ -756,6 +756,8 @@
                     {{ d[5] }}
                     {% elif gt == 'Board Games' %}
                     {{ d[2] }}
+                    {% else %}
+                    {{url_for('static', filename='img/gplay1.jpeg')}}
                     {% endif %}
                 );"></div>
                 <!-- End Image of result  -->
@@ -808,6 +810,8 @@
                                     {{ d[5] }}
                                     {% elif gt == 'Board Games' %}
                                     {{ d[2] }}
+                                    {% else %}
+                                    {{url_for('static', filename='img/gplay.jpg')}}
                                     {% endif %}"
                                 alt="game image"
                                 style="width:80%"
@@ -836,13 +840,13 @@
                                 {% if gt == 'Video Games'%}
                                 Price: {{ d[4] }}
                                 {% elif gt == 'Mobile Games' %}
-                                Price: {{ d[2] }}
+                                Price: {{ d[4] }}
 
                                 {% endif %}
                             </p>
                             <p>
                                 Tags: {% if gt == 'Video Games'%}
-                                {{ d[0] }}
+                                {{ d[2] }}
                                 {% elif gt == 'Mobile Games' %}
                                 {{ d[2] }}
                                 {% elif gt == 'Board Games' %}
