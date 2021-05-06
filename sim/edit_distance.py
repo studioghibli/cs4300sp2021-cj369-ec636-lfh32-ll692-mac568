@@ -49,4 +49,4 @@ def edit_distance_list(query):
         result += tup[0] + ';'
     return result[:-1]
 
-print(edit_distance_list('escape'))
+# print(edit_distance_list('escape'))
