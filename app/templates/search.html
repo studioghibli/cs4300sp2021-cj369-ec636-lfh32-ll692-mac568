@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <head>
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> 
-
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta charset="UTF-8">
     <title>Game Recommendations</title>
     <link rel="stylesheet" href="/static/bootstrap.min.css">
@@ -266,13 +265,11 @@
                                     </strong>
                                 </p>
                             </div>
-
                             <!-- More info button -->
                             <div class="result-expand">
                                 <button type="button" class="modal-btn btn btn-info" id="button">More info</button>
                             </div>
                             <br>
-
                         </div>
                     </div>
                 </div>
@@ -391,7 +388,7 @@
             });
 
             // call boolean
-            async function boolFilter(gn, f1in, f1out, f2in, f2out, f3in, f3out, f4in, f4out, f5in, f5out){
+            function boolFilter(gn, f1in, f1out, f2in, f2out, f3in, f3out, f4in, f4out, f5in, f5out){
                 var res = await $.ajax({
                     url: "/",
                     type: "POST",
@@ -409,42 +406,113 @@
                 });
                 return res;
             }
-            let tags = document.getElementById('{{ gt }}').getElementsByClassName('fil1tag');
-            for (let i = 0; i < tags.length; i++ ) {
-                if (tags[i].value == 'include') {
-                    // TO-DO: add to parameter f1in
+            
+            let f1in = null;
+            let f1out = null;
+            let f2in = null;
+            let f2out = null;
+            let f3in = null;
+            let f3out = null;
+            let f4in = null;
+            let f4out = null;
+            let f5in = null;
+            let f5out = null;
+
+            if ('{{ gt }}' == "Board Games") {
+                let tags1 = document.getElementById('{{ gt }}').getElementsByClassName('fil1tag');
+                f1in = [];
+                f1out = [];
+                for (let i = 0; i < tags1.length; i++ ) {
+                    if (tags1[i].value == 'include') {
+                        f1in.push(tags1[i].innerHTML);
+                    } else if (tags1[i].value == 'exclude') {
+                        f1out.push(tags1[i].innerHTML);
+                    }
                 }
+
+                let tags2 = document.getElementById('{{ gt }}').getElementsByClassName('fil2tag');
+                f2in = [];
+                f2out = [];
+                for (let i = 0; i < tags2.length; i++ ) {
+                    if (tags2[i].value == 'include') {
+                        f2in.push(tags2[i].innerHTML);
+                    } else if (tags2[i].value == 'exclude') {
+                        f2out.push(tags2[i].innerHTML);
+                    }
+                }
+
+                let tags3 = document.getElementById('{{ gt }}').getElementsByClassName('fil3tag');
+                f3in = tags3[0].value;
+                f3out = tags3[1].value;
+
+                let tags4 = document.getElementById('{{ gt }}').getElementsByClassName('fil4tag');
+                f4in = tags4[0].value;
+                f4out = tags4[1].value;
+            } else if ('{{ gt }}' == "Mobile Games") {
+                let tags1 = document.getElementById('{{ gt }}').getElementsByClassName('fil1tag');
+                f1in = [];
+                f1out = [];
+                for (let i = 0; i < tags1.length; i++ ) {
+                    if (tags1[i].value == 'include') {
+                        f1in.push(tags1[i].innerHTML);
+                    } else if (tags1[i].value == 'exclude') {
+                        f1out.push(tags1[i].innerHTML);
+                    }
+                }
+
+                let tags2 = document.getElementById('{{ gt }}').getElementsByClassName('fil2tag');
+                f2in = tags2[0].value;
+                f2out = tags2[1].value;
+
+                let tags3 = document.getElementById('{{ gt }}').getElementsByClassName('fil3tag');
+                f3in = tags3[0].value;
+            } else if ('{{ gt }}' == "Video Games") {
+                let tags1 = document.getElementById('{{ gt }}').getElementsByClassName('fil1tag');
+                f1in = [];
+                f1out = [];
+                for (let i = 0; i < tags1.length; i++ ) {
+                    if (tags1[i].value == 'include') {
+                        f1in.push(tags1[i].innerHTML);
+                    } else if (tags1[i].value == 'exclude') {
+                        f1out.push(tags1[i].innerHTML);
+                    }
+                }
+
+                let tags2 = document.getElementById('{{ gt }}').getElementsByClassName('fil2tag');
+                f2in = [];
+                f2out = [];
+                for (let i = 0; i < tags2.length; i++ ) {
+                    if (tags2[i].value == 'include') {
+                        f2in.push(tags2[i].innerHTML);
+                    } else if (tags2[i].value == 'exclude') {
+                        f2out.push(tags2[i].innerHTML);
+                    }
+                }
+
+                let tags3 = document.getElementById('{{ gt }}').getElementsByClassName('fil3tag');
+                f3in = [];
+                f3out = [];
+                for (let i = 0; i < tags3.length; i++ ) {
+                    if (tags3[i].value == 'include') {
+                        f3in.push(tags3[i].innerHTML);
+                    } else if (tags3[i].value == 'exclude') {
+                        f3out.push(tags3[i].innerHTML);
+                    }
+                }
+
+                let tags4 = document.getElementById('{{ gt }}').getElementsByClassName('fil4tag');
+                f4in = tags4[0].value;
+                f4out = tags4[1].value;
+
+                let tags5 = document.getElementById('{{ gt }}').getElementsByClassName('fil5tag');
+                f5in = tags5[0].value;
+                f5out = tags5[1].value;
             }
 
-            // replace data
-            // let gn = d3.select('#gn');
-            // gn.on('input', function(){
-            //     var x = document.getElementById('input_game');
-            //     while (x.lastChild) {
-            //         x.removeChild(x.lastChild)
-            //     }
-
-            //     if (document.getElementById('gn').value == '' ||
-            //         document.getElementById('gn').value == null) { return; }
-
-            //     edDist(document.getElementById('gn').value)
-            //         .then(val => {
-            //             let ans = val.split(';');
-            //             for (let i = 0; i < ans.length; i++) {
-            //                 var op = document.createElement('div');
-            //                 op.innerHTML = ans[i];
-            //                 op.setAttribute("style",
-            //                     "padding: 10px; cursor:pointer; background-color: #fff; border-bottom: 1px solid #d4d4d4; width: 100%; text-align: left;")
-            //                 op.addEventListener("click", function(e) {
-            //                     document.getElementById('gn').value = ans[i];
-            //                     while (x.lastChild) {
-            //                         x.removeChild(x.lastChild)
-            //                     }
-            //                 });
-            //                 x.appendChild(op);
-            //             }
-            //         });
-            // });
+            let sub_btn = d3.select('#') // TO-DO: add id to submit filter button
+            sub_btn.onclick = function() {
+                boolFilter(document.getElementById('gn').value, f1in, f1out, f2in, f2out, f3in, f3out, f4in, f4out, f5in, f5out);
+            }
         });
     </script>
     <script>
