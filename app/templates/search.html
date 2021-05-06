@@ -13,142 +13,228 @@
             <p class="navbar-text">Built by: cj369, ec636, lfh32, ll692, mac568</p>
         </div>
     </div>
-
-
-      <!-- Slideshow -->
+    <!-- Slideshow -->
     <div class="slideshow-container" style="padding:0%; position: static;">
-
-      <!-- Full-width images with number and caption text
-
-      <img class="mySlides" src="{{ url_for('static', filename='img/slideshow1.jpg') }}" alt="slideshow1" style="width: 100%;" > -->
-      <img class="mySlides" src="{{ url_for('static', filename='img/p1.jpeg') }}" alt="slideshow2" style="width: 100%; height: 100%; filter: brightness(80%);">
-      <img class="mySlides" src="{{ url_for('static', filename='img/p2.jpeg') }}" alt="slideshow3" style="width: 100%; height: 100%; filter: brightness(80%);">
-      <img class="mySlides" src="{{ url_for('static', filename='img/p3.jpeg') }}" alt="slideshow4" style="width: 100%; height: 100%; filter: brightness(80%);">
-      <img class="mySlides" src="{{ url_for('static', filename='img/p4.jpeg') }}" alt="slideshow5" style="width: 100%; height: 100%; filter: brightness(80%);">
-      <img class="mySlides" src="{{ url_for('static', filename='img/p6.jpeg') }}" alt="slideshow7" style="width: 100%; height: 100%; filter: brightness(80%);">
-      <img class="mySlides" src="{{ url_for('static', filename='img/p8.png') }}" alt="slideshow8" style="width: 100%; height: 100%; filter: brightness(80%);">
-      <img class="mySlides" src="{{ url_for('static', filename='img/p9.jpeg') }}" alt="slideshow9" style="width: 100%; height: 100%; filter: brightness(80%);">
-      <img class="mySlides" src="{{ url_for('static', filename='img/p10.png') }}" alt="slideshow10" style="width: 100%; height: 100%; filter: brightness(80%);">
-
-      <!--
-      <img class="mySlides" src="{{ url_for('static', filename='img/slideshow8.jpeg') }}" alt="slideshow8" style="width: 100%;">
-      <img class="mySlides" src="{{ url_for('static', filename='img/slideshow9.png') }}" alt="slideshow9" style="width: 100%;">
-      <img class="mySlides" src="{{ url_for('static', filename='img/slideshow10.png') }}" alt="slideshow10" style="width: 100%;" >
-      -->
-
+        <!-- Full-width images with number and caption text -->
+        <img
+            class="mySlides"
+            src="{{ url_for('static', filename='img/p1.jpeg') }}"
+            alt="slideshow2"
+            style="width: 100%; height: 100%; filter: brightness(80%);"
+        >
+        <img
+            class="mySlides"
+            src="{{ url_for('static', filename='img/p2.jpeg') }}"
+            alt="slideshow3"
+            style="width: 100%; height: 100%; filter: brightness(80%);"
+        >
+        <img
+            class="mySlides"
+            src="{{ url_for('static', filename='img/p3.jpeg') }}"
+            alt="slideshow4"
+            style="width: 100%; height: 100%; filter: brightness(80%);"
+        >
+        <img
+            class="mySlides"
+            src="{{ url_for('static', filename='img/p4.jpeg') }}"
+            alt="slideshow5"
+            style="width: 100%; height: 100%; filter: brightness(80%);"
+        >
+        <img
+            class="mySlides"
+            src="{{ url_for('static', filename='img/p6.jpeg') }}"
+            alt="slideshow7"
+            style="width: 100%; height: 100%; filter: brightness(80%);"
+        >
+        <img
+            class="mySlides"
+            src="{{ url_for('static', filename='img/p8.png') }}"
+            alt="slideshow8"
+            style="width: 100%; height: 100%; filter: brightness(80%);"
+        >
+        <img
+            class="mySlides"
+            src="{{ url_for('static', filename='img/p9.jpeg') }}"
+            alt="slideshow9"
+            style="width: 100%; height: 100%; filter: brightness(80%);"
+        >
+        <img
+            class="mySlides"
+            src="{{ url_for('static', filename='img/p10.png') }}"
+            alt="slideshow10"
+            style="width: 100%; height: 100%; filter: brightness(80%);"
+        >
     </div>
-
-    <form class="form-inline " style="position: absolute;
-                                                  top: 50%;
-                                                  left: 50%;
-                                                  transform: translate(-50%, -200%);
-                                                  text-align:center;">
-        <img class="tite-image" src="{{ url_for('static', filename='img/title.png') }}" alt="title2" style="width: 100%; padding: 5%;">
-
-        <div class="form-group" style="text-align:center">
-            <input
-                list="input_game"
-                id="gn"
-                name="game"
-                class="form-control"
-                placeholder="Enter a game to start"
-                autocomplete="off"
-            >
-            <!-- type="search" -->
-            <datalist id="input_game" style="font-family: Helvetica Neue; font-style: normal;"></datalist>
-            <button id="go" type="submit" class="btn btn-info">Go!</button>
+    <form class="global-search">
+        <img class="title-image" src="{{ url_for('static', filename='img/title.png') }}" alt="title2">
+        <div class="form-group autocomplete">
+            <div style="display: flex;">
+                <div>
+                    <input
+                        id="gn"
+                        name="game"
+                        class="form-control"
+                        placeholder="Enter a game to start"
+                        autocomplete="off"
+                    >
+                    <div id="input_game" class="autocomplete-items"></div>
+                </div>
+                <button
+                    id="go"
+                    type="submit"
+                    class="btn btn-info"
+                    style="margin-left: 15px;"
+                >Go!</button>
+            </div>
         </div>
     </form>
-    <div id="Steam Games" style="border-color: #4285F4;border-width: 5px;">
-        <div>
-            <h4 style="padding-left: 20px; padding-top: 10px;">Genres to Include:</h4>
-            <ul name="genres_in" id="genres_in">
-                <button class="tag" type="button">Accounting</button>
-                <button class="tag" type="button">Action</button>
-                <button class="tag" type="button">Adventure</button>
-                <button class="tag" type="button">Animation & Modeling</button>
-                <button class="tag" type="button">Audio Production</button>
-                <button class="tag" type="button">Casual</button>
-                <button class="tag" type="button">Design & Illustration</button>
-                <button class="tag" type="button">Documentary</button>
-                <button class="tag" type="button">Early Access</button>
-                <button class="tag" type="button">Education</button>
-                <button class="tag" type="button">Free to Play</button>
-                <button class="tag" type="button">Game Development</button>
-                <button class="tag" type="button">Gore</button>
-                <button class="tag" type="button">Indie</button>
-                <button class="tag" type="button">Massively Multiplayer</button>
-                <button class="tag" type="button">Nudity</button>
-                <button class="tag" type="button">Photo Editing</button>
-                <button class="tag" type="button">Racing</button>
-                <button class="tag" type="button">RPG</button>
-                <button class="tag" type="button">Sexual Content</button>
-                <button class="tag" type="button">Simulation</button>
-                <button class="tag" type="button">Software Training</button>
-                <button class="tag" type="button">Sports</button>
-                <button class="tag" type="button">Strategy</button>
-                <button class="tag" type="button">Tutorial</button>
-                <button class="tag" type="button">Utilities</button>
-                <button class="tag" type="button">Video Production</button>
-                <button class="tag" type="button">Violent</button>
-                <button class="tag" type="button">Web Publishing</button>
-            </ul>
+    <form>
+        <div id="steam-games" style="border-color: #4285F4;border-width: 5px;">
+            <div>
+                <h4 style="padding-left: 20px; padding-top: 10px;">Genres:</h4>
+                <ul name="genres" id="genres">
+                    <button class="tag" type="button" value="neutral">
+                        Accounting
+                        <input name="accounting" style="display: none;">
+                    </button>
+                    <button class="tag" type="button" value="neutral">
+                        Action
+                        <input name="action" style="display: none;">
+                    </button>
+                    <button class="tag" type="button" value="neutral">
+                        Adventure
+                        <input name="adventure" style="display: none;">
+                    </button>
+                    <button class="tag" type="button" value="neutral">
+                        Animation & Modeling
+                        <input name="animation-modeling" style="display: none;">
+                    </button>
+                    <button class="tag" type="button" value="neutral">
+                        Audio Production
+                        <input name="audio-production" style="display: none;">
+                    </button>
+                    <button class="tag" type="button" value="neutral">
+                        Casual
+                        <input name="casual" style="display: none;">
+                    </button>
+                    <button class="tag" type="button" value="neutral">
+                        Design & Illustration
+                        <input name="design-illustration" style="display: none;">
+                    </button>
+                    <button class="tag" type="button" value="neutral">
+                        Documentary
+                        <input name="documentary" style="display: none;">
+                    </button>
+                    <button class="tag" type="button" value="neutral">
+                        Early Access
+                        <input name="early-access" style="display: none;">
+                    </button>
+                    <button class="tag" type="button" value="neutral">
+                        Education
+                        <input name="education" style="display: none;">
+                    </button>
+                    <button class="tag" type="button" value="neutral">
+                        Free to Play
+                        <input name="free-to-play" style="display: none;">
+                    </button>
+                    <button class="tag" type="button" value="neutral">
+                        Game Development
+                        <input name="game-development" style="display: none;">
+                    </button>
+                    <button class="tag" type="button" value="neutral">
+                        Gore
+                        <input name="gore" style="display: none;">
+                    </button>
+                    <button class="tag" type="button" value="neutral">
+                        Indie
+                        <input name="indie" style="display: none;">
+                    </button>
+                    <button class="tag" type="button" value="neutral">
+                        Massively Multiplayer
+                        <input name="massively-multiplayer" style="display: none;">
+                    </button>
+                    <button class="tag" type="button" value="neutral">
+                        Nudity
+                        <input name="nudity" style="display: none;">
+                    </button>
+                    <button class="tag" type="button" value="neutral">
+                        Photo Editing
+                        <input name="photo-editing" style="display: none;">
+                    </button>
+                    <button class="tag" type="button" value="neutral">
+                        Racing
+                        <input name="racing" style="display: none;">
+                    </button>
+                    <button class="tag" type="button" value="neutral">
+                        RPG
+                        <input name="rpg" style="display: none;">
+                    </button>
+                    <button class="tag" type="button" value="neutral">
+                        Sexual Content
+                        <input name="sexual-content" style="display: none;">
+                    </button>
+                    <button class="tag" type="button" value="neutral">
+                        Simulation
+                        <input name="simulation" style="display: none;">
+                    </button>
+                    <button class="tag" type="button" value="neutral">
+                        Software Training
+                        <input name="software-training" style="display: none;">
+                    </button>
+                    <button class="tag" type="button" value="neutral">
+                        Sports
+                        <input name="sports" style="display: none;">
+                    </button>
+                    <button class="tag" type="button" value="neutral">
+                        Strategy
+                        <input name="strategy" style="display: none;">
+                    </button>
+                    <button class="tag" type="button" value="neutral">
+                        Tutorial
+                        <input name="tutorial" style="display: none;">
+                    </button>
+                    <button class="tag" type="button" value="neutral">
+                        Utilities
+                        <input name="utilities" style="display: none;">
+                    </button>
+                    <button class="tag" type="button" value="neutral">
+                        Video Production
+                        <input name="video-production" style="display: none;">
+                    </button>
+                    <button class="tag" type="button" value="neutral">
+                        Violent
+                        <input name="violent" style="display: none;">
+                    </button>
+                    <button class="tag" type="button" value="neutral">
+                        Web Publishing
+                        <input name="web-publishing" style="display: none;">
+                    </button>
+                </ul>
+            </div>
+            <br>
+            <button
+                type="button"
+                type="submit"
+                class="filter"
+                style="margin-left: 20px;"
+            >Filter</button>
         </div>
-        <br>
-        <div>
-            <h4 style="padding-left: 20px;">Genres to Exclude:</h4>
-            <ul name="genres_ex" id="genres_ex">
-                <button class="tag" type="button">Accounting</button>
-                <button class="tag" type="button">Action</button>
-                <button class="tag" type="button">Adventure</button>
-                <button class="tag" type="button">Animation & Modeling</button>
-                <button class="tag" type="button">Audio Production</button>
-                <button class="tag" type="button">Casual</button>
-                <button class="tag" type="button">Design & Illustration</button>
-                <button class="tag" type="button">Documentary</button>
-                <button class="tag" type="button">Early Access</button>
-                <button class="tag" type="button">Education</button>
-                <button class="tag" type="button">Free to Play</button>
-                <button class="tag" type="button">Game Development</button>
-                <button class="tag" type="button">Gore</button>
-                <button class="tag" type="button">Indie</button>
-                <button class="tag" type="button">Massively Multiplayer</button>
-                <button class="tag" type="button">Nudity</button>
-                <button class="tag" type="button">Photo Editing</button>
-                <button class="tag" type="button">Racing</button>
-                <button class="tag" type="button">RPG</button>
-                <button class="tag" type="button">Sexual Content</button>
-                <button class="tag" type="button">Simulation</button>
-                <button class="tag" type="button">Software Training</button>
-                <button class="tag" type="button">Sports</button>
-                <button class="tag" type="button">Strategy</button>
-                <button class="tag" type="button">Tutorial</button>
-                <button class="tag" type="button">Utilities</button>
-                <button class="tag" type="button">Video Production</button>
-                <button class="tag" type="button">Violent</button>
-                <button class="tag" type="button">Web Publishing</button>
-            </ul>
-        </div>
-        <br>
-        <div id=""></div>
-        <button type="button" class="filter" style="margin-left: 20px;">Filter</button>
-    </div>
+    </form>
     <div id="output" style="padding-top: 20px;">
-        <p style="text-align:center; font-size: large;">Showing results for:
+        <p style="text-align:center; font-size: large;">
+            Showing results for:
             <strong>
                 {{ output_message }}
             </strong>
         </p>
     </div>
-
     <div class="container-fluid results" style="padding-bottom: 75px;">
         <form class="form-inline" style="text-align:center;">
             {% if data != None %}
             {% for d in data %}
             <div class="col-sm-4 overlay-container" style="padding: 5px; position:relative">
                 <!-- Being Image of result -->
-                <div class="result-box "
-                style="
+                <div class="result-box " style="
                 display: block;
                 height: 160px;
                 padding: 50px 0;
@@ -160,99 +246,100 @@
                     {% elif gt == 'Board Games' %}
                     {{ d[2] }}
                     {% endif %}
-                );">
-                </div>
-
+                );"></div>
                 <!-- End Image of result  -->
-
                 <!-- Begin overlay  -->
                 <div class="overlay" style="height: 100%;">
-                  <div class="result-box-caption">
-                    <div class="result-box-caption-content">
-                      <!-- Game Name -->
-                      <div class="result-text">
-                        <p>
-                          <strong>
-                            {% if gt == 'Video Games' %}
-                            {{ d[1] }}
+                    <div class="result-box-caption">
+                        <div class="result-box-caption-content">
+                            <!-- Game Name -->
+                            <div class="result-text">
+                                <p>
+                                    <strong>
+                                        {% if gt == 'Video Games' %}
+                                        {{ d[1] }}
+                                        {% else %}
+                                        {{ d[0] }}
+                                        {% endif %}
+                                    </strong>
+                                </p>
+                            </div>
 
-                            {% else %}
-                            {{ d[0] }}
-                            {% endif %}
-                          </strong>
-                        </p>
-                      </div>
+                            <!-- More info button -->
+                            <div class="result-expand">
+                                <button type="button" class="modal-btn btn btn-info" id="button">More info</button>
+                            </div>
+                            <br>
 
-                      <br>
-                      <br>
-                      <!-- More info button -->
-                      <div class="result-expand">
-                        <button type="button" class="modal-btn btn btn-info" id="button">More info</button>
-                      </div>
-
+                        </div>
                     </div>
-                  </div>
                 </div>
                 <!-- End overlay  -->
-
             </div>
             <div class="modal-pop-up modal" id="m-{{loop.index0}}">
-              <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title">
-                          {% if gt == 'Video Games' %}
-                          {{ d[1] }}
-                          {% else %}
-                          {{ d[0] }}
-                          {% endif %}
-                      </h5>
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">
+                                {% if gt == 'Video Games' %}
+                                {{ d[1] }}
+                                {% else %}
+                                {{ d[0] }}
+                                {% endif %}
+                            </h5>
+                            <span class="close" id="close-{{loop.index0}}" style="size=200%;">&times;</span>
+                            <!-- <span class="close" id="close-{{loop.index0}}">x</span> -->
+                        </div>
+                        <div class="modal-body">
+                            <img
+                                class="modal-img"
+                                src="{% if gt == 'Video Games' %}
+                                    {{ d[5] }}
+                                    {% elif gt == 'Board Games' %}
+                                    {{ d[2] }}
+                                    {% endif %}"
+                                alt="game image"
+                                style="width:80%"
+                            >
+                            <p>
+                                <a href="
+                                    {% if gt == 'Video Games' or gt == 'Mobile Games' %}
+                                    {{ d[6] }}
+                                    {% elif gt == 'Board Games' %}
+                                    {{ d[3] }}
+                                    {% endif %}
+                                ">
+                                    Click here for more info
+                                </a>
+                            </p>
+                            <p>
+                                Similarity Score: {% if gt == 'Video Games'%}
+                                {{ d[0] }}
+                                {% elif gt == 'Mobile Games' %}
+                                {{ d[1] }}
+                                {% elif gt == 'Board Games' %}
+                                {{ d[1] }}
+                                {% endif %}
+                            </p>
+                            <p>
+                                {% if gt == 'Video Games'%}
+                                Price: {{ d[4] }}
+                                {% elif gt == 'Mobile Games' %}
+                                Price: {{ d[2] }}
 
-                      <span class="close" id="close-{{loop.index0}}" style="size=200%;">&times;</span>
-                      <!-- <span class="close" id="close-{{loop.index0}}">x</span> -->
+                                {% endif %}
+                            </p>
+                            <p>
+                                Tags: {% if gt == 'Video Games'%}
+                                {{ d[0] }}
+                                {% elif gt == 'Mobile Games' %}
+                                {{ d[2] }}
+                                {% elif gt == 'Board Games' %}
+                                {{ d[5] }}
+                                {% endif %}
+                            </p>
+                        </div>
                     </div>
-                      <div class="modal-body">
-                          <img class="modal-img" src=
-                              "{% if gt == 'Video Games' %}
-                              {{ d[5] }}
-                              {% elif gt == 'Board Games' %}
-                              {{ d[2] }}
-                              {% endif %}"
-                              alt="game image"
-                              style="width:80%"
-                          >
-                          <p><a href="
-                              {% if gt == 'Video Games' or gt == 'Mobile Games' %}
-                              {{ d[6] }}
-                              {% elif gt == 'Board Games' %}
-                              {{ d[3] }}
-                              {% endif %}
-                          ">
-                              Click here for more info
-                          </a></p>
-                          <p>Similarity Score: {% if gt == 'Video Games'%}
-                          {{ d[0] }}
-                          {% elif gt == 'Mobile Games' %}
-                          {{ d[1] }}
-                          {% elif gt == 'Board Games' %}
-                          {{ d[1] }}
-                          {% endif %}</p>
-                          <p>{% if gt == 'Video Games'%}
-                          Price: {{ d[4] }}
-                          {% elif gt == 'Mobile Games' %}
-                          Price: {{ d[2] }}
-
-                          {% endif %}</p>
-                          <p>Tags: {% if gt == 'Video Games'%}
-                          {{ d[0] }}
-                          {% elif gt == 'Mobile Games' %}
-                          {{ d[2] }}
-                          {% elif gt == 'Board Games' %}
-                          {{ d[5] }}
-                          {% endif %}</p>
-                      </div>
-
-                  </div>
                 </div>
             </div>
             {% endfor %}
@@ -262,18 +349,13 @@
     <script>
         $(document).ready(function () {
             // call edit distance function
-            async function edDist(gn, gt){
+            async function edDist(gn){
                 var res = await $.ajax({
                     url: "/",
                     type: "POST",
                     data: { 'game_name': gn },
-                    success: hallelujah
                 });
                 return res;
-            }
-
-            function hallelujah(response) {
-                console.log(response)
             }
 
             // add options to dropdown
@@ -290,11 +372,11 @@
                 edDist(document.getElementById('gn').value)
                     .then(val => {
                         let ans = val.split(';');
-                        for (let i = 0; i < 5; i++) {
+                        for (let i = 0; i < ans.length; i++) {
                             var op = document.createElement('div');
                             op.innerHTML = ans[i];
                             op.setAttribute("style",
-                                "padding: 10px; cursor:pointer; background-color: #fff; border-bottom: 1px solid #d4d4d4; width: 100%")
+                                "padding: 10px; cursor:pointer; background-color: #fff; border-bottom: 1px solid #d4d4d4; width: 100%; text-align: left;")
                             op.addEventListener("click", function(e) {
                                 document.getElementById('gn').value = ans[i];
                                 while (x.lastChild) {
@@ -302,79 +384,42 @@
                                 }
                             });
                             x.appendChild(op);
-                            console.log(document.getElementById('input_game').lastChild)
                         }
-                        console.log(document.getElementById('input_game'))
-                        console.log('complete ' + val)
                     });
             });
+
+            // call edit distance function
+            async function edDist(gn){
+                var res = await $.ajax({
+                    url: "/",
+                    type: "POST",
+                    data: { 'game_name': gn },
+                });
+                return res;
+            }
         });
     </script>
     <script>
-        function get_filters(x){
-            var f = $(x).find('button').map(function () {
-                var item = []
-                if (window.getComputedStyle(this)['backgroundColor'] === "rgb(135, 206, 235)") {
-                    item.push(this.textContent);
+        var filter_btns = document.getElementsByClassName('tag');
+        for (let i = 0; i < filter_btns.length; i++) {
+            filter_btns[i].onclick = function() {
+                if (filter_btns[i].value == "neutral") {
+                    filter_btns[i].value = "include"
+                    filter_btns[i].style.backgroundColor = "lightblue"
+                } else if (filter_btns[i].value == "include") {
+                    filter_btns[i].value = "exclude"
+                    filter_btns[i].style.backgroundColor = "lightcoral"
+                } else {
+                    filter_btns[i].value = "neutral"
+                    filter_btns[i].style.backgroundColor = "lightgrey"
                 }
-                return item;
-            });
-            return f;
-        }
-
-        $('.filter').click(function(){
-            let post_data = {
-                gi: get_filters($('#genres_in')),
-                ge: get_filters($('#genres_ex')) ,
             }
-            post_data = JSON.stringify(post_data)
-            $.ajax({
-                url: window.location.href,
-                type: 'POST',
-                contentType: 'application/json',
-                data: post_data,
-                dataType: 'json',
-                success: function(data){
-                    let d = data['data'].replaceAll('[', '').replaceAll(']', '').split(')')
-                    console.log(d)
-                    for (let i = 0; i < d.length; i++) {
-                        d[i] = d[i].replace('(', '').split(',')
-                        if (d[i][0] === '') {
-                            d[i].shift()
-                        }
-
-                        $('.rankings').each(function (j, obj) {
-                            obj.innerHTML = d[j][1]
-                        });
-                    }
-                },
-                error: function(){
-                    console.log('FAIL')
-                }
-            });
-        });
-
-
-        $('.tag').each(function(i, obj){
-            obj.onclick = function(){
-                console.log(obj.style.backgroundColor.localeCompare('skyblue'))
-                if (obj.style.backgroundColor.localeCompare('skyblue') === 0){
-                    obj.style.background = '#f0f0f0';
-                }
-                else {
-                    obj.style.backgroundColor = 'skyblue';
-                }
-            };
-        });
+        }
 
         // modals
         var modals = document.getElementsByClassName("modal-pop-up");
         var btns = document.getElementsByClassName("modal-btn");
         var spans = document.getElementsByClassName("close");
-
-        console.log(modals)
-        console.log(btns)
-        console.log(spans)
 
         for (let i = 0; i < modals.length; i++) {
             btns[i].onclick = function() {
@@ -383,37 +428,12 @@
             spans[i].onclick = function() {
                 modals[i].style.display = "none";
             }
-            window.onclick = function(event) {
-                if (event.target == modals[i]) {
-                    modals[i].style.display = "none";
-                }
-            }
+            // window.onclick = function(event) {
+            //     if (event.target == modals[i]) {
+            //         modals[i].style.display = "none";
+            //     }
+            // }
           }
-
-        // // When the user clicks the button, open the modal
-        // btns[0].onclick = function() {
-        //     modals[0].style.display = "block";
-        // }
-        //
-        // btns[1].onclick = function() {
-        //     modals[1].style.display = "block";
-        // }
-        // // When the user clicks on <span> (x), close the modal
-        // spans[0].onclick = function() {
-        //   console.log("pls")
-        //     modals[0].style.display = "none";
-        // }
-        //
-        // spans[1].onclick = function() {
-        //     modals[1].style.display = "none";
-        // }
-        // // When the user clicks anywhere outside of the modal, close it
-        // window.onclick = function(event) {
-        //     if (event.target == modals) {
-        //         modal.style.display = "none";
-        //     }
-        // }
-
 
         // background
         var slideIndex = 0;
