@@ -252,15 +252,15 @@ def mgs_get_rankings(score_list):
 TESTS
 '''
 
-print("\nQUERY: slither.io")
+# print("\nQUERY: slither.io")
 
-print("\nNON-FILTERED RESULTS:")
-j = mgs_jaccard_list('slither.io')
-c = mgs_cossim_list('slither.io')
-l = mgs_jacc_cossim(j, c)
-data1 = mgs_get_rankings(l)
-for i in range(len(data1)):
-    print(data1[i])
+# print("\nNON-FILTERED RESULTS:")
+# j = mgs_jaccard_list('slither.io')
+# c = mgs_cossim_list('slither.io')
+# l = mgs_jacc_cossim(j, c)
+# data1 = mgs_get_rankings(l)
+# for i in range(len(data1)):
+#     print(data1[i])
 
 # print("\nFILTERED RESULTS:")
 # filtered_l = mgs_boolean_filter(
