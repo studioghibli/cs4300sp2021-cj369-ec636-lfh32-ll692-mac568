@@ -8,7 +8,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 mobile_games_df_dict = {'App': str, 'Rating': np.float16, 'Type': str,
                         'Price': str, 'Content Rating': str, 'Genres': str, 'Web Link': str}
-mobile_games_df = pd.read_csv(r'data/mobile-games/googleplaystore.csv',
+mobile_games_df = pd.read_csv(r'../data/mobile-games/googleplaystore.csv',
                               usecols=mobile_games_df_dict, dtype=mobile_games_df_dict)
 
 
@@ -45,7 +45,7 @@ COSINE SIMILARITY
 '''
 
 reviews_dict = {'App': str, 'Translated_Review': str}
-reviews_df = pd.read_csv(r'data/mobile-games/user_reviews_cleaned.csv',
+reviews_df = pd.read_csv(r'../data/mobile-games/user_reviews_cleaned.csv',
                          usecols=reviews_dict, dtype=reviews_dict).dropna()
 reviews_df = reviews_df.groupby('App')['Translated_Review'].apply(
     ';'.join).reset_index()

@@ -5,12 +5,12 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 board_df_dict = {'id': np.int64, 'url': str}
 board_df = pd.read_csv(
-    r'data/board-games/data/2019_05_02.csv', usecols=board_df_dict, dtype=board_df_dict)
+    r'../data/board-games/data/2019_05_02.csv', usecols=board_df_dict, dtype=board_df_dict)
 
 board_details_df_dict = {'primary': str, 'description': str, 'boardgamecategory': str, 'boardgamemechanic': str,
                          'image': str, 'minplaytime': np.int64, 'maxplaytime': np.int64, 'minplayers': np.int16, 'maxplayers': np.int16}
 board_details_df = pd.read_csv(
-    r'data/board-games/data/games_detailed_info.csv', usecols=board_details_df_dict, dtype=board_details_df_dict)
+    r'../data/board-games/data/games_detailed_info.csv', usecols=board_details_df_dict, dtype=board_details_df_dict)
 
 
 def boardgame_jaccard(game_title):
