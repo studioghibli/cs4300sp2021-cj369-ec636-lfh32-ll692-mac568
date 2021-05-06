@@ -93,26 +93,61 @@ def combine_cosine_jaccard(cosine_list, jaccard_list):
     return sorted(combine_list, key=lambda x: -x[1])
 
 
-def boardgames_boolean(similar_games, disliked_games=['None'], disliked_genres=['None'], liked_genres=[], liked_mechanics=[],
-                       disliked_mechanics=['None'], min_time=0, max_time=float('inf'), min_players=0, max_players=float('inf')):
+def boardgames_boolean(similar_games, disliked_games=None, liked_genres=None, disliked_genres=None, liked_mechanics=None,
+                       disliked_mechanics=None, min_time=None, max_time=None, min_players=None, max_players=None):
     filtered_games = []
     for game in similar_games:
-        if game[0] not in disliked_games:
+        include = True
+
+        if liked_genres != None:
+            for genre in liked_genres:
+                if genre not in game[4]:
+                    include = False
+                    break
+            if not include:
+                continue
+
+        if disliked_genres != None:
             for genre in disliked_genres:
-                try:
-                    if genre not in game[4]:
-                        for mechanic in disliked_mechanics:
-                            if mechanic not in game[5]:
-                                for genre in liked_genres:
-                                    if genre not in game[4]:
-                                        raise TypeError
-                                for mechanic in liked_mechanics:
-                                    if mechanic not in game[5]:
-                                        raise TypeError
-                                if (game[6] > min_time and game[7] < max_time and game[8] > min_players and game[9] < max_players):
-                                    filtered_games.append(game)
-                except TypeError:
-                    pass
+                if genre in game[4]:
+                    include = False
+                    break
+            if not include:
+                continue
+        
+        if liked_mechanics != None:
+            for mechanic in liked_mechanics:
+                if mechanic not in game[5]:
+                    include = False
+                    break
+            if not include:
+                continue
+
+        if disliked_mechanics != None:
+            for mechanic in disliked_mechanics:
+                if mechanic in game[5]:
+                    include = False
+                    break
+            if not include:
+                continue
+
+        if min_time != None:
+            if game[6] < min_time:
+                continue
+
+        if max_time != None:
+            if game[7] > max_time:
+                continue
+                    
+        if min_players != None:
+            if game[8] < min_time:
+                continue
+
+        if max_players != None:
+            if game[9] > max_time:
+                continue
+        
+        filtered_games.append(game)
 
     return filtered_games
 
