@@ -176,7 +176,8 @@ def search():
                     data = mg.mgs_get_rankings(l)[:30]
                 else:
                     appid = sg.steam_name_to_id[gn]
-                    data = sg.steam_get_rankings(sg.steam_sim_list(appid))[:30]
+                    l = sg.steam_sim_list(appid)
+                    data = sg.steam_get_rankings(l)[:30]
             except Exception as e:
                 output_message = 'invalid query'
                 return render_template('search.html', output_message=output_message)
