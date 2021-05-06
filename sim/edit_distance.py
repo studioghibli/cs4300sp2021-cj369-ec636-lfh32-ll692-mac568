@@ -1,10 +1,6 @@
-# from sim import board_games as bg
-# from sim import mobile_games as mg
-# from sim import steam_games as sg
-
-import board_games as bg
-import mobile_games as mg
-import steam_games as sg
+from sim import board_games as bg
+from sim import mobile_games as mg
+from sim import steam_games as sg
 
 import nltk
 import numpy as np

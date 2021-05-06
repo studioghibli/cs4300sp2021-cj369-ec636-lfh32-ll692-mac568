@@ -14,7 +14,8 @@ def search():
 
     gn = request.args.get('game')
     gt = ed.get_game_type(gn)
-    print(request.args.get(''))
+    print("get request")
+    print(request.args.get('accounting'))
     data = []
 
     if gt == None or gn == None:
