@@ -41,14 +41,14 @@
       <!-- Full-width images with number and caption text
 
       <img class="mySlides" src="{{ url_for('static', filename='img/slideshow1.jpg') }}" alt="slideshow1" style="width: 100%;" > -->
-      <img class="mySlides" src="{{ url_for('static', filename='img/p1.jpeg') }}" alt="slideshow2" style="width: 100%; height: 100%; filter: brightness(50%);">
-      <img class="mySlides" src="{{ url_for('static', filename='img/p2.jpeg') }}" alt="slideshow3" style="width: 100%; height: 100%; filter: brightness(50%);">
-      <img class="mySlides" src="{{ url_for('static', filename='img/p3.jpeg') }}" alt="slideshow4" style="width: 100%; height: 100%; filter: brightness(50%);">
-      <img class="mySlides" src="{{ url_for('static', filename='img/p4.jpeg') }}" alt="slideshow5" style="width: 100%; height: 100%; filter: brightness(50%);">
-      <img class="mySlides" src="{{ url_for('static', filename='img/p6.jpeg') }}" alt="slideshow7" style="width: 100%; height: 100%; filter: brightness(50%);">
-      <img class="mySlides" src="{{ url_for('static', filename='img/p8.png') }}" alt="slideshow8" style="width: 100%; height: 100%; filter: brightness(50%);">
-      <img class="mySlides" src="{{ url_for('static', filename='img/p9.jpeg') }}" alt="slideshow9" style="width: 100%; height: 100%; filter: brightness(50%);">
-      <img class="mySlides" src="{{ url_for('static', filename='img/p10.png') }}" alt="slideshow10" style="width: 100%; height: 100%; filter: brightness(50%);">
+      <img class="mySlides" src="{{ url_for('static', filename='img/p1.jpeg') }}" alt="slideshow2" style="width: 100%; height: 100%; filter: brightness(80%);">
+      <img class="mySlides" src="{{ url_for('static', filename='img/p2.jpeg') }}" alt="slideshow3" style="width: 100%; height: 100%; filter: brightness(80%);">
+      <img class="mySlides" src="{{ url_for('static', filename='img/p3.jpeg') }}" alt="slideshow4" style="width: 100%; height: 100%; filter: brightness(80%);">
+      <img class="mySlides" src="{{ url_for('static', filename='img/p4.jpeg') }}" alt="slideshow5" style="width: 100%; height: 100%; filter: brightness(80%);">
+      <img class="mySlides" src="{{ url_for('static', filename='img/p6.jpeg') }}" alt="slideshow7" style="width: 100%; height: 100%; filter: brightness(80%);">
+      <img class="mySlides" src="{{ url_for('static', filename='img/p8.png') }}" alt="slideshow8" style="width: 100%; height: 100%; filter: brightness(80%);">
+      <img class="mySlides" src="{{ url_for('static', filename='img/p9.jpeg') }}" alt="slideshow9" style="width: 100%; height: 100%; filter: brightness(80%);">
+      <img class="mySlides" src="{{ url_for('static', filename='img/p10.png') }}" alt="slideshow10" style="width: 100%; height: 100%; filter: brightness(80%);">
 
       <!--
       <img class="mySlides" src="{{ url_for('static', filename='img/slideshow8.jpeg') }}" alt="slideshow8" style="width: 100%;">
@@ -58,10 +58,11 @@
 
     </div>
 
-    <form class="form-inline global-search" style="position: absolute;
+    <form class="form-inline " style="position: absolute;
                                                   top: 50%;
                                                   left: 50%;
-                                                  transform: translate(-50%, -200%);">
+                                                  transform: translate(-50%, -200%);
+                                                  text-align:center;">
         <img class="tite-image" src="{{ url_for('static', filename='img/title.png') }}" alt="title2" style="width: 100%; padding: 5%;">
 
         <div class="form-group" style="text-align:center">
@@ -83,12 +84,13 @@
       <h4 style="text-align:center">{{output_message}}</h4>
     </div>
 
-    <div class="container-fluid results">
-        <form class="form-inline global-search">
+    <div class="container-fluid results" style="padding-bottom: 75px;">
+        <form class="form-inline" style="text-align:center;">
             {% if data != None %}
             {% for d in data %}
-            <div class="col-sm-4 overlay-container" style="padding: 5px;">
-                <div class="result-box overlay"
+            <div class="col-sm-4 overlay-container" style="padding: 5px; position:relative">
+                <!-- Being Image of result -->
+                <div class="result-box "
                 style="
                 display: block;
                 height: 160px;
@@ -102,31 +104,42 @@
                     {{ d[2] }}
                     {% endif %}
                 );">
-                    <div class="result-box-caption">
-                        <div class="result-box-caption-content">
-                            <div class="result-text">
-                                <p>
-                                    <strong>
-                                        {% if gt == 'Video Games' %}
-                                        {{ d[1] }}
-                                        {% else %}
-                                        {{ d[0] }}
-                                        {% endif %}
-                                    </strong>
-                                </p>
-                            </div>
-                            <br>
-                            <br>
-                            <div class="result-expand">
-
-                            </div>
-                            <br>
-                            <button type="button" class="modal-btn btn btn-info">More info</button>
-                        </div>
-                    </div>
                 </div>
+
+                <!-- End Image of result  -->
+
+                <!-- Begin overlay  -->
+                <div class="overlay" style="height: 100%;">
+                  <div class="result-box-caption">
+                    <div class="result-box-caption-content">
+                      <!-- Game Name -->
+                      <div class="result-text">
+                        <p>
+                          <strong>
+                            {% if gt == 'Video Games' %}
+                            {{ d[1] }}
+
+                            {% else %}
+                            {{ d[0] }}
+                            {% endif %}
+                          </strong>
+                        </p>
+                      </div>
+
+                      <br>
+                      <br>
+                      <!-- More info button -->
+                      <div class="result-expand">
+                        <button type="button" class="modal-btn btn btn-info" id="button">More info</button>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                <!-- End overlay  -->
+
             </div>
-            <div class="modal-pop-up modal">
+            <div class="modal-pop-up modal" id="m-{{loop.index0}}">
               <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -137,11 +150,20 @@
                           {{ d[0] }}
                           {% endif %}
                       </h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                      <div class="modal-body">
 
+                      <span class="close" id="close-{{loop.index0}}" style="size=200%;">&times;</span>
+                      <!-- <span class="close" id="close-{{loop.index0}}">x</span> -->
+                    </div>
+                      <div class="modal-body">
+                          <img class="modal-img" src=
+                              "{% if gt == 'Video Games' %}
+                              {{ d[5] }}
+                              {% elif gt == 'Board Games' %}
+                              {{ d[2] }}
+                              {% endif %}"
+                              alt="game image"
+                              style="width:80%"
+                          >
                           <p><a href="
                               {% if gt == 'Video Games' or gt == 'Mobile Games' %}
                               {{ d[6] }}
@@ -151,9 +173,28 @@
                           ">
                               Click here for more info
                           </a></p>
-                          <p>Some text. Some text. Some text.</p>
+                          <p>Similarity Score: {% if gt == 'Video Games'%}
+                          {{ d[0] }}
+                          {% elif gt == 'Mobile Games' %}
+                          {{ d[1] }}
+                          {% elif gt == 'Board Games' %}
+                          {{ d[1] }}
+                          {% endif %}</p>
+                          <p>{% if gt == 'Video Games'%}
+                          Price: {{ d[4] }}
+                          {% elif gt == 'Mobile Games' %}
+                          Price: {{ d[2] }}
+
+                          {% endif %}</p>
+                          <p>Tags: {% if gt == 'Video Games'%}
+                          {{ d[0] }}
+                          {% elif gt == 'Mobile Games' %}
+                          {{ d[2] }}
+                          {% elif gt == 'Board Games' %}
+                          {{ d[5] }}
+                          {% endif %}</p>
                       </div>
-                    </div>
+
                   </div>
                 </div>
               </div>
@@ -167,23 +208,72 @@
         var btns = document.getElementsByClassName("modal-btn");
         var spans = document.getElementsByClassName("close");
 
-        for (let i = 0; i < modals.length; i++) {
-            modal = modals[i]
-            btn = btns[i]
-            span = spans[i]
+        console.log(modals)
+        console.log(btns)
+        console.log(spans)
 
-            btn.onclick = function() {
-                modal.style.display = "block !important";
+        for (let i = 0; i < modals.length; i++) {
+            // btns[i].onclick = function() {
+            //     modals[i].style.display = "block";
+            //     console.log(i)
+            // }
+            // spans[i].onclick = function() {
+            //     modals[i].style.display = "none";
+            //     console.log(i)
+            // }
+            // window.onclick = function(event) {
+            //     if (event.target == modals[i]) {
+            //         modals[i].style.display = "none";
+            //     }
+            // }
+
+            // modal = modals[i]
+            // btn = btns[i]
+            // span = spans[i]
+
+            console.log("poo")
+
+            btns[i].onclick = function() {
+                modals[i].style.display = "block";
             }
-            span.onclick = function() {
-                modal.style.display = "none !important";
+            spans[i].onclick = function() {
+                modals[i].style.display = "none";
             }
             window.onclick = function(event) {
-                if (event.target == modal) {
-                    modal.style.display = "none !important";
+              console.log("xd")
+              console.log(event.target)
+              console.log(i)
+                if (event.target == modals[i]) {
+                  console.log("LOL")
+                    modals[i].style.display = "none";
                 }
             }
-        }
+          }
+
+        // // When the user clicks the button, open the modal
+        // btns[0].onclick = function() {
+        //     modals[0].style.display = "block";
+        // }
+        //
+        // btns[1].onclick = function() {
+        //     modals[1].style.display = "block";
+        // }
+        // // When the user clicks on <span> (x), close the modal
+        // spans[0].onclick = function() {
+        //   console.log("pls")
+        //     modals[0].style.display = "none";
+        // }
+        //
+        // spans[1].onclick = function() {
+        //     modals[1].style.display = "none";
+        // }
+        // // When the user clicks anywhere outside of the modal, close it
+        // window.onclick = function(event) {
+        //     if (event.target == modals) {
+        //         modal.style.display = "none";
+        //     }
+        // }
+
 
 
         async function edDist(gn, gt){
