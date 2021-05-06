@@ -65,7 +65,7 @@
             style="width: 100%; height: 100%; filter: brightness(80%);"
         >
     </div>
-    <form class="global-search">
+    <form class="global-search" method="GET">
         <img class="title-image" src="{{ url_for('static', filename='img/title.png') }}" alt="title2">
         <div class="form-group autocomplete">
             <div style="display: flex;">
@@ -88,138 +88,136 @@
             </div>
         </div>
     </form>
-    <form>
-        <div id="steam-games" style="border-color: #4285F4;border-width: 5px;">
-            <div>
-                <h4 style="padding-left: 20px; padding-top: 10px;">Genres:</h4>
-                <ul name="genres" id="genres">
-                    <button class="tag" type="button" value="neutral">
-                        Accounting
-                        <input name="accounting" style="display: none;">
-                    </button>
-                    <button class="tag" type="button" value="neutral">
-                        Action
-                        <input name="action" style="display: none;">
-                    </button>
-                    <button class="tag" type="button" value="neutral">
-                        Adventure
-                        <input name="adventure" style="display: none;">
-                    </button>
-                    <button class="tag" type="button" value="neutral">
-                        Animation & Modeling
-                        <input name="animation-modeling" style="display: none;">
-                    </button>
-                    <button class="tag" type="button" value="neutral">
-                        Audio Production
-                        <input name="audio-production" style="display: none;">
-                    </button>
-                    <button class="tag" type="button" value="neutral">
-                        Casual
-                        <input name="casual" style="display: none;">
-                    </button>
-                    <button class="tag" type="button" value="neutral">
-                        Design & Illustration
-                        <input name="design-illustration" style="display: none;">
-                    </button>
-                    <button class="tag" type="button" value="neutral">
-                        Documentary
-                        <input name="documentary" style="display: none;">
-                    </button>
-                    <button class="tag" type="button" value="neutral">
-                        Early Access
-                        <input name="early-access" style="display: none;">
-                    </button>
-                    <button class="tag" type="button" value="neutral">
-                        Education
-                        <input name="education" style="display: none;">
-                    </button>
-                    <button class="tag" type="button" value="neutral">
-                        Free to Play
-                        <input name="free-to-play" style="display: none;">
-                    </button>
-                    <button class="tag" type="button" value="neutral">
-                        Game Development
-                        <input name="game-development" style="display: none;">
-                    </button>
-                    <button class="tag" type="button" value="neutral">
-                        Gore
-                        <input name="gore" style="display: none;">
-                    </button>
-                    <button class="tag" type="button" value="neutral">
-                        Indie
-                        <input name="indie" style="display: none;">
-                    </button>
-                    <button class="tag" type="button" value="neutral">
-                        Massively Multiplayer
-                        <input name="massively-multiplayer" style="display: none;">
-                    </button>
-                    <button class="tag" type="button" value="neutral">
-                        Nudity
-                        <input name="nudity" style="display: none;">
-                    </button>
-                    <button class="tag" type="button" value="neutral">
-                        Photo Editing
-                        <input name="photo-editing" style="display: none;">
-                    </button>
-                    <button class="tag" type="button" value="neutral">
-                        Racing
-                        <input name="racing" style="display: none;">
-                    </button>
-                    <button class="tag" type="button" value="neutral">
-                        RPG
-                        <input name="rpg" style="display: none;">
-                    </button>
-                    <button class="tag" type="button" value="neutral">
-                        Sexual Content
-                        <input name="sexual-content" style="display: none;">
-                    </button>
-                    <button class="tag" type="button" value="neutral">
-                        Simulation
-                        <input name="simulation" style="display: none;">
-                    </button>
-                    <button class="tag" type="button" value="neutral">
-                        Software Training
-                        <input name="software-training" style="display: none;">
-                    </button>
-                    <button class="tag" type="button" value="neutral">
-                        Sports
-                        <input name="sports" style="display: none;">
-                    </button>
-                    <button class="tag" type="button" value="neutral">
-                        Strategy
-                        <input name="strategy" style="display: none;">
-                    </button>
-                    <button class="tag" type="button" value="neutral">
-                        Tutorial
-                        <input name="tutorial" style="display: none;">
-                    </button>
-                    <button class="tag" type="button" value="neutral">
-                        Utilities
-                        <input name="utilities" style="display: none;">
-                    </button>
-                    <button class="tag" type="button" value="neutral">
-                        Video Production
-                        <input name="video-production" style="display: none;">
-                    </button>
-                    <button class="tag" type="button" value="neutral">
-                        Violent
-                        <input name="violent" style="display: none;">
-                    </button>
-                    <button class="tag" type="button" value="neutral">
-                        Web Publishing
-                        <input name="web-publishing" style="display: none;">
-                    </button>
-                </ul>
-            </div>
-            <br>
-            <button
-                type="button"
-                type="submit"
-                class="filter"
-                style="margin-left: 20px;"
-            >Filter</button>
+    <div id="Video Games" style="border-color: #4285F4;border-width: 5px;">
+        <div>
+            <h4 style="padding-left: 20px; padding-top: 10px;">Genres:</h4>
+            <ul name="genres" id="genres">
+                <button class="fil1tag tag" type="button" value="neutral">
+                    Accounting
+                    <input name="accounting" style="display: none;">
+                </button>
+                <button class="fil1tag tag" type="button" value="neutral">
+                    Action
+                    <input name="action" style="display: none;">
+                </button>
+                <button class="fil1tag tag" type="button" value="neutral">
+                    Adventure
+                    <input name="adventure" style="display: none;">
+                </button>
+                <button class="fil1tag tag" type="button" value="neutral">
+                    Animation & Modeling
+                    <input name="animation-modeling" style="display: none;">
+                </button>
+                <button class="fil1tag tag" type="button" value="neutral">
+                    Audio Production
+                    <input name="audio-production" style="display: none;">
+                </button>
+                <button class="fil1tag tag" type="button" value="neutral">
+                    Casual
+                    <input name="casual" style="display: none;">
+                </button>
+                <button class="fil1tag tag" type="button" value="neutral">
+                    Design & Illustration
+                    <input name="design-illustration" style="display: none;">
+                </button>
+                <button class="fil1tag tag" type="button" value="neutral">
+                    Documentary
+                    <input name="documentary" style="display: none;">
+                </button>
+                <button class="fil1tag tag" type="button" value="neutral">
+                    Early Access
+                    <input name="early-access" style="display: none;">
+                </button>
+                <button class="fil1tag tag" type="button" value="neutral">
+                    Education
+                    <input name="education" style="display: none;">
+                </button>
+                <button class="fil1tag tag" type="button" value="neutral">
+                    Free to Play
+                    <input name="free-to-play" style="display: none;">
+                </button>
+                <button class="fil1tag tag" type="button" value="neutral">
+                    Game Development
+                    <input name="game-development" style="display: none;">
+                </button>
+                <button class="fil1tag tag" type="button" value="neutral">
+                    Gore
+                    <input name="gore" style="display: none;">
+                </button>
+                <button class="fil1tag tag" type="button" value="neutral">
+                    Indie
+                    <input name="indie" style="display: none;">
+                </button>
+                <button class="fil1tag tag" type="button" value="neutral">
+                    Massively Multiplayer
+                    <input name="massively-multiplayer" style="display: none;">
+                </button>
+                <button class="fil1tag tag" type="button" value="neutral">
+                    Nudity
+                    <input name="nudity" style="display: none;">
+                </button>
+                <button class="fil1tag tag" type="button" value="neutral">
+                    Photo Editing
+                    <input name="photo-editing" style="display: none;">
+                </button>
+                <button class="fil1tag tag" type="button" value="neutral">
+                    Racing
+                    <input name="racing" style="display: none;">
+                </button>
+                <button class="fil1tag tag" type="button" value="neutral">
+                    RPG
+                    <input name="rpg" style="display: none;">
+                </button>
+                <button class="fil1tag tag" type="button" value="neutral">
+                    Sexual Content
+                    <input name="sexual-content" style="display: none;">
+                </button>
+                <button class="fil1tag tag" type="button" value="neutral">
+                    Simulation
+                    <input name="simulation" style="display: none;">
+                </button>
+                <button class="fil1tag tag" type="button" value="neutral">
+                    Software Training
+                    <input name="software-training" style="display: none;">
+                </button>
+                <button class="fil1tag tag" type="button" value="neutral">
+                    Sports
+                    <input name="sports" style="display: none;">
+                </button>
+                <button class="fil1tag tag" type="button" value="neutral">
+                    Strategy
+                    <input name="strategy" style="display: none;">
+                </button>
+                <button class="fil1tag tag" type="button" value="neutral">
+                    Tutorial
+                    <input name="tutorial" style="display: none;">
+                </button>
+                <button class="fil1tag tag" type="button" value="neutral">
+                    Utilities
+                    <input name="utilities" style="display: none;">
+                </button>
+                <button class="fil1tag tag" type="button" value="neutral">
+                    Video Production
+                    <input name="video-production" style="display: none;">
+                </button>
+                <button class="fil1tag tag" type="button" value="neutral">
+                    Violent
+                    <input name="violent" style="display: none;">
+                </button>
+                <button class="fil1tag tag" type="button" value="neutral">
+                    Web Publishing
+                    <input name="web-publishing" style="display: none;">
+                </button>
+            </ul>
         </div>
-    </form>
+        <br>
+        <button
+            type="button"
+            type="submit"
+            class="filter"
+            style="margin-left: 20px;"
+        >Filter</button>
+    </div>
     <div id="output" style="padding-top: 20px;">
         <p style="text-align:center; font-size: large;">
             Showing results for:
@@ -352,7 +350,7 @@
                 var res = await $.ajax({
                     url: "/",
                     type: "POST",
-                    data: { 'game_name': gn },
+                    data: { 'game_name': gn }
                 });
                 return res;
             }
@@ -387,15 +385,61 @@
                     });
             });
 
-            // call edit distance function
-            async function edDist(gn){
+            // call boolean
+            async function boolFilter(gn, f1in, f1out, f2in, f2out, f3in, f3out, f4in, f4out, f5in, f5out){
                 var res = await $.ajax({
                     url: "/",
                     type: "POST",
-                    data: { 'game_name': gn },
+                    data: { 'game_name': gn,
+                            'filter_1_in': f1in,
+                            'filter_1_out': f1out,
+                            'filter_2_in': f2in,
+                            'filter_2_out': f2out,
+                            'filter_3_in': f3in,
+                            'filter_3_out': f3out,
+                            'filter_4_in': f4in,
+                            'filter_4_out': f4out,
+                            'filter_5_in': f5in,
+                            'filter_5_out': f5out }
                 });
                 return res;
             }
+            let tags = document.getElementById('{{ gt }}').getElementsByClassName('fil1tag');
+            for (let i = 0; i < tags.length; i++ ) {
+                if (tags[i].value == 'include') {
+                    // TO-DO: add to parameter f1in
+                }
+            }
+
+            // replace data
+            // let gn = d3.select('#gn');
+            // gn.on('input', function(){
+            //     var x = document.getElementById('input_game');
+            //     while (x.lastChild) {
+            //         x.removeChild(x.lastChild)
+            //     }
+
+            //     if (document.getElementById('gn').value == '' ||
+            //         document.getElementById('gn').value == null) { return; }
+
+            //     edDist(document.getElementById('gn').value)
+            //         .then(val => {
+            //             let ans = val.split(';');
+            //             for (let i = 0; i < ans.length; i++) {
+            //                 var op = document.createElement('div');
+            //                 op.innerHTML = ans[i];
+            //                 op.setAttribute("style",
+            //                     "padding: 10px; cursor:pointer; background-color: #fff; border-bottom: 1px solid #d4d4d4; width: 100%; text-align: left;")
+            //                 op.addEventListener("click", function(e) {
+            //                     document.getElementById('gn').value = ans[i];
+            //                     while (x.lastChild) {
+            //                         x.removeChild(x.lastChild)
+            //                     }
+            //                 });
+            //                 x.appendChild(op);
+            //             }
+            //         });
+            // });
         });
     </script>
     <script>
@@ -427,11 +471,6 @@
             spans[i].onclick = function() {
                 modals[i].style.display = "none";
             }
-            // window.onclick = function(event) {
-            //     if (event.target == modals[i]) {
-            //         modals[i].style.display = "none";
-            //     }
-            // }
           }
 
         // background
