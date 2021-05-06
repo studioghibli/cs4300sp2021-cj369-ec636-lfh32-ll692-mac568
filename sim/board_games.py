@@ -8,7 +8,8 @@ board_df = pd.read_csv(
     r'data/board-games/data/2019_05_02.csv', usecols=board_df_dict, dtype=board_df_dict)
 
 board_details_df_dict = {'primary': str, 'description': str, 'boardgamecategory': str, 'boardgamemechanic': str,
-                         'image': str, 'minplaytime': np.int64, 'maxplaytime': np.int64, 'minplayers': np.int16, 'maxplayers': np.int16}
+                         'image': str, 'minplaytime': np.int64, 'maxplaytime': np.int64, 'minplayers': np.int16, 'maxplayers': np.int16,
+                         'bayesaverage': np.float32, 'id': np.int32}
 board_details_df = pd.read_csv(
     r'data/board-games/data/games_detailed_info.csv', usecols=board_details_df_dict, dtype=board_details_df_dict)
 
@@ -48,9 +49,12 @@ def boardgame_jaccard(game_title):
             image = board_details_df.at[i, 'image']
 
             index_l = board_df.index
-            link_index = index_l[board_df.at[i, 'id'] == board_df['id']]
+            link_index = index_l[board_details_df.at[i, 'id'] == board_df['id']]
             link = "https://boardgamegeek.com" + \
                 board_df.at[link_index[0], 'url']
+            
+            rating = board_details_df.at[i, 'bayesaverage']
+            rating_weight = (rating / 10) + 1  
 
             min_time = board_details_df.at[i, 'minplaytime']
             max_time = board_details_df.at[i, 'maxplaytime']
@@ -60,8 +64,8 @@ def boardgame_jaccard(game_title):
                 sims_jac.append((board_details_df.at[i, 'primary'], 0, image, link,
                                 cat_i, mech_i, min_time, max_time, min_players, max_players))
             else:
-                sims_jac.append((board_details_df.at[i, 'primary'], (len(cat_i & game_genres) / len(cat_i | game_genres)), image, link, cat_i, mech_i,
-                                 min_time, max_time, min_players, max_players))
+                sims_jac.append((board_details_df.at[i, 'primary'], (len(cat_i & game_genres) / len(cat_i | game_genres)) * rating_weight, image,
+                                 link, cat_i, mech_i, min_time, max_time, min_players, max_players))
 
     return sorted(sims_jac, key=lambda x: x[0])
 
@@ -78,8 +82,10 @@ def boardgame_cosine_sim(game_title):
     result = list()
     for i in range(len(cossims)):
         if i != idx:
-            result.append((board_details_df['primary'][i], cossims[i]))
-    return result
+            rating = board_details_df.at[i, 'bayesaverage']
+            rating_weight = (rating / 10) + 1
+            result.append((board_details_df['primary'][i], cossims[i] * rating_weight))
+    return sorted(result, key=lambda x: x[0])
 
 
 def combine_cosine_jaccard(cosine_list, jaccard_list):
@@ -150,12 +156,12 @@ def get_mechanics():
 
     return sorted(list(mechanics))
 
-# jaccard = boardgame_jaccard('XCOM: The Board Game')
-# cosine = boardgame_cosine_sim('XCOM: The Board Game')
+jaccard = boardgame_jaccard('XCOM: The Board Game')
+cosine = boardgame_cosine_sim('XCOM: The Board Game')
 # print(jaccard)
 # print(cosine)
-# game_list = combine_cosine_jaccard(cosine, jaccard)
-# print(game_list)
+game_list = combine_cosine_jaccard(cosine, jaccard)
+print(game_list[:10])
 # filtered = boardgames_boolean(game_list, disliked_games=['Project: ELITE'], disliked_genres=['Trivia'], liked_genres=['Puzzle'],
 #                               liked_mechanics=['Tile Placement'])
 # print(filtered)
