@@ -9,7 +9,6 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.8.10/themes/smoothness/jquery-ui.css" type="text/css">
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script> -->
 </head>
 <body style="padding:0px">
     <div class="navbar navbar-default navbar-fixed-bottom" role="navigation">
@@ -928,7 +927,6 @@
                 let f5out = "";
 
                 if ('{{ gt }}' == "Board Games") {
-                    console.log("woohoo 1")
                     let tags1 = document.getElementById('{{ gt }}').getElementsByClassName('fil1tag');
                     for (let i = 0; i < tags1.length; i++ ) {
                         if (tags1[i].value == 'include') {
@@ -955,8 +953,6 @@
                     f4in = tags4[0].value;
                     f4out = tags4[1].value;
 
-                    console.log("woohoo 2")
-                    console.log(f1in)
                 } else if ('{{ gt }}' == "Mobile Games") {
                     let tags1 = document.getElementById('{{ gt }}').getElementsByClassName('fil1tag');
                     for (let i = 0; i < tags1.length; i++ ) {
@@ -1022,7 +1018,6 @@
                             'filter_5_in': f5in,
                             'filter_5_out': f5out });
 
-                // console.log(boolFilter("{{ output_message }}", "{{ gt }}", f1in, f1out, f2in, f2out, f3in, f3out, f4in, f4out, f5in, f5out));
             });
         });
 

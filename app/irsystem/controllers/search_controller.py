@@ -32,9 +32,6 @@ def search():
             fil5in = request.form['filter_5_in']
             fil5out = request.form['filter_5_out']
 
-            # for x in [fil1in, fil1out, fil2in, fil2out, fil3in, fil3out, fil4in, fil4out, fil5in, fil5out]:
-            #     print(x)
-
             try:
                 if gt == 'Board Games':
                     if fil1in == '':
