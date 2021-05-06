@@ -261,9 +261,9 @@ TESTING
 # output_cossim = steam_get_rankings(steam_cossim_list(steam_df['appid'][0]))
 # print(output_cossim)
 
-print('sim')
-output_sim = steam_get_rankings(steam_sim_list(steam_df['appid'][0]))
-print(output_sim)
+# print('sim')
+# output_sim = steam_get_rankings(steam_sim_list(steam_df['appid'][0]))
+# print(output_sim)
 
 # print('boolean and jaccard')
 # output_jaccard = steam_jaccard_list(steam_df['appid'][1])
