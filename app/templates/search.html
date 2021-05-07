@@ -753,11 +753,12 @@
         <form class="form-inline" style="text-align:center;">
             {% if data != None %}
             {% for d in data %}
-            <div class="col-sm-4 overlay-container" style="padding: 5px; position:relative">
+            <div class="col-sm-4 overlay-container card" style="padding: 5px; position:relative; ">
+              <div class="result-container" style="border: 1px solid lightgrey; border-radius: 10px">
                 <!-- Being Image of result -->
                 <div class="result-box " style="
                 display: block;
-                height: 160px;
+                height: 240px;
                 padding: 50px 0;
                 background-size: cover;
                 background-position: center;
@@ -769,7 +770,9 @@
                     {% else %}
                     {{url_for('static', filename='img/gplay1.jpeg')}}
                     {% endif %}
-                );"></div>
+                );
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;"></div>
                 <!-- End Image of result  -->
                 <!-- Begin overlay  -->
                 <div class="overlay" style="height: 100%;">
@@ -784,8 +787,8 @@
                                 </p>
                             </div> -->
                             <!-- More info button -->
-                            <div class="result-expand" style="padding-top: 10px;">
-                                <button type="button" class="modal-btn btn btn-info" style="font-family: Landasans; font-size: 30px">
+                            <div class="result-expand" style="padding-top: 15px;">
+                                <button type="button" class="modal-btn btn btn-info" style="font-size: 20px; font-family: Optima; transition-duration: 0.4s;">
                                     {% if gt == 'Video Games' %}
                                     {{ d[1] }}
                                     {% else %}
@@ -796,6 +799,7 @@
                             <br>
                         </div>
                     </div>
+                  </div>
                 </div>
                 <!-- End overlay  -->
             </div>
@@ -804,7 +808,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <span class="close" id="close-{{loop.index0}}" style="size=300%;">&times;</span>
-                            <h5 class="modal-title">
+                            <h5 class="modal-title" style="font-family: Optima;">
                                 {% if gt == 'Video Games' %}
                                 {{ d[1] }}
                                 {% else %}

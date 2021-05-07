@@ -98,13 +98,16 @@
   background-color: rgba(0, 0, 0, 0.4);
 }
 
+.modal-btn:hover {
+  box-shadow: 0 6px 8px 0 rgba(0,0,0,0.24), 0 8px 50px 0 rgba(0,0,0,0.19);
+}
 .tag {
   border-radius   : 20px;
-  font-size       : 24px;
+  font-size       : 16px;
   border-style    : groove;
   margin-top      : 5px;
   background-color: lightgrey;
-  font-family     : Landasans;
+  font-family: Optima;
 }
 
 .modal-content {
@@ -176,7 +179,7 @@ h2 {
 }
 
 .btn {
-  background-color: #4285F4;
+
   border          : none
 }
 
