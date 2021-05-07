@@ -68,7 +68,7 @@ def steam_jaccard_list(appid):
         neg_ratings = steam_df.at[i, 'negative_ratings']
         # rating_weight = ((pos_ratings + 1) / (neg_ratings + 2))
         rating_weight = min(((((pos_ratings + 1) / (pos_ratings + neg_ratings + 2)))
-                    - (((neg_ratings + 1) / (pos_ratings + neg_ratings + 2))) + 0.5), 1)
+                             - (((neg_ratings + 1) / (pos_ratings + neg_ratings + 2))) + 0.5), 1)
         if x != appid:
             score_list.append((x, steam_jaccard(appid, x)))
     return score_list
@@ -89,15 +89,17 @@ def steam_cossim_list(appid):
     result = list()
     for i in range(len(cossims)):
         if i != idx:
-            index = steam_df.index[steam_descriptions_df.at[i, 'steam_appid'] == steam_df['appid']]
+            index = steam_df.index[steam_descriptions_df.at[i,
+                                                            'steam_appid'] == steam_df['appid']]
             if len(index) > 0:
                 pos_ratings = steam_df.at[index[0], 'positive_ratings']
                 neg_ratings = steam_df.at[index[0], 'negative_ratings']
                 rating_weight = min(((((pos_ratings + 1) / (pos_ratings + neg_ratings + 2)))
-                    - (((neg_ratings + 1) / (pos_ratings + neg_ratings + 2))) + 0.5), 1)
+                                     - (((neg_ratings + 1) / (pos_ratings + neg_ratings + 2))) + 0.5), 1)
             else:
                 rating_weight = 1
-            result.append((steam_descriptions_df['steam_appid'][i], cossims[i]))
+            result.append(
+                (steam_descriptions_df['steam_appid'][i], cossims[i]))
     return result
 
 

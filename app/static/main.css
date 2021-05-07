@@ -3,11 +3,6 @@
   src        : url(arcadeclassic.regular.ttf);
 }
 
-@font-face {
-  font-family: Landasans;
-  src        : url(landasans.ttf);
-}
-
 .slideshow-container {
   width   : 100%;
   padding : 0%;
@@ -99,15 +94,16 @@
 }
 
 .modal-btn:hover {
-  box-shadow: 0 6px 8px 0 rgba(0,0,0,0.24), 0 8px 50px 0 rgba(0,0,0,0.19);
+  box-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.24), 0 8px 50px 0 rgba(0, 0, 0, 0.19);
 }
+
 .tag {
   border-radius   : 20px;
   font-size       : 16px;
   border-style    : groove;
   margin-top      : 5px;
   background-color: lightgrey;
-  font-family: Optima;
+  font-family     : Optima;
 }
 
 .modal-content {
@@ -179,8 +175,10 @@ h2 {
 }
 
 .btn {
-
-  border          : none
+  display      : inline-block;
+  overflow-wrap: break-word;
+  max-width    : 80%;
+  border       : none
 }
 
 .step-links a {

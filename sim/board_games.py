@@ -49,12 +49,13 @@ def boardgame_jaccard(game_title):
             image = board_details_df.at[i, 'image']
 
             index_l = board_df.index
-            link_index = index_l[board_details_df.at[i, 'id'] == board_df['id']]
+            link_index = index_l[board_details_df.at[i,
+                                                     'id'] == board_df['id']]
             link = "https://boardgamegeek.com" + \
                 board_df.at[link_index[0], 'url']
-            
+
             rating = board_details_df.at[i, 'bayesaverage']
-            rating_weight = (rating / 10) + 1  
+            rating_weight = (rating / 10) + 1
 
             min_time = board_details_df.at[i, 'minplaytime']
             max_time = board_details_df.at[i, 'maxplaytime']
@@ -84,7 +85,8 @@ def boardgame_cosine_sim(game_title):
         if i != idx:
             rating = board_details_df.at[i, 'bayesaverage']
             rating_weight = (rating / 10) + 1
-            result.append((board_details_df['primary'][i], cossims[i] * rating_weight))
+            result.append(
+                (board_details_df['primary'][i], cossims[i] * rating_weight))
     return sorted(result, key=lambda x: x[0])
 
 
@@ -120,7 +122,7 @@ def boardgames_boolean(similar_games, disliked_games=None, liked_genres=None, di
                     break
             if not include:
                 continue
-        
+
         if liked_mechanics != None:
             for mechanic in liked_mechanics:
                 if mechanic not in game[5]:
@@ -144,7 +146,7 @@ def boardgames_boolean(similar_games, disliked_games=None, liked_genres=None, di
         if max_time != None:
             if game[7] > max_time:
                 continue
-                    
+
         if min_players != None:
             if game[8] < min_time:
                 continue
@@ -152,7 +154,7 @@ def boardgames_boolean(similar_games, disliked_games=None, liked_genres=None, di
         if max_players != None:
             if game[9] > max_time:
                 continue
-        
+
         filtered_games.append(game)
 
     return filtered_games

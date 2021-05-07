@@ -729,7 +729,6 @@
         </div>
     </div>
     {% endif %}
-
     <button
         type="submit"
         class="filter"
@@ -754,9 +753,9 @@
             {% if data != None %}
             {% for d in data %}
             <div class="col-sm-4 overlay-container card" style="padding: 5px; position:relative; ">
-              <div class="result-container" style="border: 1px solid lightgrey; border-radius: 10px">
-                <!-- Being Image of result -->
-                <div class="result-box " style="
+                <div class="result-container" style="border: 1px solid lightgrey; border-radius: 10px">
+                    <!-- Being Image of result -->
+                    <div class="result-box " style="
                 display: block;
                 height: 240px;
                 padding: 50px 0;
@@ -773,33 +772,33 @@
                 );
                 border-top-left-radius: 10px;
                 border-top-right-radius: 10px;"></div>
-                <!-- End Image of result  -->
-                <!-- Begin overlay  -->
-                <div class="overlay" style="height: 100%;">
-                    <div class="result-box-caption">
-                        <div class="result-box-caption-content">
-                            <!-- Game Name -->
-                            <!-- <div class="result-text">
+                    <!-- End Image of result  -->
+                    <!-- Begin overlay  -->
+                    <div class="overlay" style="height: 100%;">
+                        <div class="result-box-caption">
+                            <div class="result-box-caption-content">
+                                <!-- Game Name -->
+                                <!-- <div class="result-text">
                                 <p>
                                     <strong>
 
                                     </strong>
                                 </p>
                             </div> -->
-                            <!-- More info button -->
-                            <div class="result-expand" style="padding-top: 15px;">
-                                <button type="button" class="modal-btn btn btn-info" style="font-size: 20px; font-family: Optima; transition-duration: 0.4s;">
-                                    {% if gt == 'Video Games' %}
+                                <!-- More info button -->
+                                <div class="result-expand" style="padding-top: 15px;">
+                                    <button type="button" class="modal-btn btn btn-info" style="font-size: 20px; font-family: Optima; transition-duration: 0.4s;">
+                                        {% if gt == 'Video Games' %}
                                     {{ d[1] }}
                                     {% else %}
                                     {{ d[0] }}
                                     {% endif %}
-                                </button>
+                                    </button>
+                                </div>
+                                <br>
                             </div>
-                            <br>
                         </div>
                     </div>
-                  </div>
                 </div>
                 <!-- End overlay  -->
             </div>

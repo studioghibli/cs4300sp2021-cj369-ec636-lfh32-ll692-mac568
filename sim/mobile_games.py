@@ -243,9 +243,7 @@ def mgs_get_rankings(score_list):
             result_list.append((game, score, genres, rating,
                                 payment_type, price, content, web_link))
 
-    result_list = sorted(result_list, key=lambda x: x[1], reverse=True)[:30]
-
-    return result_list
+    return sorted(result_list, key=lambda x: x[1], reverse=True)[:30]
 
 
 '''
