@@ -191,12 +191,12 @@ def get_mechanics():
 
     return sorted(list(mechanics))
 
-jaccard = boardgame_jaccard('XCOM: The Board Game')
-cosine = boardgame_cosine_sim('XCOM: The Board Game')
+# jaccard = boardgame_jaccard('XCOM: The Board Game')
+# cosine = boardgame_cosine_sim('XCOM: The Board Game')
 # print(jaccard)
 # print(cosine)
-game_list = combine_cosine_jaccard(cosine, jaccard)
-print(game_list[:10])
+# game_list = combine_cosine_jaccard(cosine, jaccard)
+# print(game_list[:10])
 # filtered = boardgames_boolean(game_list, disliked_games=['Project: ELITE'], disliked_genres=['Trivia'], liked_genres=['Puzzle'],
 #                               liked_mechanics=['Tile Placement'])
 # print(filtered)
