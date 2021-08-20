@@ -5,7 +5,7 @@ This Flask app template is intended to get you started with your project and lau
 ## Quickstart Guide
 ### 1. Cloning the repository from Git
 ```bash
-git clone https://github.com/mahin-mac568/Game-Recommender.git
+git clone https://github.com/studioghibli/cs4300sp2021-cj369-ec636-lfh32-ll692-mac568.git
 cd Game-Recommender
 cd GR-repo
 ```
