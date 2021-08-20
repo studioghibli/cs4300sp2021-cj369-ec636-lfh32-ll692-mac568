@@ -26,12 +26,18 @@ for i in range(len(mobile_games_df['App'])):
 
 
 def mgs_jaccard(app1, app2):
+    '''
+    returns Jaccard similarity score between app1 and app2
+    '''
     A_int_B = mgs_sets[app1].intersection(mgs_sets[app2])
     A_uni_B = mgs_sets[app1].union(mgs_sets[app2])
     return len(A_int_B) / len(A_uni_B)
 
 
 def mgs_jaccard_list(app):
+    '''
+    returns tuple list of game apps and Jaccard similarity scores
+    '''
     score_list = []
     for app_name in mobile_games_df['App']:
         if app_name != app:
@@ -55,6 +61,9 @@ tfidf_mat = tfidf_vec.fit_transform(reviews_df['Translated_Review'])
 
 
 def mgs_cossim_list(app):
+    '''
+    returns tuple list of game apps and cosine similarity scores
+    '''
     if reviews_df['App'][reviews_df['App'] == app].count() > 0:
         idx = reviews_df.index[reviews_df['App'] == app][0]
         query_tfidf = tfidf_vec.transform(
@@ -72,8 +81,10 @@ def mgs_cossim_list(app):
 COMBINE JACCARD AND COSINE SIMILARITY
 '''
 
-
 def mgs_jacc_cossim(jacc_list, cossim_list):
+    '''
+    returns tuple list of game apps and average of cosine and Jaccard similarity scores
+    '''
     if cossim_list == None:
         return jacc_list
 
@@ -99,9 +110,16 @@ def mgs_jacc_cossim(jacc_list, cossim_list):
 BOOLEAN SEARCH
 '''
 
-
 def mgs_boolean_filter(score_list, included_genres=None, excluded_genres=None,
                        max_price=None, min_price=None, min_rating=None):
+    '''
+    returns filtered list
+    * score_list: list of tuples of game apps and similarity scores
+    * included_genres and excluded_genres: list of genres to include and exclude
+    * max_price and min_price: the maximum price the user is willing to pay for 
+        a game and the minimum price that a user is willing to pay for a game 
+    * min_rating: the minimum rating that the user is willing to consider
+    '''
     filtered_games = []
 
     for (game, score) in score_list:
@@ -157,7 +175,6 @@ def mgs_boolean_filter(score_list, included_genres=None, excluded_genres=None,
 '''
 SENTIMENT ANALYSIS
 '''
-
 
 def mgs_sentiment_list(score_list):
     sent_dict = dict()
@@ -221,10 +238,19 @@ def mgs_sentiment_list(score_list):
 SORT RANKINGS
 '''
 
-
 def mgs_get_rankings(score_list):
-    # score_list = mgs_sentiment_list(score_list)
-
+    '''
+    list of tuples of ranked games
+    * values in tuple are:
+        * score: float
+        * genres: list of strings
+        * rating: float 
+        * name: string
+        * payment_type: string 
+        * price: float
+        * content: string
+        * link to site: string
+    '''
     result_list = list()
     for game, score in score_list:
         i = mobile_games_df.index[mobile_games_df['App'] == game][0]
