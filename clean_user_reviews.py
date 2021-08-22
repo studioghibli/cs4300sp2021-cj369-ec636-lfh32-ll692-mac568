@@ -1,3 +1,5 @@
+# Data extracted and cleaned by Mahin Chowdhury (mac568@cornell.edu)
+
 import pandas as pd
 import re
 import csv
