@@ -22,7 +22,7 @@ pip install -r requirements.txt
 ```
 (For Mac users, you may encounter an `ERROR: Failed building wheel for greenlet`. This can be fixed with `xcode-select --install`.)
 
-An aside note: In the above example, we created a virtualenv for a python3 environment. You will have python3.7.6 installed by default.
+An aside note: In the above example, we created a virtualenv for a python3 environment. You will have Python 3.7.6 installed by default.
 
 
 ### 3. Ensuring environment variables are present
